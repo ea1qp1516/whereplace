@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 //Definir el schema de user
 
-var empresaSchema = {
+var userSchema = {
     username: String,
     nombre: String,
     apellidos: String,
@@ -16,5 +16,5 @@ var empresaSchema = {
 };
 
 
-module.exports = mongoose.model("Empresa", empresaSchema);
+module.exports = mongoose.model("User", userSchema);
 
