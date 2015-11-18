@@ -1,6 +1,6 @@
 module.exports = function(app) {
 
-    var Empresa = require('/modelos/empresa');
+    var Empresa = require('/home/urtasun/WebstormProjects/whereplace/modelos/empresa');
     // Obtiene una Empresa de la base de datos
     getEmpresa = function (req, res) {
         Empresa.findOne({"_id":req.params._id},function (err, empresa) {
@@ -47,14 +47,33 @@ module.exports = function(app) {
             });
 
     }
+    empresalogin = function(req,res)
+    {
+        console.log(req.body);
+        User.findOne({"username":req.body.username},function (err, user) {
+                console.log(user.password);
+                if (err)
+                    res.send(err)
+                if(req.body.password == user.password){
+                    console.log("logIN OK");
+                    res.json(user);
+                }
+                else
+                    res.send("LogIN FAIL");
+                console.log("LOGIN FAIL");
+
+                // devuelve el user seleccionado/home/urtasun/WebstormProjects/whereplace/modelos/empresa.js
+            }
+        );
+    }
 
 
 
     app.get('/empresa/:empresa_id', getEmpresa);
 // Crear una nueva Empresa
-    app.get('/empresa', getEmpresas);
+    app.get('/', getEmpresas);
 // Modificar los datos de una Empresa
     app.post('/empresa', newEmpresa);
 // Borrar una Empresa
-    app.post('/empresa/login', empresaLogin);
+    app.post('/empresa/login', empresalogin);
 }

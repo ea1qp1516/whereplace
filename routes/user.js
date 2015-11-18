@@ -1,14 +1,16 @@
 
+
 module.exports = function(app) {
 
 
-    var User = require('../modelos/user.js');
+    var User = require('/home/urtasun/WebstormProjects/whereplace/modelos/user');
     // Obtiene un Usuario de la base de datos
     getUser = function (req, res) {
-        user.findOne({"_id":req.params._id},function (err, user) {
+        console.log(req);
+        User.findOne({"_id":req.params.user_id},function (err, user) {
                 if (err)
                     res.send(err)
-                res.json(user); // devuelve el user seleccionado
+                res.json(user); // devuelve el user seleccionado/home/urtasun/WebstormProjects/whereplace/modelos/empresa.js
             }
         );
     }
@@ -27,7 +29,7 @@ module.exports = function(app) {
     newUser = function (req, res) {
 
         // Creo el objeto Empresa
-        user.create(
+        User.create(
             {
                 username: req.body.username,
                 nombre: req.body.nombre,
@@ -42,7 +44,7 @@ module.exports = function(app) {
                 if (err)
                     res.send(err);
                 // Obtine y devuelve todas las routes tras crear una de ellas
-                Empresa.find(function (err, user) {
+                User.find(function (err, user) {
                     if (err)
                         res.send(err)
                     res.json(user);
@@ -53,20 +55,32 @@ module.exports = function(app) {
 
     userlogin = function(req,res)
     {
+        console.log(req.body);
+        User.findOne({"username":req.body.username},function (err, user) {
+                console.log(user.password);
+                if (err)
+                    res.send(err)
+                if(req.body.password == user.password){
+                    console.log("logIN OK");
+                    res.json(user);
+                }
+                else
+                    res.send("LogIN FAIL");
+                    console.log("LOGIN FAIL");
 
+                // devuelve el user seleccionado/home/urtasun/WebstormProjects/whereplace/modelos/empresa.js
+            }
+        );
     }
 
 
     // devolver todos los Empresas
     app.get('/user/:user_id', getUser);
-    // Crear una nueva Empresa
     app.get('/user', getUsers);
     // Modificar los datos de una Empresa
     app.post('/user', newUser);
-    // Borrar una Empresa
     app.post('/user/login', userlogin);
-    // application
-    /*app.get('*', function(req, res) {
+     /*app.get('*', function(req, res) {
         res.sendfile('./public/index2.html'); // Carga única de la vista
     });*/
 };
