@@ -28,6 +28,7 @@ module.exports = function(app) {
             {
                 nombre: req.body.nombre,
                 direccion: req.body.username,
+                ciudad: req.body.ciudad,
                 descripcion: req.body.descripcion,
                 email: req.body.email,
                 password: req.body.password,
@@ -71,7 +72,7 @@ module.exports = function(app) {
 
     app.get('/empresa/:empresa_id', getEmpresa);
 // Crear una nueva Empresa
-    app.get('/', getEmpresas);
+    app.get('/empresas', getEmpresas);
 // Modificar los datos de una Empresa
     app.post('/empresa', newEmpresa);
 // Borrar una Empresa
