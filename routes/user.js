@@ -3,7 +3,7 @@
 module.exports = function(app) {
 
 
-    var User = require('/home/urtasun/WebstormProjects/whereplace/modelos/user');
+    var User = require('../modelos/user');
     // Obtiene un Usuario de la base de datos
     getUser = function (req, res) {
         console.log(req);
@@ -74,10 +74,9 @@ module.exports = function(app) {
     }
 
 
-    // devolver todos los Empresas
+
     app.get('/user/:user_id', getUser);
     app.get('/user', getUsers);
-    // Modificar los datos de una Empresa
     app.post('/user', newUser);
     app.post('/user/login', userlogin);
      /*app.get('*', function(req, res) {

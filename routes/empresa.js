@@ -1,6 +1,6 @@
 module.exports = function(app) {
 
-    var Empresa = require('/home/urtasun/WebstormProjects/whereplace/modelos/empresa');
+    var Empresa = require('../modelos/empresa');
     // Obtiene una Empresa de la base de datos
     getEmpresa = function (req, res) {
         Empresa.findOne({"_id":req.params._id},function (err, empresa) {
@@ -70,10 +70,7 @@ module.exports = function(app) {
 
 
     app.get('/empresa/:empresa_id', getEmpresa);
-// Crear una nueva Empresa
     app.get('/', getEmpresas);
-// Modificar los datos de una Empresa
     app.post('/empresa', newEmpresa);
-// Borrar una Empresa
     app.post('/empresa/login', empresalogin);
 }
