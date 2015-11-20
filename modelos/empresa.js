@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var empresaSchema = {
     nombre:String,
     direccion:String,
+    ciudad: String,
     descripcion:String,
     email:String,
     password:String,

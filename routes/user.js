@@ -79,9 +79,9 @@ module.exports = function(app) {
     app.get('/user', getUsers);
     app.post('/user', newUser);
     app.post('/user/login', userlogin);
-     /*app.get('*', function(req, res) {
-        res.sendfile('./public/index2.html'); // Carga única de la vista
-    });*/
+    app.get('*', function(req, res) {
+        res.sendfile('./public/index.html'); // Carga única de la vista
+    });
 };
 
 
