@@ -2,6 +2,7 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html ng-app="MainApp">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,8 +30,9 @@
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="responsive.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
     </head>
-    <body>
+    <body ng-controller="mainController">
  
         <div id="preloader">
             <div id="status">&nbsp;</div>
@@ -114,10 +116,10 @@
                                                                 <h4 class="modal-title">Únete a WherePlace ahora!</h4>
                                                         </div>
                                                         <div class="modal-body">
-                                                                <p>Nombre </p><input type="text" class="form-control" placeholder="Introduce tu nombre ..." id="nombre"><br>
-                                                                <p>Apellidos </p><input type="text" class="form-control" placeholder="Introduce tus apellidos ..." id="apellidos"><br>
-                                                                <p>Correo </p><input type="email" class="form-control" placeholder="Introduce mail ..." id="mail"><br>
-                                                                <p>Contraseña </p><input type="password" class="form-control" id="contra"><br>
+                                                                <p>Nombre </p><input type="text" class="form-control" placeholder="Introduce tu nombre ..." ng-model="newUser.username"><br>
+                                                                <p>Apellidos </p><input type="text" class="form-control" placeholder="Introduce tus apellidos ..." ng-model="newUser.apellidos"><br>
+                                                                <p>Correo </p><input type="email" class="form-control" placeholder="Introduce mail ..." ng-model="newUser.email"><br>
+                                                                <p>Contraseña </p><input type="password" class="form-control" ng-model="newUser.password"><br>
                                                                 <p>Repite tu contraseña</p><input type="password" class="form-control" id="contra1"><br>
                                                         </div>
                                                        
@@ -125,8 +127,8 @@
                                                        
                                                        
                                                                 <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal"  >Close</button>
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="registrarUser()">Aceptar</button>
                                                                 </div>
                                 </div> 
  
@@ -146,12 +148,12 @@
                                                                 <h4 class="modal-title">Únete a WherePlace ahora!</h4>
                                                         </div>
                                                         <div class="modal-body">
-                                                                <p>Nombre </p><input type="text" class="form-control" placeholder="Introduce nombre de la compañia ..." id="nombre"><br>
-                                                                <p>Ciudad </p><input type="text" class="form-control" placeholder="Introduce dirección física de la empresa ..." id="apellidos"><br>
-                                                                <p>Direccion </p><input type="email" class="form-control" placeholder="Introduce mail ..." id="mail"><br>
-                                                                <p>Correo </p><input type="password" class="form-control" id="contra"><br>
-                                                                <p>Contraseña </p><input type="password" class="form-control" id="contra"><br>
-                                                                <p>Repite tu contraseña</p><input type="password" class="form-control" id="contra1"><br>
+                                                                <p>Nombre </p><input type="text" class="form-control" placeholder="Introduce nombre de la compañia ..." ng-model="newEmpresa.nombre"><br>
+                                                                <p>Ciudad </p><input type="text" class="form-control" placeholder="Introduce la ciudad" ng-model="newEmpresa.ciudad"><br>
+                                                                <p>Direccion </p><input type="text" class="form-control" placeholder="Introduce la dirección" ng-model="newEmpresa.direccion"><br>
+                                                                <p>Correo </p><input type="email" class="form-control" placeholder="E-mail" ng-model="newEmpresa.email"><br>
+                                                                <p>Contraseña </p><input type="password" class="form-control" ng-model="newEmpresa.password"><br>
+                                                                <p>Repite tu contraseña</p><input type="password" class="form-control"><br>
                                                         </div>
                                                        
                                                        
@@ -159,7 +161,7 @@
                                                        
                                                                 <div class="modal-footer">
                                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="registrarEmpresa()">Aceptar</button>
                                                                 </div>
                                 </div> 
  
@@ -178,12 +180,12 @@
                                                                 <h4 class="modal-title">Únete a WherePlace</h4>
                                                         </div>
                                                                 <div class="modal-body">
-                                                                <p>Correo </p><input type="text" class="form-control" placeholder="Introduce mail ..." id="mail"><br>
-                                                                <p>Contraseña </p><input type="password" class="form-control" id="contra"><br>
+                                                                <p>Correo </p><input type="text" class="form-control" placeholder="Introduce username ..." ng-model="loginUser.username"><br>
+                                                                <p>Contraseña </p><input type="password" class="form-control" ng-model="loginUser.password"><br>
                                                         </div>
                                                                 <div class="modal-footer">
                                                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="login()">Aceptar</button>
                                                                 </div>
                                 </div>
  
@@ -414,5 +416,6 @@
         <script src="js/owl.carousel.min.js"></script>
         <script src="js/wow.js"></script>
         <script src="js/main.js"></script>
+        <script src="js/angular_main.js"></script>
     </body>
 </html>

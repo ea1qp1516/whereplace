@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<html ng-app="MainApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Where Place</title>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+</head>
+<body ng-controller="mainController">
+    <h1>Lugares</h1>
+    <div>
+        <h2 >Nombre</h2>
+        <table>
+            <tr ng-repeat="empresa in empresas">
+                <td>Nombre : {{empresa.nombre}}</td>
+                <td>Ciudad : {{empresa.ciudad}}</td>
+                <td>Direccion : {{empresa.direccion}}</td>
+                <td>Email : {{empresa.email}}</td>
+
+            </tr>
+
+        </table>
+
+
+    </div>
+
+</body>
+<script src="js/angular_main.js"></script>
+</html>
