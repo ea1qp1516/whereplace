@@ -2,8 +2,8 @@
 
 module.exports = function(app) {
 
-
     var User = require('../modelos/user');
+    var Empresa = require('../modelos/empresa');
     // Obtiene un Usuario de la base de datos
     getUser = function (req, res) {
         console.log(req);
@@ -61,13 +61,35 @@ module.exports = function(app) {
                 if (err)
                     res.send(err)
                 if(req.body.password == user.password){
+
                     console.log("logIN OK");
-                    res.json(user);
+                    console.log(user.gustos);
+                    var gustos = user.gustos;
+                    var empresasFinal = new Array();
+
+                    function getEmpresasbyTag(gusto){
+                        var query = Empresa.find( { tags: gusto });
+                        return query;
+                    }
+
+                    gustos.forEach(function(gusto){
+                        var query = getEmpresasbyTag(gusto);
+                        query.exec(function(err,empresas) {
+                            if(err){
+                                return console.log(err);
+                            }
+                            empresasFinal = empresas;
+                        });
+
+                    });
+                    console.log(empresasFinal);
+                    res.send("blue"); // devuelve todos los Users en JSON
+
                 }
-                else
+                else{
                     res.send("LogIN FAIL");
                     console.log("LOGIN FAIL");
-
+                }
                 // devuelve el user seleccionado/home/urtasun/WebstormProjects/whereplace/modelos/empresa.js
             }
         );

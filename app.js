@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var http = require("http");
 
 mongoose.connect("mongodb://localhost/whereplace");
 
