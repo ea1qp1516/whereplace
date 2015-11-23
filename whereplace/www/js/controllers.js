@@ -23,8 +23,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('UsersCtrl', function($scope,$http, Chats) {
-    $http.get('http://localhost:3000/user/').success(function(data) {
-      $scope.users = data;
+    $http.get('http://localhost:3000/empresas/').success(function(data) {
+      $scope.empresas = data;
       console.log(data);
     })
 
