@@ -60,7 +60,11 @@ module.exports = function(app) {
                 console.log(user.password);
                 if (err)
                     res.send(err)
-                if(req.body.password == user.password){
+                if(user == "")
+                {
+                    res.send("Usuario no existe.");
+                }
+                else if(req.body.password == user.password){
 
                     console.log("logIN OK");
                     console.log(user.gustos);
