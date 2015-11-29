@@ -29,6 +29,7 @@ module.exports = function(app) {
     newUser = function (req, res) {
 
         // Creo el objeto Empresa
+        console.log(req.body);
         User.create(
             {
                 username: req.body.username,
