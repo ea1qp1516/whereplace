@@ -1,38 +1,36 @@
-angular.module('starter.controllers', [])
+var url = "http://localhost:3000";
+//192.168.1.41
 
-.controller('DashCtrl', function($scope) {})
+angular.module('app.controllers', [])
 
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  $scope.chats = Chats.all();
-
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
-})
-
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
-})
-
-.controller('UsersCtrl', function($scope,$http, Chats) {
-    $http.get('http://localhost:3000/empresas/').success(function(data) {
-      $scope.empresas = data;
-      console.log(data);
-    })
+.controller('loginCtrl', function($scope) {
 
 })
 
+.controller('signupCtrl', function($scope) {
 
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
-});
+})
+
+.controller('loginPost',function($scope,$http,$state) {
+    console.log("posting login");
+
+
+
+    $scope.loginPost = function() {
+      console.log($scope.user);
+      $http.post(url + '/user/login', $scope.user)
+        .success(function (data) {
+          console.log(data);
+          $state.go('empresas',{empresas:data});
+        })
+    }
+})
+
+.controller('empresasCtrl', function($scope,$stateParams) {
+    console.log('hola');
+    console.log($stateParams.empresas);
+    $scope.empresas = $stateParams.empresas;
+
+})
+
+
