@@ -158,6 +158,30 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 }]
             }
         })
+        // UI Select
+        .state('main', {
+            url: "/main",
+            templateUrl: "views/main.html",
+            controller: "MainController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load([{
+                        name: 'ui.select',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.css',
+                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.js'
+                        ]
+                    }, {
+                        name: 'MetronicApp',
+                        files: [
+                            'js/controllers/MainController.js'
+                        ]
+                    }]);
+                }]
+            }
+        })
+
 
 
 }]);
