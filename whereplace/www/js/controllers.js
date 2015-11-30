@@ -1,9 +1,72 @@
 var url = "http://localhost:3000";
-//192.168.1.41
 
 angular.module('app.controllers', [])
 
-.controller('loginCtrl', function($scope) {
+.controller('registroCtrl', function($scope) {
+
+})
+
+.controller('usuarioCtrl', function($scope,$state) {
+
+
+    $scope.userRegistro = function() {
+      var now = new Date();
+      var age = now.getFullYear() - $scope.newUser.edad.getFullYear();
+      $scope.newUser.edad = age;
+      console.log($scope.newUser);
+      $state.go('gustos',{user:$scope.newUser});
+    }
+
+
+
+
+})
+
+.controller('empresaCtrl', function($scope) {
+
+})
+
+.controller('gustosCtrl', function($scope, Gustos, $stateParams, $state, $http) {
+    $scope.newUser = $stateParams.user;
+    console.log("estoi en gustos");
+    console.log(Gustos);
+    $scope.gustos = Gustos.all();
+
+    $scope.userGustos = function(gustos) {
+      console.log(gustos);
+      var newGustos = [];
+      gustos.forEach(function(gusto){
+        if(gusto.checked) {
+          newGustos.push(gusto.name);
+        }
+      });
+      $scope.newUser.gustos = newGustos;
+      console.log($scope.newUser.genero)
+      $http.post(url + '/user/', $scope.newUser)
+       .success(function (data) {
+       console.log(data);
+       $state.go('resultadoBusqueda',{empresas:data});
+       })
+    }
+
+})
+
+.controller('resultadoBusquedaCtrl', function($scope, $state,$stateParams) {
+    $scope.goLista = function() {
+      console.log($stateParams.empresas);
+      $state.go('empresas',{empresas:$stateParams.empresas});
+    }
+
+})
+
+.controller('empresasCtrl', function($scope,$stateParams) {
+
+    console.log($stateParams.empresas);
+    $scope.empresas = $stateParams.empresas;
+
+})
+
+.controller('tipoDeNegocioCtrl', function($scope) {
 
 })
 
@@ -11,26 +74,23 @@ angular.module('app.controllers', [])
 
 })
 
+.controller('googleMapsCtrl', function($scope) {
+
+})
+
+.controller('loginFacebookCtrl', function($scope) {
+
+})
+
 .controller('loginPost',function($scope,$http,$state) {
-    console.log("posting login");
+  console.log("posting login");
 
-
-
-    $scope.loginPost = function() {
-      console.log($scope.user);
-      $http.post(url + '/user/login', $scope.user)
-        .success(function (data) {
-          console.log(data);
-          $state.go('empresas',{empresas:data});
-        })
-    }
+  $scope.loginPost = function() {
+    console.log($scope.user);
+    $http.post(url + '/user/login', $scope.user)
+      .success(function (data) {
+        console.log(data);
+        $state.go('resultadoBusqueda',{empresas:data});
+      })
+  }
 })
-
-.controller('empresasCtrl', function($scope,$stateParams) {
-    console.log('hola');
-    console.log($stateParams.empresas);
-    $scope.empresas = $stateParams.empresas;
-
-})
-
-

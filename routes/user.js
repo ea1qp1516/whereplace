@@ -45,10 +45,10 @@ module.exports = function(app) {
                 if (err)
                     res.send(err);
                 // Obtine y devuelve todas las routes tras crear una de ellas
-                User.find(function (err, user) {
+                Empresa.find(function (err, empresas) {
                     if (err)
                         res.send(err)
-                    res.json(user);
+                    res.json(empresas);
                 });
             });
 
