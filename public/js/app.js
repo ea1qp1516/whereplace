@@ -159,7 +159,6 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             }
         })
 
-
 }]);
 
 /* Init global settings and run the app */

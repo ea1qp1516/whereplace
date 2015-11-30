@@ -1,6 +1,6 @@
-var app = angular.module('MainApp', []);
+var myApp = angular.module('MainApp', []);
 
-function mainController($scope, $http) {
+function loginController($scope, $http) {
     $scope.newEmpresa = {};
     $scope.newUser = {};
     $scope.loginUser = {};
@@ -31,10 +31,12 @@ function mainController($scope, $http) {
 
     // Función para registrar a un usuario
     $scope.login = function() {
+        console.log("bieen");
         $http.post('/user/login', $scope.loginUser)
             .success(function(data) {
                 $scope.loginUser = {};
-                location.href="main.html";
+                location.href = 'views/main.html'
+                console.log("bieen");
 
             })
             .error(function(data) {
@@ -51,5 +53,3 @@ function mainController($scope, $http) {
             console.log('Error: ' + data);
         });
 }
-
-
