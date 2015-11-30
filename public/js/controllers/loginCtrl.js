@@ -1,3 +1,4 @@
+var myApp = angular.module('MainApp', []);
 
 function loginController($scope, $http) {
     $scope.newEmpresa = {};

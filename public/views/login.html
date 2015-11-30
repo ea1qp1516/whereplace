@@ -13,7 +13,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
-<html lang="en" ng-app="MetronicApp">
+<html lang="en" ng-app="MainApp">
 <!--<![endif]-->
 <!-- BEGIN HEAD -->
 <head>
@@ -25,6 +25,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	<meta content="" name="description"/>
 	<meta content="" name="author"/>
 	<!-- BEGIN GLOBAL MANDATORY STYLES -->
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
 	<link href="../../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 	<link href="../../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
@@ -45,7 +46,7 @@ License: You must have a valid license purchased only from themeforest(the above
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
-<body class="login">
+<body class="login" ng-controller="loginController">
 <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
 <div class="menu-toggler sidebar-toggler">
 </div>
@@ -80,7 +81,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			<input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Contraseña"  ng-model="loginUser.password"/>
 		</div>
 		<div class="form-actions">
-			<button type="submit" class="btn btn-primary btn-block uppercase" ng-controller="loginController" ng-click="login()">Login</button>
+			<button type="submit" class="btn btn-primary btn-block uppercase" onclick="return false" ng-click="login()">Login</button>
 		</div>
 		<div class="form-actions">
 			<div class="pull-left">
@@ -107,11 +108,6 @@ License: You must have a valid license purchased only from themeforest(the above
 					<a class="social-icon-color linkedin" data-original-title="Linkedin" href="javascript:;"></a>
 				</li>
 			</ul>
-		</div>
-		<div class="create-account">
-			<p>
-				<a href="javascript:;" id="register-btn">Crea tu cuenta</a>
-			</p>
 		</div>
 	</form>
 	<!-- END LOGIN FORM -->
