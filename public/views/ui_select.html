@@ -1,0 +1,90 @@
+<!-- BEGIN MAIN CONTENT -->
+<div data-ng-include="'tpl/header.html'" data-ng-controller="HeaderController"
+     class="page-header md-shadow-z-1-i navbar navbar-fixed-top">
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light" ng-controller="UISelectController">
+            <div class="portlet-title">
+                <div class="caption font-green-sharp">
+                    <span class="caption-subject bold uppercase">WherePlace</span>
+                    <span class="caption-helper hide"></span>
+                </div>
+                <div class="actions">
+                    <a class="btn btn-circle btn-icon-only btn-default" href="#">
+                        <i class="icon-cloud-upload"></i>
+                    </a>
+                    <a class="btn btn-circle btn-icon-only btn-default" href="#">
+                        <i class="icon-wrench"></i>
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-md-3 control-label"></label>
+
+                <div class="col-md-6">
+                    <div class="input-group">
+
+                        <ui-select ng-model="person.selected" theme="bootstrap">
+                            <ui-select-match placeholder="Estoy buscando..">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices repeat="item in people | filter: $select.search">
+                                <span ng-bind-html="item.name | highlight: $select.search"></span>
+                                <small ng-bind-html="item.email | highlight: $select.search"></small>
+                            </ui-select-choices>
+                        </ui-select>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Ciudad</label>
+
+                            <div class="col-sm-4">
+                                <div class="input-group">
+								<span class="input-group-addon">
+								<i class="fa fa-search"></i>
+								</span>
+                                    <span style="position: relative; display: inline-block; direction: ltr;"
+                                          class="twitter-typeahead"><input tabindex="-1" spellcheck="false"
+                                                                           autocomplete="off" readonly=""
+                                                                           style="position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; opacity: 1; background: rgb(255, 255, 255) none repeat scroll 0% 0%;"
+                                                                           class="form-control tt-hint"
+                                                                           type="text"><input dir="auto"
+                                                                                              style="position: relative; vertical-align: top; background-color: transparent;"
+                                                                                              spellcheck="false"
+                                                                                              autocomplete="off"
+                                                                                              id="typeahead_example_2"
+                                                                                              name="typeahead_example_2"
+                                                                                              class="form-control tt-input"
+                                                                                              type="text"><pre
+                                            style="position: absolute; visibility: hidden; white-space: pre; font-family: &quot;Open Sans&quot;,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: optimizelegibility; text-transform: none;"
+                                            aria-hidden="true">B</pre><span
+                                            style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;"
+                                            class="tt-dropdown-menu"><div class="tt-dataset-typeahead_example_2"></div></span></span>
+                                </div>
+                                <p class="help-block">
+                                    E.g: USA, Malaysia. Prefetch from JSON source
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn green">Submit</button>
+                        <button type="button" class="btn default">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+</div>
+</div>
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS-->
+
+<!-- BEGIN MAIN JS -->
