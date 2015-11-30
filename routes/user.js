@@ -45,7 +45,7 @@ module.exports = function(app) {
                 if (err)
                     res.send(err);
                 // Obtine y devuelve todas las routes tras crear una de ellas
-                Empresa.find(function (err, empresas) {
+                Empresa.find({tags:{$in: user.gustos}},function (err, empresas) {
                     if (err)
                         res.send(err)
                     res.json(empresas);
@@ -70,12 +70,12 @@ module.exports = function(app) {
                     console.log("logIN OK");
 
 
-                    Empresa.find(function (err, empresa) {
-                            if (err)
-                                res.send(err)
-                            res.json(empresa); // devuelve todas las Empresas en JSON
-                        }
-                    );
+                    Empresa.find({tags:{$in: user.gustos}},function (err, empresas) {
+                        if (err)
+                            res.send(err)
+                        console.log(empresas);
+                        res.json(empresas);
+                    });
                 }
                 else{
                     res.send("LogIN FAIL");
