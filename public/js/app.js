@@ -118,6 +118,12 @@ MetronicApp.controller('PageHeadController', ['$scope', function($scope) {
     });
 }]);
 
+MetronicApp.controller('LoginController', function($scope, $http, $timeout) {
+    $scope.$on('$viewContentLoaded', function () {
+        Metronic.initAjax(); // initialize core components
+    });
+
+});
 /* Setup Layout Part - Footer */
 MetronicApp.controller('FooterController', ['$scope', function($scope) {
     $scope.$on('$includeContentLoaded', function() {
@@ -158,11 +164,26 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 }]
             }
         })
-        // UI Select
+        // Login
+        .state('login', {
+            url: "/login",
+            templateUrl: "views/login.html",
+            controller: "LoginController"
+
+        })
+
+        // Login
         .state('main', {
             url: "/main",
             templateUrl: "views/main.html",
-            controller: "MainController",
+            controller: "MainController"
+
+        })
+        // Registrar
+        .state('register', {
+            url: "/register",
+            templateUrl: "views/registrar.html",
+            controller: "RegistrarController",
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load([{
@@ -175,7 +196,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                     }, {
                         name: 'MetronicApp',
                         files: [
-                            'js/controllers/MainController.js'
+                            'js/controllers/RegistrarController.js'
                         ]
                     }]);
                 }]
@@ -184,6 +205,44 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 
 
 }]);
+
+
+MetronicApp.controller('LoginController', function($scope, $http, $location) {
+    $scope.loginUser = {};
+    $scope.login = function(){
+        $http.post('/user/login', $scope.loginUser)
+            .success(function(data) {
+                console.log("correcto");
+                $scope.loginUser = {};
+                $location.path('/main');
+
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    }
+
+
+});
+
+MetronicApp.controller('MainController', function($scope, $http, $location) {
+
+    $scope.empresas = {};
+
+    $http.get('/empresas').success(function(data) {
+
+        $scope.empresas = data;
+
+    })
+        .error(function(data) {
+            console.log('Error: ' + data);
+        });
+
+
+});
+
+
+
 
 /* Init global settings and run the app */
 MetronicApp.run(["$rootScope", "settings", "$state", function($rootScope, settings, $state) {
