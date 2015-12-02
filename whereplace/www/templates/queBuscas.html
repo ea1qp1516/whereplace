@@ -1,0 +1,8 @@
+<ion-view title="Que buscas">
+    <ion-content padding="'true'" class="has-header">
+        <form class="list">
+            <ion-toggle ng-repeat="gusto in gustos" ng-model="gusto.checked" >{{gusto.name}}</ion-toggle>
+        </form>
+        <a menu-close="" class="button button-calm button-block " ng-controller="gustosCtrl" ng-click="userGustos(gustos)">Buscar</a>
+    </ion-content>
+</ion-view>

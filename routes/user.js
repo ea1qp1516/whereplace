@@ -29,6 +29,7 @@ module.exports = function(app) {
     newUser = function (req, res) {
 
         // Creo el objeto Empresa
+        console.log(req.body);
         User.create(
             {
                 username: req.body.username,
@@ -44,10 +45,10 @@ module.exports = function(app) {
                 if (err)
                     res.send(err);
                 // Obtine y devuelve todas las routes tras crear una de ellas
-                User.find(function (err, user) {
+                Empresa.find({tags:{$in: user.gustos}},function (err, empresas) {
                     if (err)
                         res.send(err)
-                    res.json(user);
+                    res.json(empresas);
                 });
             });
 
@@ -60,31 +61,21 @@ module.exports = function(app) {
                 console.log(user.password);
                 if (err)
                     res.send(err)
-                if(req.body.password == user.password){
+                if(user == "")
+                {
+                    res.send("Usuario no existe.");
+                }
+                else if(req.body.password == user.password){
 
                     console.log("logIN OK");
-                    console.log(user.gustos);
-                    var gustos = user.gustos;
-                    var empresasFinal = new Array();
 
-                    function getEmpresasbyTag(gusto){
-                        var query = Empresa.find( { tags: gusto });
-                        return query;
-                    }
 
-                    gustos.forEach(function(gusto){
-                        var query = getEmpresasbyTag(gusto);
-                        query.exec(function(err,empresas) {
-                            if(err){
-                                return console.log(err);
-                            }
-                            empresasFinal = empresas;
-                        });
-
+                    Empresa.find({tags:{$in: user.gustos}},function (err, empresas) {
+                        if (err)
+                            res.send(err)
+                        console.log(empresas);
+                        res.json(empresas);
                     });
-                    console.log(empresasFinal);
-                    res.send("blue"); // devuelve todos los Users en JSON
-
                 }
                 else{
                     res.send("LogIN FAIL");

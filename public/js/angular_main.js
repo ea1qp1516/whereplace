@@ -1,4 +1,4 @@
-angular.module('MainApp', [])
+var app = angular.module('MainApp', []);
 
 function mainController($scope, $http) {
     $scope.newEmpresa = {};

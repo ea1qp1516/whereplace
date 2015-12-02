@@ -1,0 +1,28 @@
+
+<body ng-controller="MainController">
+<div>
+
+
+	<h1>Funciona!!</h1>
+
+	<div>
+		<h2 >Empresas Colaboradoras</h2>
+		<table>
+			<table border="1">
+				<tr ng-repeat="empresa in empresas">
+					<td> <b>Nombre :</b>  {{empresa.nombre}}<br></td>
+					<td> <b>Ciudad :</b>  {{empresa.ciudad}}<br></td>
+					<td> <b>Direccion :</b>  {{empresa.direccion}}<br></td>
+					<td> <b>Email :</b> {{empresa.email}}<br></td>
+				</tr>
+				<br>
+			</table>
+		</table>
+
+
+	</div>
+</div>
+
+
+
+</body>

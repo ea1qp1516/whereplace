@@ -4883,7 +4883,12 @@ Portlets
 /* Light Portlet */
 .portlet.light {
   padding: 12px 20px 15px 20px;
-  background-color: #fff;
+  background-color: black;
+  background-image: url('/assets/admin/pages/img/fondo_mapa.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+
 }
 .portlet.light.bordered {
   border: 1px solid #e1e1e1 !important;

@@ -1,30 +1,123 @@
-angular.module('starter.controllers', [])
+var url = "http://localhost:3000";
 
-.controller('DashCtrl', function($scope) {})
+angular.module('app.controllers', [])
 
-.controller('ChatsCtrl', function($scope, $http, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-  $http.get('http://localhost:3000/user/').success(function(data) {
-    $scope.chats = data;
-  })
+.controller('registroCtrl', function($scope) {
 
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
+.controller('usuarioCtrl', function($scope,$state) {
+
+
+    $scope.userRegistro = function() {
+      var now = new Date();
+      var age = now.getFullYear() - $scope.newUser.edad.getFullYear();
+      $scope.newUser.edad = age;
+      console.log($scope.newUser);
+      $state.go('gustos',{user:$scope.newUser});
+    }
+
+
+
+
 })
 
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
+.controller('empresaCtrl', function($scope) {
+
+})
+
+.controller('gustosCtrl', function($scope, Gustos, $stateParams, $state, $http) {
+    $scope.newUser = $stateParams.user;
+    console.log("estoi en gustos");
+    console.log(Gustos);
+    $scope.gustos = Gustos.all();
+
+    $scope.userGustos = function(gustos) {
+      console.log(gustos);
+      var newGustos = [];
+      gustos.forEach(function(gusto){
+        if(gusto.checked) {
+          newGustos.push(gusto.name);
+        }
+      });
+      $scope.newUser.gustos = newGustos;
+      console.log($scope.newUser.genero)
+      $http.post(url + '/user/', $scope.newUser)
+       .success(function (data) {
+       console.log(data);
+       $state.go('resultadoBusqueda',{empresas:data});
+       })
+    }
+
+})
+
+.controller('resultadoBusquedaCtrl', function($scope, $state,$stateParams) {
+    $scope.goLista = function() {
+      console.log($stateParams.empresas);
+      $state.go('empresas',{empresas:$stateParams.empresas});
+    }
+
+})
+
+.controller('empresasCtrl', function($scope,$stateParams) {
+
+    console.log($stateParams.empresas);
+    $scope.empresas = $stateParams.empresas;
+
+})
+
+.controller('tipoDeNegocioCtrl', function($scope) {
+
+})
+
+.controller('signupCtrl', function($scope) {
+
+})
+
+.controller('googleMapsCtrl', function($scope) {
+
+})
+
+.controller('loginFacebookCtrl', function($scope) {
+
+})
+
+.controller('loginPost',function($scope,$http,$state) {
+  console.log("posting login");
+
+  $scope.loginPost = function() {
+    console.log($scope.user);
+    $http.post(url + '/user/login', $scope.user)
+      .success(function (data) {
+        console.log(data);
+        $state.go('resultadoBusqueda',{empresas:data});
+      })
+  }
+})
+
+.controller('MapController', function($scope, $ionicLoading) {
+
+	google.maps.event.addDomListener(window, 'load', function() {
+	    var myLatlng = new google.maps.LatLng(37.3000, -120.4833);
+
+	    var mapOptions = {
+	        center: myLatlng,
+	        zoom: 16,
+	        mapTypeId: google.maps.MapTypeId.ROADMAP
+	    };
+
+	    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+	    navigator.geolocation.getCurrentPosition(function(pos) {
+	        map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+	        var myLocation = new google.maps.Marker({
+	            position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
+	            map: map,
+	            title: "My Location"
+	        });
+	    });
+
+	    $scope.map = map;
+	});
+ 
 });
