@@ -2,8 +2,8 @@
 
 module.exports = function(app) {
 
-
     var User = require('../modelos/user');
+    var Empresa = require('../modelos/empresa');
     // Obtiene un Usuario de la base de datos
     getUser = function (req, res) {
         console.log(req);
@@ -29,6 +29,7 @@ module.exports = function(app) {
     newUser = function (req, res) {
 
         // Creo el objeto Empresa
+        console.log(req.body);
         User.create(
             {
                 username: req.body.username,
@@ -44,10 +45,10 @@ module.exports = function(app) {
                 if (err)
                     res.send(err);
                 // Obtine y devuelve todas las routes tras crear una de ellas
-                User.find(function (err, user) {
+                Empresa.find({tags:{$in: user.gustos}},function (err, empresas) {
                     if (err)
                         res.send(err)
-                    res.json(user);
+                    res.json(empresas);
                 });
             });
 
@@ -60,14 +61,26 @@ module.exports = function(app) {
                 console.log(user.password);
                 if (err)
                     res.send(err)
-                if(req.body.password == user.password){
-                    console.log("logIN OK");
-                    res.json(user);
+                if(user == "")
+                {
+                    res.send("Usuario no existe.");
                 }
-                else
+                else if(req.body.password == user.password){
+
+                    console.log("logIN OK");
+
+
+                    Empresa.find({tags:{$in: user.gustos}},function (err, empresas) {
+                        if (err)
+                            res.send(err)
+                        console.log(empresas);
+                        res.json(empresas);
+                    });
+                }
+                else{
                     res.send("LogIN FAIL");
                     console.log("LOGIN FAIL");
-
+                }
                 // devuelve el user seleccionado/home/urtasun/WebstormProjects/whereplace/modelos/empresa.js
             }
         );
