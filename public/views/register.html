@@ -48,107 +48,52 @@ License: You must have a valid license purchased only from themeforest(the above
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
-<body class="login" ng-controller="loginController">
+<body class="login" ng-controller="RegisterController">
 <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
 <div class="menu-toggler sidebar-toggler">
 </div>
 <!-- END SIDEBAR TOGGLER BUTTON -->
 <!-- BEGIN LOGO -->
 <div class="logo">
-	<a href="index.html">
-	<img src="../../assets/global/img/logo_login.png" style="height: 120px;" alt=""/>
+	<img src="../../assets/global/img/logo_login.png" style="height: 120px; display:block; margin : 0 auto;" alt=""/>
 	</a>
 </div>
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
-<div class="content">
-	<!-- BEGIN LOGIN FORM -->
-	<form class="login-form" action="index.html" method="post">
-		<div class="form-title">
-			<span class="form-title">Bienvenido.</span>
-			<span class="form-subtitle">Porfavor indentifícate</span>
-		</div>
-		<div class="alert alert-danger display-hide">
-			<button class="close" data-close="alert"></button>
-			<span>
-			Introduce tu Email y contraseña </span>
-		</div>
-		<div class="form-group">
-			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-			<label class="control-label visible-ie8 visible-ie9">Email</label>
-			<input class="form-control form-control-solid placeholder-no-fix" type="email" autocomplete="off" placeholder="Email" name="email" ng-model="loginUser.username"/>
-		</div>
-		<div class="form-group">
-			<label class="control-label visible-ie8 visible-ie9">Contraseña</label>
-			<input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Contraseña" name="password" ng-model="loginUser.password"/>
-		</div>
-		<div class="form-actions">
-			<button type="submit" onclick="return false" class="btn btn-primary btn-block uppercase" ng-click="login()">Login</button>
-		</div>
-		<div class="form-actions">
-			<div class="pull-left">
-				<label class="rememberme check">
-				<input type="checkbox" name="remember" value="1"/>Recordar credenciales </label>
-			</div>
-			<div class="pull-right forget-password-block">
-				<a href="javascript:;" id="forget-password" class="forget-password">¿Olvidaste tu contraseña?</a>
-			</div>
-		</div>
-		<div class="login-options">
-			<h4 class="pull-left">Logueate usando ...</h4>
-			<ul class="social-icons pull-right">
-				<li>
-					<a class="social-icon-color facebook" data-original-title="facebook" href="javascript:;"></a>
-				</li>
-				<li>
-					<a class="social-icon-color twitter" data-original-title="Twitter" href="javascript:;"></a>
-				</li>
-				<li>
-					<a class="social-icon-color googleplus" data-original-title="Goole Plus" href="javascript:;"></a>
-				</li>
-				<li>
-					<a class="social-icon-color linkedin" data-original-title="Linkedin" href="javascript:;"></a>
-				</li>
-			</ul>
-		</div>
+<div class="content" style=" width:30%; margin:auto; border-style:solid;">
 
-	</form>
-	<!-- END LOGIN FORM -->
-	<!-- BEGIN FORGOT PASSWORD FORM -->
-	<form class="forget-form" action="index.html" method="post">
-		<div class="form-title">
-			<span class="form-title">¿Olivdaste tu contraseña?</span>
-			<span class="form-subtitle">Introduce tu Email para recuperarla</span>
-		</div>
-		<div class="form-group">
-			<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email"/>
-		</div>
-		<div class="form-actions">
-			<button type="button" id="back-btn" class="btn btn-default">Atrás</button>
-			<button type="submit" class="btn btn-primary uppercase pull-right">Aceptar</button>
-		</div>
-	</form>
-	<!-- END FORGOT PASSWORD FORM -->
 	<!-- BEGIN REGISTRATION FORM -->
-	<form class="register-form" action="index.html" method="post">
+	<form class="register-form" method="post">
 		<div class="form-title">
-			<span class="form-title">Registrate</span>
+			<span class="form-title" style="    color: #c9dce9;
+    font-size: 17px;
+    font-weight: 300 !important;
+    padding-left: 10px;">Registrate</span>
 		</div>
-		<p class="hint">
+		<p class="hint" style="    color: #c9dce9;
+    font-size: 12px;
+    font-weight: 300 !important;
+    padding-left: 10px;">
 			Introduce tus detalles a continuación
 		</p>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">Nombre complet</label>
-			<input class="form-control placeholder-no-fix" type="text" placeholder="Nombre completo" name="fullname"/>
+			<input class="form-control placeholder-no-fix" type="text" placeholder="Nombre completo" name="fullname" ng-model="newUser.nombre" style="width:50%; background-color: #6ba3c8; border: 1px solid #ffffff;
+    height: 43px;
+    color: #d9ecf9;"/>
 		</div>
 		<div class="form-group">
 			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 			<label class="control-label visible-ie8 visible-ie9">Email</label>
-			<input class="form-control placeholder-no-fix" type="text" placeholder="Email" name="email"/>
+			<input class="form-control placeholder-no-fix" type="text" placeholder="Email" name="email" ng-model="newUser.email" style="width:50%; background-color: #6ba3c8; border: 1px solid #ffffff;
+    height: 43px;
+    color: #d9ecf9;"/>
 		</div>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">Dirección física</label>
-			<input class="form-control placeholder-no-fix" type="text" placeholder="Address" name="address"/>
+			<input class="form-control placeholder-no-fix" type="text" placeholder="Address" name="address" style="width:50%; background-color: #6ba3c8; border: 1px solid #ffffff;
+    height: 43px;
+    color: #d9ecf9;"/>
 		</div>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">Ciudad</label>
@@ -395,15 +340,21 @@ License: You must have a valid license purchased only from themeforest(the above
 		</p>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">Usuario</label>
-			<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Usuario" name="username"/>
+			<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Usuario" name="username" ng-model="newUser.username" style="width:50%; background-color: #6ba3c8; border: 1px solid #ffffff;
+    height: 43px;
+    color: #d9ecf9;"/>
 		</div>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">Contraseña</label>
-			<input class="form-control placeholder-no-fix" type="password" autocomplete="off" id="register_password" placeholder="Contraseña" name="password"/>
+			<input class="form-control placeholder-no-fix" type="password" autocomplete="off" id="register_password" placeholder="Contraseña" name="password" ng-model="newUser.password" style="width:50%; background-color: #6ba3c8; border: 1px solid #ffffff;
+    height: 43px;
+    color: #d9ecf9;"/>
 		</div>
 		<div class="form-group">
 			<label class="control-label visible-ie8 visible-ie9">Repite tu contraseña</label>
-			<input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Repite tu contraseña" name="rpassword"/>
+			<input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Repite tu contraseña" name="rpassword"style="width:50%; background-color: #6ba3c8; border: 1px solid #ffffff;
+    height: 43px;
+    color: #d9ecf9;"/>
 		</div>
 		<div class="form-group margin-top-20 margin-bottom-20">
 			<label class="check">
@@ -418,7 +369,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		</div>
 		<div class="form-actions">
 			<button type="button" id="register-back-btn" class="btn btn-default">Atrás</button>
-			<button type="submit" id="register-submit-btn" class="btn btn-primary uppercase pull-right">Aceptar</button>
+			<button type="submit" id="register-submit-btn" class="btn btn-primary uppercase pull-right" ng-click="registrarUser()">Aceptar</button>
 		</div>
 	</form>
 	<!-- END REGISTRATION FORM -->
