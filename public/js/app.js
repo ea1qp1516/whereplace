@@ -175,7 +175,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         // Login
         .state('main', {
             url: "/main",
-            templateUrl: "views/main.html",
+            templateUrl: "views/main_dummy.html",
             controller: "MainController"
 
         })
