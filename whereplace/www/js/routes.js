@@ -8,27 +8,17 @@ angular.module('app.routes', [])
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-
-
   .state('registro', {
     url: '/registro1',
     templateUrl: 'templates/registro.html',
     controller: 'registroCtrl'
   })
 
-
-
-
-
   .state('usuario', {
     url: '/registrouser',
     templateUrl: 'templates/usuario.html',
     controller: 'usuarioCtrl'
   })
-
-
-
-
 
   .state('empresa', {
     url: '/registroempresa',
@@ -43,20 +33,12 @@ angular.module('app.routes', [])
     controller: 'empresasCtrl'
   })
 
-
-
-
-
   .state('gustos', {
     url: '/gustos',
     templateUrl: 'templates/queBuscas.html',
     params: {'user':{}},
     controller: 'gustosCtrl'
   })
-
-
-
-
 
   .state('resultadoBusqueda', {
     url: '/resultado',
@@ -65,19 +47,11 @@ angular.module('app.routes', [])
     controller: 'resultadoBusquedaCtrl'
   })
 
-
-
-
-
   .state('tipoDeNegocio', {
     url: '/tags',
     templateUrl: 'templates/tipoDeNegocio.html',
     controller: 'tipoDeNegocioCtrl'
   })
-
-
-
-
 
   .state('loginPost', {
     url: '/login',
@@ -85,19 +59,11 @@ angular.module('app.routes', [])
     controller: 'loginPost'
   })
 
-
-
-
-
   .state('googleMaps', {
     url: '/gmaps',
     templateUrl: 'templates/googleMaps.html',
     controller: 'googleMapsCtrl'
   })
-
-
-
-
 
   .state('loginFacebook', {
     url: '/inicio',
@@ -105,7 +71,23 @@ angular.module('app.routes', [])
     controller: 'loginFacebookCtrl'
   })
 
+.state('perfilusuario', {
+    url: '/perfilusuario',
+    templateUrl: 'templates/perfilusuario.html',
+    controller: 'perfilusuarioCtrl'
+  })
 
+.state('favoritos', {
+    url: '/favoritos',
+    templateUrl: 'templates/favoritos.html',
+    controller: 'favoritosCtrl'
+  })
+
+.state('settings', {
+    url: '/settings',
+    templateUrl: 'templates/settings.html',
+    controller: 'settingsCtrl'
+  })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/inicio');
