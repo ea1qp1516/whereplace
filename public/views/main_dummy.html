@@ -1,1 +1,71 @@
- 
+
+<!-- BEGIN MAIN CONTENT -->
+
+
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    #map {
+        height: 100%;
+
+    }
+</style>
+<body>
+<div data-ng-include="'tpl/header_login.html'" data-ng-controller="HeaderController"
+     class="page-header md-shadow-z-1-i navbar navbar-fixed-top">
+    </div>
+<div class="row" ng-controller="MainController">
+    <div class="col-md-4">
+        <!-- BEGIN: ACCORDION DEMO -->
+        <div class="portlet light" style="background-color: white;" ng-repeat="empresa in empresas">
+            <div class="portlet-title">
+                <div class="caption font-green-sharp">
+                    <i class="icon-settings font-green-sharp"></i>
+                    <span class="caption-subject bold uppercase">{{empresa.nombre}}</span>
+                    <span class="caption-helper hide"></span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <span>{{empresa.email}}</span>
+                <br>
+                <span>{{empresa.ciudad}}</span>
+
+                <!-- Aqui irá el contenido de la empresa -->
+            </div>
+        </div>
+        <!-- END: ACCORDION DEMO -->
+    </div>
+    <div class="col-md-8" ng-controller="MapCtrl">
+        <!-- Aquí irá el mapa -->
+        <div class="portlet light" style= "background-color: white;">
+            <div class="portlet-title" id="map" style="height: 750px;">
+
+            </div>
+            <div class="portlet-body">
+
+                <script>
+
+                    var map;
+                    function initMap() {
+                        map = new google.maps.Map(document.getElementById('map'), {
+                            center: {lat: 41.396311, lng: 1.9589427999999316},
+                            zoom: 8
+                        });
+                    }
+
+                </script>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzurAdCYR_gG-KAqGreC3-ZJUhklwAacs&callback=initMap"
+                        async defer></script>
+
+            </div>
+        </div>
+        <!-- END: ACCORDION DEMO -->
+    </div>
+</div>
+<!-- END MAIN CONTENT -->
+</body>
+
+<!-- BEGIN MAIN JS -->

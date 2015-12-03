@@ -172,9 +172,9 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 
         })
 
-       .state('main2', {
-            url: "/main2",
-            templateUrl: "views/main2.html",
+       .state('main', {
+            url: "/main_dummy",
+            templateUrl: "views/main_dummy.html",
             controller: "MainController"
 
         })
@@ -213,7 +213,7 @@ MetronicApp.controller('LoginController', function($scope, $http, $location) {
             .success(function(data) {
                 console.log("correcto");
                 $scope.loginUser = {};
-                $location.path('/main2');
+                $location.path('/main_dummy');
 
             })
             .error(function(data) {
@@ -258,6 +258,30 @@ MetronicApp.controller('MainController', function($scope, $http, $location) {
 
 });
 
+MetronicApp.controller('MapCtrl', ['$scope', function ($scope) {
+
+    $scope.map = {
+        center: {
+            latitude: 40.454018,
+            longitude: -3.509205
+        },
+        zoom: 12,
+        options : {
+            scrollwheel: false
+        },
+        control: {}
+    };
+    $scope.marker = {
+        id: 0,
+        coords: {
+            latitude: 40.454018,
+            longitude: -3.509205
+        },
+        options: {
+            draggable: true
+        }
+    };
+}]);
 
 
 
