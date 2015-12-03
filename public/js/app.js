@@ -182,8 +182,8 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         // Registrar
         .state('register', {
             url: "/register",
-            templateUrl: "views/registrar.html",
-            controller: "RegistrarController",
+            templateUrl: "views/register.html",
+            controller: "RegisterController",
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load([{
@@ -196,7 +196,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                     }, {
                         name: 'MetronicApp',
                         files: [
-                            'js/controllers/RegistrarController.js'
+                            'js/controllers/RegisterController.js'
                         ]
                     }]);
                 }]
@@ -222,6 +222,23 @@ MetronicApp.controller('LoginController', function($scope, $http, $location) {
             });
     }
 
+
+});
+
+MetronicApp.controller('RegisterController', function($scope, $http, $location) {
+    console.log("entra reg");
+    $scope.registrarUser = function() {
+        $http.post('/user', $scope.newUser)
+            .success(function(data) {
+
+                $scope.newUser = {};
+                $scope.newUser = {};
+                $location.path('/main');
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
 
 });
 
