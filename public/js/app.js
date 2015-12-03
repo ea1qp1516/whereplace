@@ -172,10 +172,9 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 
         })
 
-        // Login
-        .state('main', {
-            url: "/main",
-            templateUrl: "views/main.html",
+       .state('main2', {
+            url: "/main2",
+            templateUrl: "views/main2.html",
             controller: "MainController"
 
         })
@@ -214,7 +213,7 @@ MetronicApp.controller('LoginController', function($scope, $http, $location) {
             .success(function(data) {
                 console.log("correcto");
                 $scope.loginUser = {};
-                $location.path('/main');
+                $location.path('/main2');
 
             })
             .error(function(data) {
@@ -249,6 +248,7 @@ MetronicApp.controller('MainController', function($scope, $http, $location) {
     $http.get('/empresas').success(function(data) {
 
         $scope.empresas = data;
+        console.log(data);
 
     })
         .error(function(data) {

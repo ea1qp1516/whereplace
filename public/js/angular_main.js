@@ -45,7 +45,7 @@ function mainController($scope, $http) {
     $http.get('/empresas').success(function(data) {
 
         $scope.empresas = data;
-        console.log("Log Empresas" + data);
+        console.log(data);
     })
         .error(function(data) {
             console.log('Error: ' + data);
