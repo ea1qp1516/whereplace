@@ -74,11 +74,25 @@ angular.module('app.controllers', [])
 
 })
 
+
+
 .controller('googleMapsCtrl', function($scope) {
 
 })
 
 .controller('loginFacebookCtrl', function($scope) {
+
+})
+
+.controller('perfilusuarioCtrl', function($scope) {
+
+})
+
+.controller('favoritosCtrl', function($scope) {
+
+})
+
+.controller('settingsCtrl', function($scope) {
 
 })
 
@@ -121,3 +135,5 @@ angular.module('app.controllers', [])
 	});
  
 });
+
+
