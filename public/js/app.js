@@ -172,18 +172,17 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 
         })
 
-        // Login
-        .state('main', {
-            url: "/main",
-            templateUrl: "views/main.html",
+       .state('main', {
+            url: "/main_dummy",
+            templateUrl: "views/main_dummy.html",
             controller: "MainController"
 
         })
         // Registrar
         .state('register', {
             url: "/register",
-            templateUrl: "views/registrar.html",
-            controller: "RegistrarController",
+            templateUrl: "views/register.html",
+            controller: "RegisterController",
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load([{
@@ -196,7 +195,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                     }, {
                         name: 'MetronicApp',
                         files: [
-                            'js/controllers/RegistrarController.js'
+                            'js/controllers/RegisterController.js'
                         ]
                     }]);
                 }]
@@ -214,7 +213,7 @@ MetronicApp.controller('LoginController', function($scope, $http, $location) {
             .success(function(data) {
                 console.log("correcto");
                 $scope.loginUser = {};
-                $location.path('/main');
+                $location.path('/main_dummy');
 
             })
             .error(function(data) {
@@ -225,6 +224,23 @@ MetronicApp.controller('LoginController', function($scope, $http, $location) {
 
 });
 
+MetronicApp.controller('RegisterController', function($scope, $http, $location) {
+    console.log("entra reg");
+    $scope.registrarUser = function() {
+        $http.post('/user', $scope.newUser)
+            .success(function(data) {
+
+                $scope.newUser = {};
+                $scope.newUser = {};
+                $location.path('/main');
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
+
+});
+
 MetronicApp.controller('MainController', function($scope, $http, $location) {
 
     $scope.empresas = {};
@@ -232,6 +248,7 @@ MetronicApp.controller('MainController', function($scope, $http, $location) {
     $http.get('/empresas').success(function(data) {
 
         $scope.empresas = data;
+        console.log(data);
 
     })
         .error(function(data) {
@@ -241,6 +258,30 @@ MetronicApp.controller('MainController', function($scope, $http, $location) {
 
 });
 
+MetronicApp.controller('MapCtrl', ['$scope', function ($scope) {
+
+    $scope.map = {
+        center: {
+            latitude: 40.454018,
+            longitude: -3.509205
+        },
+        zoom: 12,
+        options : {
+            scrollwheel: false
+        },
+        control: {}
+    };
+    $scope.marker = {
+        id: 0,
+        coords: {
+            latitude: 40.454018,
+            longitude: -3.509205
+        },
+        options: {
+            draggable: true
+        }
+    };
+}]);
 
 
 
