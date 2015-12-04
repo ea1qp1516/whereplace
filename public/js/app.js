@@ -174,6 +174,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 
        .state('main', {
             url: "/main_dummy",
+            params: {'empresas':{}},
             templateUrl: "views/main_dummy.html",
             controller: "MainController"
 
@@ -206,14 +207,14 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 }]);
 
 
-MetronicApp.controller('LoginController', function($scope, $http, $location) {
+MetronicApp.controller('LoginController', function($scope, $http, $state) {
     $scope.loginUser = {};
     $scope.login = function(){
         $http.post('/user/login', $scope.loginUser)
             .success(function(data) {
                 console.log("correcto");
                 $scope.loginUser = {};
-                $location.path('/main_dummy');
+                $state.go('main',{empresas:data});
 
             })
             .error(function(data) {
@@ -241,21 +242,9 @@ MetronicApp.controller('RegisterController', function($scope, $http, $location) 
 
 });
 
-MetronicApp.controller('MainController', function($scope, $http, $location) {
+MetronicApp.controller('MainController', function($scope, $http,$stateParams) {
 
-    $scope.empresas = {};
-
-    $http.get('/empresas').success(function(data) {
-
-        $scope.empresas = data;
-        console.log(data);
-
-    })
-        .error(function(data) {
-            console.log('Error: ' + data);
-        });
-
-
+    $scope.empresas = $stateParams.empresas;
 });
 
 MetronicApp.controller('MapCtrl', ['$scope', function ($scope) {
