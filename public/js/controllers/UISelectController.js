@@ -155,17 +155,13 @@ MetronicApp.controller('UISelectController', function($scope, $http, $timeout) {
 
     $scope.person = {};
     $scope.people = [{
-        name: 'Restaurantes'
+        name: 'Comida'
     }, {
-        name: 'Bares'
+        name: 'Diversión'
     }, {
-        name: 'Teatros'
+        name: 'Nocturno'
     }, {
-        name: 'Discotecas'
-    }, {
-        name: 'Cafeterias'
-    }, {
-        name: 'Cines'
+        name: 'Compras'
     }];
 
     $scope.availableColors = ['Red', 'Green', 'Blue', 'Yellow', 'Magenta', 'Maroon', 'Umbra', 'Turquoise'];
