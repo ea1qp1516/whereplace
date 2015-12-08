@@ -13,9 +13,15 @@ var empresaSchema = {
     password:String,
     telefono: String,
     puntuacion: String,
-    tags:[String]
+    tags:[String],
+    comentarios:[String],
+    detalles:[String],
+    created_at: Date,
+    updated_at: Date,
 };
 
 
+
 module.exports = mongoose.model("Empresa", empresaSchema);
+
 

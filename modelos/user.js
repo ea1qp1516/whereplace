@@ -5,17 +5,21 @@ var Schema = mongoose.Schema;
 //Definir el schema de user
 
 var userSchema = new Schema({
-    username: String,
     nombre: String,
     apellidos: String,
     password: String,
     email: String,
-    genero: String,
     gustos: [String],
-    edad: { type: Number, min: 14, max: 80 },
+    fecha_nacimiento: Date ,
     created_at: Date,
-    updated_at: Date
+    updated_at: Date,
+    contador_comentarios: String,
+    favoritos: [String]
 });
+
+userSchema.methods.validPassword = function( pwd ) {
+    return ( this.password === pwd );
+};
 
 
 var User = mongoose.model("User", userSchema);
