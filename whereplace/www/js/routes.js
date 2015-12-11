@@ -89,6 +89,11 @@ angular.module('app.routes', [])
     controller: 'settingsCtrl'
   })
 
+.state('about', {
+    url: '/about',
+    templateUrl: 'templates/about.html',
+    controller: 'aboutCtrl'
+  })
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/inicio');
 

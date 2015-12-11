@@ -16,10 +16,6 @@ angular.module('app.controllers', [])
       console.log($scope.newUser);
       $state.go('gustos',{user:$scope.newUser});
     }
-
-
-
-
 })
 
 .controller('empresaCtrl', function($scope) {
@@ -74,8 +70,6 @@ angular.module('app.controllers', [])
 
 })
 
-
-
 .controller('googleMapsCtrl', function($scope) {
 
 })
@@ -93,6 +87,10 @@ angular.module('app.controllers', [])
 })
 
 .controller('settingsCtrl', function($scope) {
+
+})
+
+.controller('aboutCtrl', function($scope) {
 
 })
 
@@ -134,6 +132,15 @@ angular.module('app.controllers', [])
         $scope.map = map;
     });
 
-});
+})
+
+
+
+
+
+
+
+
+
 
 
