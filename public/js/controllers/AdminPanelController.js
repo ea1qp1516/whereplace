@@ -1,5 +1,7 @@
+/**
+ * Created by Usuario on 11/12/2015.
+ */
 'use strict';
-$scope.empresas = {};
 
 MetronicApp.filter('propsFilter', function() {
     return function(items, props) {
@@ -31,23 +33,17 @@ MetronicApp.filter('propsFilter', function() {
         return out;
     };
 });
-MetronicApp.controller('MainController', function($scope, $http, $timeout) {
+MetronicApp.controller('AdminPanelController', function($scope, $http, $timeout) {
     $scope.$on('$viewContentLoaded', function () {
         Metronic.initAjax(); // initialize core components
     });
 
-        $http.get('/empresas').success(function(data){
-        $scope.empresas = data;
-        console.log(data);
+    $http.get('/empresas').success(function(data){
+            $scope.empresas = data;
+            console.log(data);
 
         })
-            .error(function(data) {
-                console.log('Error: ' + data);
-            });
-
-
+        .error(function(data) {
+            console.log('Error: ' + data);
+        });
 });
-
-
-
-
