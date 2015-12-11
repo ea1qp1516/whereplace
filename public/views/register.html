@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+
+<html lang="en" ng-app="MainApp">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+<meta charset="utf-8"/>
+<title>WherePlace | ¿Que harás hoy?</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta content="" name="description"/>
+<meta content="" name="author"/>
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+<link href="../../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="../../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
+<link href="../../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="../../assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+<link href="../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
+
+	<!-- END GLOBAL MANDATORY STYLES -->
+<!-- BEGIN PAGE LEVEL STYLES -->
+<link href="../../assets/admin/pages/css/login2.css" rel="stylesheet" type="text/css"/>
+<!-- END PAGE LEVEL SCRIPTS -->
+<!-- BEGIN THEME STYLES -->
+<link href="../../assets/global/css/components-rounded.css" id="style_components" rel="stylesheet" type="text/css"/>
+<link href="../../assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
+<link href="../../assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
+<link href="../../assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+<link href="../../assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
+
+	<!-- END THEME STYLES -->
+<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="login" ng-controller="RegisterController">
+<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+<div class="menu-toggler sidebar-toggler">
+</div>
+<!-- END SIDEBAR TOGGLER BUTTON -->
+<!-- BEGIN LOGO -->
+<div class="logo">
+	<img src="../../assets/global/img/logo_login.png" style="height: 120px; display:block; margin : 0 auto;" alt=""/>
+	</a>
+</div>
+<!-- END LOGO -->
+<!-- BEGIN LOGIN -->
+<div class="content" style=" width:30%; margin:auto; border-style:solid;">
+
+	<!-- BEGIN REGISTRATION FORM -->
+	<form class="register-form" method="post">
+		<div class="form-title">
+			<span class="form-title" style="    color: #c9dce9;
+    font-size: 17px;
+    font-weight: 300 !important;
+    padding-left: 10px;">Registrate</span>
+		</div>
+		<p class="hint" style="    color: #c9dce9;
+    font-size: 12px;
+    font-weight: 300 !important;
+    padding-left: 10px;">
+			Introduce tus detalles a continuación
+		</p>
+		<div class="form-group">
+			<label class="control-label visible-ie8 visible-ie9">Nombre complet</label>
+			<input class="form-control placeholder-no-fix" type="text" placeholder="Nombre completo" name="fullname" ng-model="newUser.nombre" style="width:50%; background-color: #6ba3c8; border: 1px solid #ffffff;
+    height: 43px;
+    color: #d9ecf9;"/>
+		</div>
+		<div class="form-group">
+			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+			<label class="control-label visible-ie8 visible-ie9">Email</label>
+			<input class="form-control placeholder-no-fix" type="text" placeholder="Email" name="email" ng-model="newUser.email" style="width:50%; background-color: #6ba3c8; border: 1px solid #ffffff;
+    height: 43px;
+    color: #d9ecf9;"/>
+		</div>
+		<div class="form-group">
+			<label class="control-label visible-ie8 visible-ie9">Dirección física</label>
+			<input class="form-control placeholder-no-fix" type="text" placeholder="Address" name="address" style="width:50%; background-color: #6ba3c8; border: 1px solid #ffffff;
+    height: 43px;
+    color: #d9ecf9;"/>
+		</div>
+		<div class="form-group">
+			<label class="control-label visible-ie8 visible-ie9">Ciudad</label>
+			<select name="country" class="form-control" style="width:50%;">
+				<option value="">Ciudad</option>
+				<option value="Álava">Álava</option>
+				<option value="Albacete">Albacete</option>
+				<option value="Alicante">Alicante</option>
+				<option value="Almería">Almería</option>
+				<option value="Asturias">Asturias</option>
+				<option value="Ávila">Ávila</option>
+				<option value="Badajoz">Badajoz</option>
+				<option value="Barcelona">Barcelona</option>
+				<option value="Burgos">Burgos</option>
+				<option value="Cáceres">Cáceres</option>
+				<option value="Cádiz">Cádiz</option>
+				<option value="Cantabria">Cantabria</option>
+				<option value="Castellón">Castellón</option>
+				<option value="Ciudad Real">Ciudad Real</option>
+				<option value="Córdoba">Córdoba</option>
+				<option value="La Coruña">La Coruña</option>
+				<option value="Cuenca">Cuenca</option>
+				<option value="Gerona">Gerona</option>
+				<option value="Granada">Granada</option>
+				<option value="Guadalajra">Guadalajara</option>
+				<option value="Gipúzcoa">Gipúzcoa</option>
+				<option value="Huleva">Huelva</option>
+				<option value="Huesca">Huesca</option>
+				<option value="Islas Baleares">Islas Baleares</option>
+				<option value="Jaén">Jaén</option>
+				<option value="León">León</option>
+				<option value="Lérida">Lérida</option>
+				<option value="Lugo">Lugo</option>
+				<option value="Madrid">Madrid</option>
+				<option value="Málaga">Málaga</option>
+				<option value="Murcia">Murcia</option>
+				<option value="Navarra">Navarra</option>
+				<option value="Orense">Orense</option>
+				<option value="Palencia">Palencia</option>
+				<option value="Las Palmas">Las Palmas</option>
+				<option value="Pontevedra">Pontevedra</option>
+				<option value="La Rioja">La Rioja</option>
+				<option value="Salamanca">Salamanca</option>
+				<option value="Segovia">Segovia</option>
+				<option value="Sevilla">Sevilla</option>
+				<option value="Soria">Soria</option>
+				<option value="Tarragona">Tarragona</option>
+				<option value="Santa Cruz de Tenerife">Santa Cruz de Tenerife</option>
+				<option value="Teruel">Teruel</option>
+				<option value="Toledo">Toledo</option>
+				<option value="Valencia">Valencia</option>
+				<option value="Valladolid">Valladolid</option>
+				<option value="Vizcaya">Vizcaya</option>
+				<option value="Zamora">Zamora</option>
+				<option value="Zaragoza">Zaragoza</option>
+				<option value="Melilla">Melilla</option>
+				<option value="Ceuta">Ceuta</option>
+			</select>
+		</div>
+		<p class="hint">
+			 Introduce los detalles de tu cuenta
+		</p>
+		<div class="form-group">
+			<label class="control-label visible-ie8 visible-ie9">Usuario</label>
+			<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Usuario" name="username" ng-model="newUser.username" style="width:50%; background-color: #6ba3c8; border: 1px solid #ffffff;
+    height: 43px;
+    color: #d9ecf9;"/>
+		</div>
+		<div class="form-group">
+			<label class="control-label visible-ie8 visible-ie9">Contraseña</label>
+			<input class="form-control placeholder-no-fix" type="password" autocomplete="off" id="register_password" placeholder="Contraseña" name="password" ng-model="newUser.password" style="width:50%; background-color: #6ba3c8; border: 1px solid #ffffff;
+    height: 43px;
+    color: #d9ecf9;"/>
+		</div>
+		<div class="form-group">
+			<label class="control-label visible-ie8 visible-ie9">Repite tu contraseña</label>
+			<input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Repite tu contraseña" name="rpassword"style="width:50%; background-color: #6ba3c8; border: 1px solid #ffffff;
+    height: 43px;
+    color: #d9ecf9;"/>
+		</div>
+		<div class="form-group margin-top-20 margin-bottom-20">
+			<label class="check">
+			<input type="checkbox" name="tnc"/>
+			<span class="loginblue-font">Acepto </span>
+			<a href="javascript:;" class="loginblue-link">Los términos de servicio</a>
+			<span class="loginblue-font">y</span>
+			<a href="javascript:;" class="loginblue-link">La póliza de privacidad </a>
+			</label>
+			<div id="register_tnc_error">
+			</div>
+		</div>
+		<div class="form-actions">
+			<button type="button" id="register-back-btn" class="btn btn-default">Atrás</button>
+			<button type="submit" id="register-submit-btn" class="btn btn-primary uppercase pull-right" ng-click="registrarUser()">Aceptar</button>
+		</div>
+	</form>
+	<!-- END REGISTRATION FORM -->
+</div>
+<div class="copyright hide">
+	 2015 © WherePlace.
+</div>
+<!-- END LOGIN -->
+<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+<!-- BEGIN CORE PLUGINS -->
+<!--[if lt IE 9]>
+<script src="./assets/global/plugins/respond.min.js"></script>
+<script src="../../assets/global/plugins/excanvas.min.js"></script> 
+<![endif]-->
+<script src="./assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="./assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+<script src="./assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="./assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="./assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+<script src="./assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+<!-- END CORE PLUGINS -->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="./assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="./assets/global/scripts/metronic.js" type="text/javascript"></script>
+<script src="./assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+<script src="./assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+<script src="./assets/admin/pages/scripts/login.js" type="text/javascript"></script>
+<script src="./js/angular_main.js"></script>
+
+<!-- END PAGE LEVEL SCRIPTS -->
+<script>
+jQuery(document).ready(function() {     
+Metronic.init(); // init metronic core components
+Layout.init(); // init current layout
+Login.init();
+Demo.init();
+});
+</script>
+<!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+</html>

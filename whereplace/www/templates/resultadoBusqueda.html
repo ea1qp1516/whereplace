@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<link href="lib/ionic/css/style.css" rel="stylesheet">
+	<script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/routes.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/directives.js"></script>
+	</head>
+	<body>
+		<ion-view title="Resultado búsqueda">
+		    <ion-content padding="'true'" class="has-header">
+		        <div>
+		            <p>
+		                ¿Cómo quieres ver el resultado de tu búsqueda?
+		            </p>
+		        </div>
+		        <button class="myButton2" ng-controller="resultadoBusquedaCtrl" ng-click="goLista(empresas)">En una lista</button>
+		        <button class="myButton" ng-controller="googleMapsCtrl" >En Google Maps</button>
+		    </ion-content>
+		    <div class="tabs tabs-icon-top tabs-positive">
+		                  <a class="tab-item" href="#/perfilusuario">
+		                      <i class="icon ion-home"></i>
+		                      Profile
+		                  </a>
+		                  <a class="tab-item" href="#/favoritos">
+		                      <i class="icon ion-star"></i>
+		                      Favorite
+		                  </a>
+		                  <a class="tab-item" href="#/settings">
+		                      <i class="icon ion-gear-a"></i>
+		                      Settings
+		                  </a>
+		    </div>
+		</ion-view>
+	</body>
+</html>

@@ -1,0 +1,128 @@
+
+<link href="../assets/global/css/components-md.css" id="style_components" rel="stylesheet" type="text/css"/>
+<link href="../assets/global/css/plugins-md.css" rel="stylesheet" type="text/css"/>
+<link href="../assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
+<link href="../assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+<link href="../assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
+<!-- BEGIN BODY -->
+<body class="login" ng-controller="LoginController">
+<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+<div class="menu-toggler sidebar-toggler">
+</div>
+<!-- END SIDEBAR TOGGLER BUTTON -->
+<!-- BEGIN LOGO -->
+<div class="logo">
+	<a href="index.html">
+		<img src="../../assets/global/img/logo_login.png" style="height: 120px; display:block; margin : 0 auto;" alt=""/>
+	</a>
+</div>
+<!-- END LOGO -->
+<!-- BEGIN LOGIN -->
+<div class="content"  style=" width:30%; margin:auto; border-style:solid;">
+	<!-- BEGIN LOGIN FORM -->
+<br>
+	<form class="login-form">
+		<div class="form-title">
+			<span class="form-title"style="    color: #edf4f8;
+    font-size: 19px;
+    font-weight: 400 !important;">Bienvenido.</span>
+			<span class="form-subtitle" style="    color: #c9dce9;
+    font-size: 17px;
+    font-weight: 300 !important;
+    padding-left: 10px;">Porfavor indentifícate</span>
+			<br>
+			<br>
+		</div>
+		<div class="alert alert-danger display-hide">
+			<button class="close" data-close="alert"></button>
+			<span>
+			Introduce tu Email y contraseña </span>
+		</div>
+		<div class="form-group">
+			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+			<label class="control-label visible-ie8 visible-ie9">Email</label>
+			<input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Email"  ng-model="loginUser.username" style="width:50%; background-color: #6ba3c8; border: 1px solid #ffffff;
+    height: 43px;
+    color: #d9ecf9;"/>
+		</div>
+		<div class="form-group">
+			<label class="control-label visible-ie8 visible-ie9">Contraseña</label>
+			<input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Contraseña"  ng-model="loginUser.password" style="width:50%; background-color: #6ba3c8;
+    border: 1px solid #ffffff;
+    height: 43px;
+    color: #d9ecf9;"/>
+		</div>
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary btn-block uppercase" ng-click="login()"style="width:20%; margin:auto;    border: 1px solid #90bbd7;
+    background-color: #5995bb;
+    color: #8fc4e5;">Login</button><br>
+		</div>
+		<div class="form-actions">
+			<div class="pull-left">
+				<label class="rememberme check">
+					<input type="checkbox" name="remember" value="1"/>Recordar credenciales </label>
+
+			</div>
+			<div class="pull-right forget-password-block">
+				<br><br>
+			</div>
+		</div>
+		<form class="form-group" action="index.html" method="post">
+			<div class="form-title"><br>
+				<a href="javascript:;" id="forget-password" class="forget-password"></a>
+				<br>
+				<span class="form-subtitle">¿Olvidaste tu contraseña? Introduce tu Email para recuperarla</span>
+			</div>
+			<div class="form-group">
+				<input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Email"  style="width:50%; background-color: #6ba3c8; border: 1px solid #ffffff;
+					   height: 43px;
+					   color: #d9ecf9;"/>
+			</div>
+			<div class="form-actions">
+				<button type="button" id="back-btn" class="btn btn-default" style="    width: 20%;
+    margin: auto;
+    border: 1px solid #90bbd7;
+    background-color: #5995bb;
+    color: #8fc4e5;">Atrás</button>
+				<button type="submit" class="btn btn-primary uppercase pull-right" style="    width: 20%;
+    margin: auto;
+    border: 1px solid #90bbd7;
+    background-color: #5995bb;
+    color: #8fc4e5;">Aceptar</button>
+			</div>
+		</form>
+		<form class="form-group" action="index.html" method="post">
+		<div class="login-options">
+			<br><br>
+			<h4 class="pull-left">Logueate usando ...</h4>
+			<ul class="social-icons pull-right">
+				<li>
+					<a class="social-icon-color facebook" data-original-title="facebook" href="javascript:;"></a>
+				</li>
+				<li>
+					<a class="social-icon-color twitter" data-original-title="Twitter" href="javascript:;"></a>
+				</li>
+				<li>
+					<a class="social-icon-color googleplus" data-original-title="Goole Plus" href="javascript:;"></a>
+				</li>
+				<li>
+					<a class="social-icon-color linkedin" data-original-title="Linkedin" href="javascript:;"></a>
+				</li>
+			</ul>
+		</div>
+			<br>
+			<br>
+	</form>
+	<!-- END LOGIN FORM -->
+	<!-- BEGIN FORGOT PASSWORD FORM -->
+
+	<!-- END FORGOT PASSWORD FORM -->
+</form>
+</div>
+<div class="copyright hide">
+	2015 © WherePlace.
+</div>
+
+<!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
