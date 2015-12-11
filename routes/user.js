@@ -1,3 +1,7 @@
+var crypto = require('crypto');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
 
 
 module.exports = function(app) {
@@ -6,18 +10,18 @@ module.exports = function(app) {
     var Empresa = require('../modelos/empresa');
     // Obtiene un Usuario de la base de datos
     getUser = function (req, res) {
-        console.log(req);
-        User.findOne({"_id":req.params.user_id},function (err, user) {
+        User.findOne({"_id":req.params.user_id},{nombre:1,apellidos:1,email:1,favoritos:1,gustos:1},function (err, user) {
                 if (err)
                     res.send(err)
                 res.json(user); // devuelve el user seleccionado/home/urtasun/WebstormProjects/whereplace/modelos/empresa.js
             }
         );
     }
+
+
 // Obtiene todos los objetos Usuarios de la base de datos
     getUsers = function (req, res) {
-        console.log("HELOO");
-        User.find(function (err, users) {
+        User.find({},{nombre:1,apellidos:1,email:1,favoritos:1,gustos:1},function (err, users) {
                 if (err)
                     res.send(err)
                 res.json(users); // devuelve todos los Users en JSON
@@ -28,18 +32,21 @@ module.exports = function(app) {
 // Guarda un objeto Empresa en base de datos
     newUser = function (req, res) {
 
+        var passmd5 = crypto.createHash('md5').update(req.body.password).digest("hex");
+        var now = new Date();
+
         // Creo el objeto Empresa
         console.log(req.body);
         User.create(
             {
-                username: req.body.username,
                 nombre: req.body.nombre,
                 apellidos: req.body.apellidos,
                 email: req.body.email,
-                password: req.body.password,
-                genero:req.body.genero,
-                edad: req.body.edad,
-                gustos: req.body.gustos
+                password: passmd5,
+                fecha_nacimiento: req.body.fecha_nacimiento,
+                created_at: now,
+                updated_at: now
+
             },
             function (err, user) {
                 if (err)
@@ -54,44 +61,66 @@ module.exports = function(app) {
 
     }
 
-    userlogin = function(req,res)
-    {
-        console.log(req.body);
-        User.findOne({"username":req.body.username},function (err, user) {
-                console.log(user.password);
+    updateUser = function(req,res){
+        if (req.body.password) {
+            var passmd5 = crypto.createHash('md5').update(req.body.password).digest("hex");
+        }
+        var now = new Date();
+        User.update( {_id : req.params.user_id},req.body,
+            function(err, user) {
                 if (err)
-                    res.send(err)
-                if(user == "")
-                {
-                    res.send("Usuario no existe.");
-                }
-                else if(req.body.password == user.password){
-
-                    console.log("logIN OK");
-
-
-                    Empresa.find({tags:{$in: user.gustos}},function (err, empresas) {
+                    res.send(err);
+                // Obtine y devuelve todas las empresas tras crear una de ellas
+                User.findOne({"_id":req.params.user_id},{__v:0, password:0},function (err, user) {
                         if (err)
                             res.send(err)
-                        console.log(empresas);
-                        res.json(empresas);
-                    });
-                }
-                else{
-                    res.send("LogIN FAIL");
-                    console.log("LOGIN FAIL");
-                }
-                // devuelve el user seleccionado/home/urtasun/WebstormProjects/whereplace/modelos/empresa.js
-            }
-        );
+                        res.json(user); // devuelve el user seleccionado/home/urtasun/WebstormProjects/whereplace/modelos/empresa.js
+                    }
+                );
+            });
+
+    }
+
+    removeUser = function(req,res){
+
     }
 
 
+    passport.serializeUser(function(user, done) {
+        done(null, user);
+    });
+
+    passport.deserializeUser(function(user, done) {
+        done(null, user);
+    });
+
+    passport.use(new LocalStrategy(
+        function(username, password, done) {
+            var passmd5 = crypto.createHash('md5').update(password).digest("hex");
+            console.log("jas");
+            User.findOne({ email: username }, function(err, user) {
+                if (err) { return done(err); }
+                if (!user) {
+                    return done(null, false, { message: 'Ese usuario no existe.' });
+                }
+                if (!user.validPassword(passmd5)) {
+                    return done(null, false, { message: 'Password incorrecta.' });
+                }
+                return done(null, user);
+            });
+        }
+    ));
 
     app.get('/user/:user_id', getUser);
     app.get('/user', getUsers);
     app.post('/user', newUser);
-    app.post('/user/login', userlogin);
+    app.post('/user/login',
+        passport.authenticate('local', {
+            successRedirect: '/',
+            failureRedirect: '/user'
+        })
+    );
+    app.post('/user/modify/:user_id', updateUser);
     app.get('*', function(req, res) {
         res.sendfile('./public/index.html'); // Carga única de la vista
     });

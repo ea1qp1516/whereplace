@@ -1,5 +1,7 @@
-var url = "http://localhost:3000";
+var url = "http://147.83.7.158:3000";
 
+//147.83.7.158
+//localhost
 angular.module('app.controllers', [])
 
 .controller('registroCtrl', function($scope) {

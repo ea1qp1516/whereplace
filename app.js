@@ -8,6 +8,9 @@ var mongoose = require('mongoose');
 var http = require("http");
 var cors = require("cors");
 var requests = require("requests");
+var crypto = require('crypto');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 mongoose.connect("mongodb://localhost/whereplace");
 
@@ -27,6 +30,7 @@ var allowCrossDomain = function (req, res, next) {
   }
 };
 
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -40,9 +44,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(allowCrossDomain);
 
+app.use(passport.initialize());
+app.use(passport.session());
 
 require('./routes/empresa')(app);
 require('./routes/user')(app);
+
 
 
 // catch 404 and forward to error handler
