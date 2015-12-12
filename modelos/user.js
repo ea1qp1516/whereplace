@@ -10,7 +10,7 @@ var userSchema = new Schema({
     password: String,
     email: String,
     gustos: [String],
-    fecha_nacimiento: Date ,
+    fecha_nacimiento: String ,
     created_at: Date,
     updated_at: Date,
     contador_comentarios: String,

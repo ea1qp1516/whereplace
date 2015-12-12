@@ -65,12 +65,6 @@ angular.module('app.routes', [])
     controller: 'googleMapsCtrl'
   })
 
-  .state('loginFacebook', {
-    url: '/inicio',
-    templateUrl: 'templates/loginFacebook.html',
-    controller: 'loginFacebookCtrl'
-  })
-
 .state('perfilusuario', {
     url: '/perfilusuario',
     templateUrl: 'templates/perfilusuario.html',

@@ -1,4 +1,4 @@
-var url = "http://localhost:3000";
+var url = "http://10.83.55.226:3000";
 
 //147.83.7.158
 //localhost
@@ -101,7 +101,7 @@ angular.module('app.controllers', [])
 
   $scope.loginPost = function() {
     console.log($scope.user);
-    $http.post(url + '/user/login', $scope.user)
+    $http.post(url + '/user/login', $scope.user,{'Content-Type': 'application/x-www-form-urlencoded'})
       .success(function (data) {
         console.log(data);
         $state.go('resultadoBusqueda',{empresas:data});

@@ -28,6 +28,9 @@ module.exports = function(app) {
             }
         );
     }
+    loginFail = function (req, res) {
+        res.status(403).send("Usuario o contraseña incorrecta");
+    }
 
 // Guarda un objeto Empresa en base de datos
     newUser = function (req, res) {
@@ -51,8 +54,8 @@ module.exports = function(app) {
             function (err, user) {
                 if (err)
                     res.send(err);
-                // Obtine y devuelve todas las routes tras crear una de ellas
-                Empresa.find({tags:{$in: user.gustos}},function (err, empresas) {
+                // Obtine y devuelve todas las routes tras crear una de ellas {tags:{$in: user.gustos}
+                Empresa.find({},function (err, empresas) {
                     if (err)
                         res.send(err)
                     res.json(empresas);
@@ -113,11 +116,12 @@ module.exports = function(app) {
 
     app.get('/user/:user_id', getUser);
     app.get('/user', getUsers);
+    app.get('/loginFail', loginFail);
     app.post('/user', newUser);
     app.post('/user/login',
         passport.authenticate('local', {
-            successRedirect: '/',
-            failureRedirect: '/user'
+            successRedirect: '/empresas',
+            failureRedirect: '/loginFail'
         })
     );
     app.post('/user/modify/:user_id', updateUser);
