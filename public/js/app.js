@@ -219,7 +219,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
         })
         .state('adminpanel', {
             url: "/adminpanel",
-            templateUrl: "views/adminpanel.html",
+            templateUrl: "views/adminpanelbasic.html",
             controller: "AdminPanelController",
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {

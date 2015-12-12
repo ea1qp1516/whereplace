@@ -37,6 +37,23 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $timeout)
     $scope.$on('$viewContentLoaded', function () {
         Metronic.initAjax(); // initialize core components
     });
+    // Función para coger el objeto seleccionado en la tabla
+    $scope.selectCompany = function(empresa) {
+        $scope.newEmpresa = empresa;
+        $scope.selected = true;
+        console.log($scope.newEmpresa, $scope.selected);
+    };
+    $scope.borrarEmpresa = function(newEmpresa) {
+        $http.delete('/empresas/' + $scope.newEmpresa._id)
+            .success(function(data) {
+                $scope.newEmpresa = {};
+                $scope.empresas = data;
+                $scope.selected = false;
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
 
     $http.get('/empresas').success(function(data){
             $scope.empresas = data;
