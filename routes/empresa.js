@@ -52,10 +52,20 @@ module.exports = function(app) {
 
     }
     addComment = function(req,res){
-        Empresa.update({_id:req.params.empresa_id},{$push:{ comentarios:{ comentario: req.body.comentario, created_at:req.body.created_at, user: req.body.email}}}, function(err,empresa){
-            if (err)
-                res.send(err)
-            res.json(empresa);
+        Empresa.findById(req.params.empresa_id,function(err,empresa){
+                if (err)
+                    res.send(err)
+                console.log(empresa);
+                empresa.comentarios.push(req.body);
+                empresa.save( function(error, data){
+                    if(error){
+                        res.json(error);
+                    }
+                    else{
+                        res.json(data);
+                    }
+                });
+
         });
 
     }
@@ -65,7 +75,7 @@ module.exports = function(app) {
             var passmd5 = crypto.createHash('md5').update(req.body.password).digest("hex");
         }
         var now = new Date();
-        Empresa.update( {_id : req.params.empresa_id},req.body,
+        Empresa.update( {_id :      req.params.empresa_id},req.body,
             function(err, user) {
                 if (err)
                     res.send(err);

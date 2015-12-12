@@ -65,12 +65,6 @@ angular.module('app.routes', [])
     controller: 'googleMapsCtrl'
   })
 
-  .state('loginFacebook', {
-    url: '/inicio',
-    templateUrl: 'templates/loginFacebook.html',
-    controller: 'loginFacebookCtrl'
-  })
-
 .state('perfilusuario', {
     url: '/perfilusuario',
     templateUrl: 'templates/perfilusuario.html',
@@ -89,7 +83,12 @@ angular.module('app.routes', [])
     controller: 'settingsCtrl'
   })
 
+.state('about', {
+    url: '/about',
+    templateUrl: 'templates/about.html',
+    controller: 'aboutCtrl'
+  })
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/inicio');
+  $urlRouterProvider.otherwise('/login');
 
 });

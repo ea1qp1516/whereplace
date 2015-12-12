@@ -1,4 +1,4 @@
-var url = "http://147.83.7.158:3000";
+var url = "http://10.83.55.226:3000";
 
 //147.83.7.158
 //localhost
@@ -18,10 +18,6 @@ angular.module('app.controllers', [])
       console.log($scope.newUser);
       $state.go('gustos',{user:$scope.newUser});
     }
-
-
-
-
 })
 
 .controller('empresaCtrl', function($scope) {
@@ -76,8 +72,6 @@ angular.module('app.controllers', [])
 
 })
 
-
-
 .controller('googleMapsCtrl', function($scope) {
 
 })
@@ -98,12 +92,16 @@ angular.module('app.controllers', [])
 
 })
 
+.controller('aboutCtrl', function($scope) {
+
+})
+
 .controller('loginPost',function($scope,$http,$state) {
   console.log("posting login");
 
   $scope.loginPost = function() {
     console.log($scope.user);
-    $http.post(url + '/user/login', $scope.user)
+    $http.post(url + '/user/login', $scope.user,{'Content-Type': 'application/x-www-form-urlencoded'})
       .success(function (data) {
         console.log(data);
         $state.go('resultadoBusqueda',{empresas:data});
@@ -136,6 +134,15 @@ angular.module('app.controllers', [])
         $scope.map = map;
     });
 
-});
+})
+
+
+
+
+
+
+
+
+
 
 

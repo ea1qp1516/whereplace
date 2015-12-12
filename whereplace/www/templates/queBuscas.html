@@ -3,6 +3,24 @@
         <form class="list">
             <ion-toggle ng-repeat="gusto in gustos" ng-model="gusto.checked" >{{gusto.name}}</ion-toggle>
         </form>
-        <a menu-close="" class="button button-calm button-block " ng-controller="gustosCtrl" ng-click="userGustos(gustos)">Buscar</a>
+        <a menu-close="" class="button button-calm button-block " ng-controller="gustosCtrl" ng-click="userGustos(gustos)">Buscar</a>  
     </ion-content>
+    <div class="tabs tabs-icon-top tabs-positive">
+                  <a class="tab-item" href="#/perfilusuario">
+                          <i class="icon ion-home"></i>
+                          Perfil
+                      </a>
+                      <a class="tab-item" href="#/gustos">
+                          <i class="icon ion-search"></i>
+                          Busqueda
+                      </a>
+                      <a class="tab-item" href="#/favoritos">
+                          <i class="icon ion-star"></i>
+                          Favorito
+                      </a>
+                      <a class="tab-item" href="#/settings">
+                          <i class="icon ion-gear-a"></i>
+                          Ajustes
+                      </a>
+    	</div>
 </ion-view>
