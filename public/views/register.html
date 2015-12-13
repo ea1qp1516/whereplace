@@ -1,4 +1,3 @@
-
 <!-- BEGIN BODY -->
 <body class="login" ng-controller="RegisterController">
 <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
@@ -8,7 +7,8 @@
 <!-- BEGIN LOGO -->
 <div class="logo">
 
-	<img src="../../assets/global/img/logo_whereplace_trans2.png" style="height: 120px; display:block; margin : 0 auto;" alt=""/>
+    <img src="../../assets/global/img/logo_whereplace_trans2.png" style="height: 120px; display:block; margin : 0 auto;"
+         alt=""/>
 
 </div>
 <br>
@@ -16,195 +16,106 @@
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
 <div class="container">
-	<div class="col-md-6">
-		<div class="portlet box blue-hoki" ng-controller="UISelectController">
-			<div class="portlet-title">
-				<div class="caption">
-					Registro Usuario
-				</div>
-			</div>
-			<div class="portlet-body form">
-				<!-- BEGIN FORM-->
-				<form action="#" id="form-username" class="form-horizontal form-bordered ng-pristine ng-valid">
-					<div class="form-body">
-						<div class="form-group">
-							<label class="control-label col-md-3">Nombre</label>
-							<div class="col-md-4">
-								<div class="input-icon right">
-									<input class="form-control" type="text" placeholder="Nombre" ng-model="newUser.nombre">
+    <div class="col-md-12">
+        <div class="portlet box blue-hoki">
+            <div class="portlet-title">
+                <div class="caption">
+                    Registro Usuario
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <form name="formUsuario" class="form-horizontal form-bordered ng-pristine ng-valid">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Nombre</label>
 
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3">Apellidos</label>
-							<div class="col-md-4">
-								<div class="input-icon right">
-									<input class="form-control" type="text" placeholder="Apellidos" ng-model="newUser.apellidos">
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3">Contraseña</label>
-							<div class="col-md-4">
-								<div class="input-icon right">
-									<input class="form-control" type="password" placeholder="Contraseña" ng-model="newUser.password">
+                            <div class="col-md-4">
+                                <div class="input-icon right">
+                                    <input class="form-control" type="text" placeholder="Nombre"
+                                           ng-model="newUser.nombre">
 
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3">Email</label>
-							<div class="col-md-4">
-								<div class="input-icon right">
-									<input class="form-control" type="email" placeholder="Email" ng-model="newUser.email">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Apellidos</label>
 
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3">Fecha de nacimiento</label>
-							<div class="col-md-4">
-								<input class="form-control" id="mask_date2" type="text" ng-model="newUser.fecha_nacimiento">
-							</div>
-						</div>
-						<div class="form-group last password-strength" >
-							<label class="control-label col-md-3">Gustos</label>
-							<div class="col-md-4">
-								<ui-select multiple ng-model="newUser.gustos" theme="bootstrap" ng-disabled="disabled">
-									<ui-select-match placeholder="Selecciona tus gustos...">{{$item.name}}</ui-select-match>
-									<ui-select-choices repeat="person in people | propsFilter: {name: $select.search, age: $select.search}">
-										{{person.name}}
-									</ui-select-choices>
-								</ui-select>
-								<!-- <p>Selected: {{multipleDemo.selectedPeople}}</p>-->
-								<p>Selected: {{multipleDemo.selectedPeople}}</p>
+                            <div class="col-md-4">
+                                <div class="input-icon right">
+                                    <input class="form-control" type="text" placeholder="Apellidos"
+                                           ng-model="newUser.apellidos">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Contraseña</label>
 
-							</div>
-						</div>
-					</div>
-					<div class="form-actions">
-						<div class="row">
-							<div class="col-md-offset-3 col-md-9">
-								<button type="submit" class="btn purple" style="background-color: #780707" ng-click="registrarUser()"><i class="fa fa-check"></i> Registrar</button>
-								<button type="button" class="btn default" ng-click="volver()">Cancelar</button>
-							</div>
-						</div>
-					</div>
-				</form>
-				<!-- END FORM-->
-			</div>
-		</div>
+                            <div class="col-md-4">
+                                <div class="input-icon right">
+                                    <input class="form-control" type="password" placeholder="Contraseña"
+                                           ng-model="newUser.password">
 
-	</div>
-	<div class="col-md-6">
-		<div class="portlet box blue-hoki" ng-controller="UISelectController">
-			<div class="portlet-title">
-				<div class="caption">
-					Registro Empresa
-				</div>
-			</div>
-			<div class="portlet-body form">
-				<!-- BEGIN FORM-->
-				<form action="#"  class="form-horizontal form-bordered ng-pristine ng-valid">
-					<div class="form-body">
-						<div class="form-group">
-							<label class="control-label col-md-3">Nombre</label>
-							<div class="col-md-4">
-								<div class="input-icon right">
-									<input class="form-control" type="text" placeholder="Nombre">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Confirmar contraseña</label>
 
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3">Dirección</label>
-							<div class="col-md-4">
-								<div class="input-icon right">
-									<input class="form-control" type="text" placeholder="Dirección">
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3">Ciudad</label>
-							<div class="col-md-4">
-								<div class="input-icon right">
-									<input class="form-control" type="text" placeholder="Ciudad">
+                            <div class="col-md-4">
+                                <div class="input-icon right">
+                                    <input class="form-control"  type="password"
+                                           placeholder="Confirmar contraseña"
+                                           ng-model="valPassword.password2" required
+                                           >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Email</label>
 
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3">Descripcion</label>
-							<div class="col-md-4">
-								<div class="input-icon right">
-									<textarea id="maxlength_textarea" class="form-control" maxlength="225" rows="2" placeholder="Descripción. Max: 225 carácteres"></textarea>
+                            <div class="col-md-4">
+                                <div class="input-icon right">
+                                    <input class="form-control" type="email" placeholder="Email"
+                                           ng-model="newUser.email">
 
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3">Email</label>
-							<div class="col-md-4">
-								<div class="input-icon right">
-									<input class="form-control" type="email" placeholder="Email">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Fecha de nacimiento</label>
 
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3">Contraseña</label>
-							<div class="col-md-4">
-								<div class="input-icon right">
-									<input class="form-control" type="password" placeholder="Contraseña">
+                            <div class="col-md-4">
+                                <input class="form-control" id="mask_date2" type="text"
+                                       ng-model="newUser.fecha_nacimiento">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button type="submit" class="btn purple" style="background-color: #780707"
+                                        ng-click="registrarUser()"><i class="fa fa-check"></i> Registrar
+                                </button>
+                                <button type="button" class="btn default" ng-click="volver()">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- END FORM-->
+            </div>
+        </div>
 
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-md-3">Teléfono</label>
-							<div class="col-md-4">
-								<div class="input-icon right">
-									<input class="form-control" type="tel" placeholder="Teléfono">
+    </div>
 
-								</div>
-							</div>
-						</div>
-					<div class="form-group last password-strength" >
-						<label class="control-label col-md-3">Gustos</label>
-						<div class="col-md-4">
-							<ui-select multiple ng-model="newUser.gustos" theme="bootstrap" ng-disabled="disabled">
-								<ui-select-match placeholder="Selecciona tus gustos...">{{$item.name}}</ui-select-match>
-								<ui-select-choices repeat="person in people | propsFilter: {name: $select.search, age: $select.search}">
-									{{person.name}}
-								</ui-select-choices>
-							</ui-select>
-							<!-- <p>Selected: {{multipleDemo.selectedPeople}}</p>-->
-							<p>Selected: {{multipleDemo.selectedPeople}}</p>
 
-						</div>
-					</div>
-					<div class="form-actions">
-						<div class="row">
-							<div class="col-md-offset-3 col-md-9">
-								<button type="submit" class="btn purple" style="background-color: #780707" ng-click="login()"><i class="fa fa-check"></i> Registrar</button>
-								<button type="button" class="btn default" ng-click="volver()">Cancelar</button>
-							</div>
-						</div>
-					</div>
-				</form>
-				<!-- END FORM-->
-			</div>
-		</div>
-
-	</div>
+</div>
 </div>
 <div class="copyright hide">
-	2015 © WherePlace.
+    2015 © WherePlace.
 </div>
 <script>
-	ComponentsFormTools.init(); // init todo page
+    ComponentsFormTools.init(); // init todo page
 </script>
 <!-- END JAVASCRIPTS -->
 </body>

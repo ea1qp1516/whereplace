@@ -12,7 +12,7 @@
     }
 </style>
 <body>
-<div data-ng-include="'tpl/header_login.html'" data-ng-controller="HeaderController"
+<div data-ng-include="'tpl/header_login.html'" ng-controller="HeaderController"
      class="page-header md-shadow-z-1-i navbar navbar-fixed-top">
     </div>
 <div class="row" ng-controller="MainController">
@@ -21,8 +21,8 @@
         <div class="portlet light" style="background-color: white;" ng-repeat="empresa in empresas">
             <div class="portlet-title">
                 <div class="caption font-green-sharp">
-                    <i class="icon-settings font-green-sharp"></i>
-                    <span class="caption-subject bold uppercase">{{empresa.nombre}}</span>
+                    <i class="icon-paper-plane font-green-sharp"></i>
+                    <a class="caption-subject bold uppercase font-green-sharp" href="#/detalles/{{empresa._id}}">{{empresa.nombre}}</a>
                     <span class="caption-helper hide"></span>
                 </div>
             </div>
@@ -30,6 +30,8 @@
                 <span>{{empresa.email}}</span>
                 <br>
                 <span>{{empresa.ciudad}}</span>
+                <br>
+                <span>{{empresa._id}}</span>
 
                 <!-- Aqui irá el contenido de la empresa -->
             </div>

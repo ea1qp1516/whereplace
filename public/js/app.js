@@ -138,8 +138,6 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
     $urlRouterProvider.otherwise("/");
 
     $stateProvider
-
-
     // UI Select
         .state('index', {
             url: "/",
@@ -174,9 +172,15 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
 
         .state('main', {
             url: "/main",
-            params: {'empresas': {}},
             templateUrl: "views/main_dummy.html",
             controller: "MainController"
+
+        })
+        //Detalles de las empresas
+        .state('detalles', {
+            url: "/detalles/{empresa_id}",
+            templateUrl: "views/detalles.html",
+            controller: "DetallesController"
 
         })
         // Registrar
@@ -210,8 +214,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
                             '../../../assets/global/plugins/typeahead/typeahead.bundle.min.js',
                             '../../../assets/admin/pages/scripts/components-form-tools.js',
                             '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.css',
-                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.js',
-                            'js/controllers/UISelectController.js'
+                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.js'
                         ]
                     }]);
                 }]
@@ -263,10 +266,9 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state) {
     $scope.loginUser = {};
     $scope.login = function () {
         $http.post('/user/login', $scope.loginUser)
-            .success(function (data) {
-                console.log("correcto");
-                $scope.loginUser = {};
-                $state.go('main', {empresas: data});
+            .success(function () {
+
+                $state.go('main');
 
             })
             .error(function (data) {
@@ -281,17 +283,26 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state) {
 MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
 
     $scope.newUser = {};
+    $scope.valPassword = {};
+    $scope.error = {};
+
     $scope.registrarUser = function () {
-        $http.post('/user', $scope.newUser)
-            .success(function (data) {
+        if ($scope.newUser.password == $scope.valPassword.password2) {
 
-                $scope.newUser = {};
+            $http.post('/user', $scope.newUser)
+                .success(function () {
 
-                $state.go('index');
-            })
-            .error(function (data) {
-                console.log('Error: ' + data);
-            });
+                    $scope.newUser = {};
+                    $state.go('index');
+
+                })
+                .error(function (data) {
+                    console.log('Error: ' + data);
+                });
+        } else {
+            console.log('Errorr');
+        }
+
     };
     $scope.volver = function () {
         $state.go('index');
@@ -299,10 +310,47 @@ MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
 
 });
 
-MetronicApp.controller('MainController', function ($scope, $http, $stateParams) {
+MetronicApp.controller('MainController', function ($scope, $http) {
 
-    $scope.empresas = $stateParams.empresas;
+    $scope.empresas = {};
+
+    $http.get('/empresas').success(function (data) {
+
+            $scope.empresas = data;
+            console.log(data);
+        })
+        .error(function (data) {
+            console.log('Error: ' + data);
+        });
 });
+
+MetronicApp.controller('HeaderLoginController', function ($scope, $http) {
+
+    $scope.empresas = {};
+
+    $http.get('/empresas').success(function (data) {
+
+            $scope.empresas = data;
+            console.log(data);
+        })
+        .error(function (data) {
+            console.log('Error: ' + data);
+        });
+});
+
+MetronicApp.controller('DetallesController', function ($scope, $http, $stateParams) {
+
+    $scope.empresa = {};
+    $http.get('/empresa/'+ $stateParams.empresa_id).success(function (data) {
+
+            $scope.empresa = data;
+            console.log(data);
+        })
+        .error(function (data) {
+            console.log('Error: ' + data);
+        });
+});
+
 
 MetronicApp.controller('MapCtrl', ['$scope', function ($scope) {
 
