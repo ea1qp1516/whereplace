@@ -176,13 +176,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
             controller: "MainController"
 
         })
-        //Detalles de las empresas
-        .state('detalles', {
-            url: "/detalles/{empresa_id}",
-            templateUrl: "views/detalles.html",
-            controller: "DetallesController"
 
-        })
         // Registrar
 
         .state('register', {
@@ -254,6 +248,38 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
                             'js/controllers/AdminPanelController.js'
                         ]
                     }]);
+                }]
+            }
+        })
+
+        .state('detalles', {
+            url: "/detalles/{empresa_id}",
+            templateUrl: "views/detalles.html",
+            controller: "DetallesController",
+            resolve: {
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([{
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+
+                            "../../assets/global/plugins/font-awesome/css/font-awesome.min.css",
+                            "../../assets/global/plugins/simple-line-icons/simple-line-icons.min.css",
+                            "../../assets/global/plugins/bootstrap/css/bootstrap.min.css",
+                            "../../assets/global/plugins/uniform/css/uniform.default.css",
+                            "../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css",
+
+                            "../../assets/admin/pages/css/blog.css",
+
+                            "../../assets/global/css/components-md.css",
+                            "../../assets/global/css/plugins-md.css",
+                            "../../assets/admin/layout4/css/layout.css",
+                            "../../assets/admin/layout4/css/themes/light.css",
+                            "../../assets/admin/layout4/css/custom.css",
+                            'js/controllers/DetallesController.js'
+                        ]
+                    }])
+                        ;
                 }]
             }
         })
@@ -331,19 +357,6 @@ MetronicApp.controller('HeaderLoginController', function ($scope, $http) {
     $http.get('/empresas').success(function (data) {
 
             $scope.empresas = data;
-            console.log(data);
-        })
-        .error(function (data) {
-            console.log('Error: ' + data);
-        });
-});
-
-MetronicApp.controller('DetallesController', function ($scope, $http, $stateParams) {
-
-    $scope.empresa = {};
-    $http.get('/empresa/'+ $stateParams.empresa_id).success(function (data) {
-
-            $scope.empresa = data;
             console.log(data);
         })
         .error(function (data) {

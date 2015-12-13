@@ -59,12 +59,12 @@
                                 </div>
                                 <hr>
                                 <div class="media">
-                                    <h3>Comments</h3>
+                                    <h3>Comentarios</h3>
                                     <a href="javascript:;" class="pull-left">
                                         <img alt="" src="../../assets/admin/pages/media/blog/9.jpg" class="media-object">
                                     </a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">Media heading <span>
+                                    <div class="media-body" ng-repeat="comentario in empresa.comentarios">
+                                        <h4 class="media-heading">{{comentario.user}} <span>
 											5 hours ago / <a href="javascript:;">
                                             Reply </a>
 											</span>
@@ -110,11 +110,11 @@
                                     </div>
                                 </div>
                                 <!--end media-->
-                                <div class="media">
+                                <div class="media" >
                                     <a href="javascript:;" class="pull-left">
                                         <img alt="" src="../../assets/admin/pages/media/blog/6.jpg" class="media-object">
                                     </a>
-                                    <div class="media-body">
+                                    <div class="media-body" >
                                         <h4 class="media-heading">Media heading <span>
 											July 5,2013 / <a href="javascript:;">
                                             Reply </a>
