@@ -51,6 +51,29 @@ module.exports = function(app) {
             });
 
     }
+
+    // Guarda un objeto Empresa en base de datos
+    borrarEmpresa = function (req, res) {
+        var now = new Date();
+        // Creo el objeto Empresa
+        Empresa.remove(
+            {
+                nombre: req.body.nombre,
+                _id : req.body._id
+            },
+            function (err, empresa) {
+                if (err) {
+                    res.send(err);
+                }
+                // Obtine y devuelve todas las routes tras crear una de ellas
+                Empresa.find(function (err, empresa) {
+                    if (err)
+                        res.send(err)
+                    res.json(empresa);
+                });
+            });
+
+    }
     addComment = function(req,res){
         Empresa.findById(req.params.empresa_id,function(err,empresa){
                 if (err)
@@ -116,8 +139,10 @@ module.exports = function(app) {
     app.get('/', getEmpresas);
 // Crear una nueva Empresa
     app.get('/empresas', getEmpresas);
+    app.delete('/empresas/delete/:empresa_id', borrarEmpresa);
     app.post('/empresa/modify/:empresa_id', updateEmpresa);
     app.post('/empresa/:empresa_id/comment', addComment);
     app.post('/empresa', newEmpresa);
     app.post('/empresa/login', empresalogin);
+
 }
