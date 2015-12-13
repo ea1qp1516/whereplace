@@ -1,4 +1,3 @@
-
 <!-- BEGIN MAIN CONTENT -->
 <style>
     html, body {
@@ -6,6 +5,7 @@
         margin: 0;
         padding: 0;
     }
+
     #map {
         height: 100%;
 
@@ -14,7 +14,7 @@
 <body>
 <div data-ng-include="'tpl/header_login.html'" ng-controller="HeaderController"
      class="page-header md-shadow-z-1-i navbar navbar-fixed-top">
-    </div>
+</div>
 <div class="row" ng-controller="MainController">
     <div class="col-md-4">
         <!-- BEGIN: ACCORDION DEMO -->
@@ -22,25 +22,47 @@
             <div class="portlet-title">
                 <div class="caption font-green-sharp">
                     <i class="icon-paper-plane font-green-sharp"></i>
-                    <a class="caption-subject bold uppercase font-green-sharp" href="#/detalles/{{empresa._id}}">{{empresa.nombre}}</a>
+                    <a class="caption-subject bold uppercase font-red-flamingo" type="button"
+                       href="#/detalles/{{empresa._id}}">{{empresa.nombre}}</a>
                     <span class="caption-helper hide"></span>
                 </div>
             </div>
             <div class="portlet-body">
-                <span>{{empresa.email}}</span>
-                <br>
-                <span>{{empresa.ciudad}}</span>
-                <br>
-                <span>{{empresa._id}}</span>
+                <div class="row">
+                    <div class="col-md-4">
+                        <span class="font-red-thunderbird">{{empresa.email}}</span>
+                        <br>
+                        <span class="font-red-thunderbird">{{empresa.ciudad}}</span>
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <div class="tiles">
+                            <div class="tile bg-green-jungle">
+                                <div class="tile-body">
+                                    <h2>{{empresa.puntuacion}}/10</h2>
+                                    <i class="fa fa-star-o"></i>
 
-                <!-- Aqui irá el contenido de la empresa -->
+                                </div>
+                                <div class="tile-object">
+                                    <div class="name">
+                                        Puntuación
+                                    </div>
+                                    <div class="number">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Aqui irá el contenido de la empresa -->
+                </div>
             </div>
         </div>
         <!-- END: ACCORDION DEMO -->
     </div>
     <div class="col-md-8" ng-controller="MapCtrl">
         <!-- Aquí irá el mapa -->
-        <div class="portlet light" style= "background-color: white;">
+        <div class="portlet light" style="background-color: white;">
             <div class="portlet-title" id="map" style="height: 750px;">
 
             </div>
