@@ -62,8 +62,9 @@ module.exports = function(app) {
                 _id : req.body._id
             },
             function (err, empresa) {
-                if (err)
+                if (err) {
                     res.send(err);
+                }
                 // Obtine y devuelve todas las routes tras crear una de ellas
                 Empresa.find(function (err, empresa) {
                     if (err)

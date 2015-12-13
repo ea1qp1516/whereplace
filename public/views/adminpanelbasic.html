@@ -1,6 +1,4 @@
-<div data-ng-include="'tpl/header.html'" data-ng-controller="HeaderController"
-     class="page-header md-shadow-z-1-i navbar navbar-fixed-top">
-</div>
+
 <div data-ng-include="'tpl/sidebar.html'" data-ng-controller="SidebarController"
      class="page-sidebar md-shadow-z-2-i  navbar-collapse collapse">
 </div>
@@ -52,7 +50,7 @@
 									<td>
 										{{empresa.email}}
 									</td>
-									<td>
+									<td width="200">
 										<button class="btn default btn-xs blue">
 										<i class="fa fa-edit"></i> Editar </button>
 
@@ -66,6 +64,60 @@
 							</div>
 						</div>
 					</div>
+					
+				<!-- BEGIN TABELT USUARIOS-->
+				<div class="portlet light">
+						<div class="portlet-title">
+							<div class="caption">
+								<i class="fa fa-bell-o"></i> Gestión de Ususarios
+							</div>
+						</div>
+						<button class="btn  btn-xs green" data-toggle="modal" href="#modalanadir">
+							<i class="fa fa-plus"></i> Añadir </button>
+						<div class="portlet-body">
+							<div class="table-scrollable">
+								<table class="table table-striped table-bordered table-advance table-hover">
+								<thead>
+								<tr>
+									<th>
+										<i class="fa fa-briefcase"></i> Nombre
+									</th>
+									<th class="hidden-xs">
+										<i class="fa fa-user"></i> Ciudad
+									</th>
+									<th>
+										<i class="fa fa-shopping-cart"></i> Email
+									</th>
+									<th>
+									</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr ng-repeat="user in users">
+									<td class="highlight">
+										{{user.nombre}}
+									</td>
+									<td class="hidden-xs">
+										{{user.ciudad}}
+									</td>
+									<td>
+										{{user.email}}
+									</td>
+									<td width="200">
+										<button class="btn default btn-xs blue">
+										<i class="fa fa-edit"></i> Editar </button>
+
+										<button class="btn default btn-xs red" ng-click="borrarEmpresa(empresa)">
+										<i class="fa fa-trash-o"></i> Borrar </button>
+									</td>
+								</tr>
+								</tr>
+								</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				<!-- END TABLET USUARIOS-->
 					<!-- END SAMPLE TABLE PORTLET-->
 				</div>
 			</div>
@@ -109,7 +161,7 @@ Demo.init(); // init demo features
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-				<h4 class="modal-title">Modal Title</h4>
+				<h4 class="modal-title">Añadir una empresa</h4>
 			</div>
 			<div class="modal-body">
 					<div class="col-sm-4">
@@ -144,8 +196,8 @@ Demo.init(); // init demo features
 						</div>		<br><br><br>					
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn default" data-dismiss="modal" style="position:absolute; top:85%; left:84%;"><span class="md-click-circle md-click-animate" style="height: 65px; width: 65px; top: -24.5px; left: -14.4844px;"></span>Cancelar</button>
-				<button type="button" class="btn blue" style="position:absolute; top:85%; left:70%;" ng-click="registrarEmpresa(newEmpresa)">Añadir</button>
+				<button type="button" id="closemodal" class="btn default" data-dismiss="modal" style="position:absolute; top:85%; left:84%;"><span class="md-click-circle md-click-animate" style="height: 65px; width: 65px; top: -24.5px; left: -14.4844px;"></span>Cancelar</button>
+				<button type="submit" class="btn blue" style="position:absolute; top:85%; left:70%;" ng-click="registrarEmpresa(newEmpresa)" id="closemodal2">Añadir</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -153,3 +205,13 @@ Demo.init(); // init demo features
 	<!-- /.modal-dialog -->
 </div>
 </body>
+<script type="text/javascript">
+$('#closemodal').click(function() {
+$('#modalanadir').modal('hide');
+});
+</script>
+<script type="text/javascript">
+	$('#closemodal2').click(function() {
+		$('#modalanadir').modal('hide');
+	});
+</script>

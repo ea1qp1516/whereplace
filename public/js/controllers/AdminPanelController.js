@@ -33,7 +33,7 @@ MetronicApp.filter('propsFilter', function() {
         return out;
     };
 });
-MetronicApp.controller('AdminPanelController', function($scope, $http, $timeout) {
+MetronicApp.controller('AdminPanelController', function($scope, $http, $stateParams, $timeout) {
     $scope.$on('$viewContentLoaded', function () {
         Metronic.initAjax(); // initialize core components
     });
@@ -70,9 +70,18 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $timeout)
         $http.post('/empresa', $scope.newEmpresa)
             .success(function(data) {
                 $scope.newEmpresa = {};
+                location.reload();
             })
             .error(function(data) {
                 console.log('Error: ' + data);
             });
     };
+
+    $http.get('/user').success(function(data){
+        $scope.users = data;
+        console.log(data);
+
+    })
+
+
 });
