@@ -6,11 +6,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var http = require("http");
+var cookies = require("cookies");
 var cors = require("cors");
 var requests = require("requests");
 var crypto = require('crypto');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var session      = require('express-session');
 
 mongoose.connect("mongodb://localhost/whereplace");
 
@@ -44,11 +46,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(allowCrossDomain);
 
+app.use(session({ secret: 'estoesunaprueba' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 require('./routes/empresa')(app);
-require('./routes/user')(app);
+require('./routes/user')(app, passport);
 
 
 

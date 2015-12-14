@@ -1,11 +1,10 @@
 var crypto = require('crypto');
 var randtoken = require('rand-token');
-var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 
 
-module.exports = function(app) {
+module.exports = function(app, passport) {
 
     var User = require('../modelos/user');
     var Empresa = require('../modelos/empresa');
@@ -31,21 +30,14 @@ module.exports = function(app) {
         );
     }
     loginSucces = function(req,res){
+        user = req.user;
         console.log(req.user);
+        res.send(user);
     }
     loginFail = function (req, res) {
-        res.status(403).send("Usuario o contraseña incorrecta");
+        res.status(403).send(req.message);
     }
 
-    loggedIn = function(req,res,next){
-        if (req.user) {
-            console.log("ok");
-            next();
-        } else {
-            console.log("no");
-        }
-
-    }
 
 // Guarda un objeto Empresa en base de datos
     newUser = function (req, res) {
@@ -112,8 +104,10 @@ module.exports = function(app) {
         done(null, user);
     });
 
-    passport.use(new LocalStrategy(
-        function(username, password, done) {
+    passport.use(new LocalStrategy({
+            passReqToCallback : true
+        },
+        function(req, username, password, done) {
             var token = randtoken.generate(16);
             console.log(token);
             var passmd5 = crypto.createHash('md5').update(password).digest("hex");
@@ -125,7 +119,11 @@ module.exports = function(app) {
                 if (!user.validPassword(passmd5)) {
                     return done(null, false, { message: 'Password incorrecta.' });
                 }
-
+                User.findByIdAndUpdate(user._id, { $set: { token: token }},function(err,user){
+                    if (err) {
+                        return done(err)
+                    }
+                });
                 return done(null, user);
             });
         }
@@ -135,12 +133,14 @@ module.exports = function(app) {
     app.get('/user', getUsers);
 
     app.get('/loginFail', loginFail);
-    app.get('/loginSucces', loginSucces);
-
+    app.get('/loginSucces',isLoggedIn, function(req, res) {
+        res.send(req.user);
+    });
     app.post('/user', newUser);
+
     app.post('/user/login',
         passport.authenticate('local', {
-            successRedirect: '/empresas',
+            successRedirect: '/loginSucces',
             failureRedirect: '/loginFail'
         })
     );
@@ -149,5 +149,18 @@ module.exports = function(app) {
         res.sendfile('./public/index.html'); // Carga única de la vista
     });
 };
+
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        console.log(req.isAuthenticated());
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/loginFail');
+}
+
+
 
 

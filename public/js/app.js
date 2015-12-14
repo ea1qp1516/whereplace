@@ -288,14 +288,14 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
 }]);
 
 
-MetronicApp.controller('LoginController', function ($scope, $http, $state) {
+/*MetronicApp.controller('LoginController',['$cookies','$cookieStore', function ($scope, $http, $state, $cookies, $cookieStore) {
     $scope.loginUser = {};
     $scope.login = function () {
         $http.post('/user/login', $scope.loginUser)
-            .success(function () {
-
+            .success(function (data) {
+                console.log($scope.user);
+                $cookieStore.put('username', data.nombre);
                 $state.go('main');
-
             })
             .error(function (data) {
                 console.log('Error: ' + data);
@@ -304,7 +304,24 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state) {
     }
 
 
-});
+}]);*/
+
+MetronicApp.controller('LoginController', function ($scope, $http, $state) {
+     $scope.loginUser = {};
+     $scope.login = function () {
+         $http.post('/user/login', $scope.loginUser)
+             .success(function (data) {
+             console.log(data);
+             $state.go('main');
+         })
+         .error(function (data) {
+             console.log('Error: ' + data);
+             $state.go('index');
+         });
+     }
+
+
+ });
 
 MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
 
@@ -339,6 +356,9 @@ MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
 MetronicApp.controller('MainController', function ($scope, $http) {
 
     $scope.empresas = {};
+    //var userName = $cookies.get('username');
+    console.log($scope.user);
+   // $cookies.put('username', $scope.user.Nombre);
 
     $http.get('/empresas').success(function (data) {
 
