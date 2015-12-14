@@ -22,8 +22,9 @@ MetronicApp.controller('DetallesController', function($scope, $http, $stateParam
     $scope.nuevoComentario = function() {
         $http.post('/empresa/' + $stateParams.empresa_id + '/comment', $scope.newComment)
             .success(function(data) {
+
+                $scope.empresa.comentarios = data.comentarios;
                 $scope.newComment = {};
-                $state.go('detalles');
 
             })
             .error(function(data) {
