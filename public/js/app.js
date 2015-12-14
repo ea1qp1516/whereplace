@@ -138,8 +138,6 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
     $urlRouterProvider.otherwise("/");
 
     $stateProvider
-
-
     // UI Select
         .state('index', {
             url: "/",
@@ -174,11 +172,11 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
 
         .state('main', {
             url: "/main",
-            params: {'empresas': {}},
             templateUrl: "views/main_dummy.html",
             controller: "MainController"
 
         })
+
         // Registrar
 
         .state('register', {
@@ -210,8 +208,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
                             '../../../assets/global/plugins/typeahead/typeahead.bundle.min.js',
                             '../../../assets/admin/pages/scripts/components-form-tools.js',
                             '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.css',
-                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.js',
-                            'js/controllers/UISelectController.js'
+                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.js'
                         ]
                     }]);
                 }]
@@ -219,7 +216,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
         })
         .state('adminpanel', {
             url: "/adminpanel",
-            templateUrl: "views/adminpanel.html",
+            templateUrl: "views/adminpanelbasic.html",
             controller: "AdminPanelController",
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -255,6 +252,38 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
             }
         })
 
+        .state('detalles', {
+            url: "/detalles/{empresa_id}",
+            templateUrl: "views/detalles.html",
+            controller: "DetallesController",
+            resolve: {
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([{
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+
+                            "../../assets/global/plugins/font-awesome/css/font-awesome.min.css",
+                            "../../assets/global/plugins/simple-line-icons/simple-line-icons.min.css",
+                            "../../assets/global/plugins/bootstrap/css/bootstrap.min.css",
+                            "../../assets/global/plugins/uniform/css/uniform.default.css",
+                            "../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css",
+
+                            "../../assets/admin/pages/css/blog.css",
+
+                            "../../assets/global/css/components-md.css",
+                            "../../assets/global/css/plugins-md.css",
+                            "../../assets/admin/layout4/css/layout.css",
+                            "../../assets/admin/layout4/css/themes/light.css",
+                            "../../assets/admin/layout4/css/custom.css",
+                            'js/controllers/DetallesController.js'
+                        ]
+                    }])
+                        ;
+                }]
+            }
+        })
+
 
 }]);
 
@@ -263,10 +292,9 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state) {
     $scope.loginUser = {};
     $scope.login = function () {
         $http.post('/user/login', $scope.loginUser)
-            .success(function (data) {
-                console.log("correcto");
-                $scope.loginUser = {};
-                $state.go('main', {empresas: data});
+            .success(function () {
+
+                $state.go('main');
 
             })
             .error(function (data) {
@@ -281,17 +309,26 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state) {
 MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
 
     $scope.newUser = {};
+    $scope.valPassword = {};
+    $scope.error = {};
+
     $scope.registrarUser = function () {
-        $http.post('/user', $scope.newUser)
-            .success(function (data) {
+        if ($scope.newUser.password == $scope.valPassword.password2) {
 
-                $scope.newUser = {};
+            $http.post('/user', $scope.newUser)
+                .success(function () {
 
-                $state.go('index');
-            })
-            .error(function (data) {
-                console.log('Error: ' + data);
-            });
+                    $scope.newUser = {};
+                    $state.go('index');
+
+                })
+                .error(function (data) {
+                    console.log('Error: ' + data);
+                });
+        } else {
+            console.log('Errorr');
+        }
+
     };
     $scope.volver = function () {
         $state.go('index');
@@ -299,10 +336,34 @@ MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
 
 });
 
-MetronicApp.controller('MainController', function ($scope, $http, $stateParams) {
+MetronicApp.controller('MainController', function ($scope, $http) {
 
-    $scope.empresas = $stateParams.empresas;
+    $scope.empresas = {};
+
+    $http.get('/empresas').success(function (data) {
+
+            $scope.empresas = data;
+            console.log(data);
+        })
+        .error(function (data) {
+            console.log('Error: ' + data);
+        });
 });
+
+MetronicApp.controller('HeaderLoginController', function ($scope, $http) {
+
+    $scope.empresas = {};
+
+    $http.get('/empresas').success(function (data) {
+
+            $scope.empresas = data;
+            console.log(data);
+        })
+        .error(function (data) {
+            console.log('Error: ' + data);
+        });
+});
+
 
 MetronicApp.controller('MapCtrl', ['$scope', function ($scope) {
 

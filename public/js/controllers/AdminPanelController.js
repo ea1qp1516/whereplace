@@ -33,10 +33,28 @@ MetronicApp.filter('propsFilter', function() {
         return out;
     };
 });
-MetronicApp.controller('AdminPanelController', function($scope, $http, $timeout) {
+MetronicApp.controller('AdminPanelController', function($scope, $http, $stateParams, $timeout) {
     $scope.$on('$viewContentLoaded', function () {
         Metronic.initAjax(); // initialize core components
     });
+    // Función para coger el objeto seleccionado en la tabla
+    $scope.selectCompany = function(empresa) {
+        $scope.newEmpresa = empresa;
+        $scope.selected = true;
+        console.log($scope.newEmpresa, $scope.selected);
+    };
+    $scope.borrarEmpresa = function(newEmpresa) {
+        console.log(newEmpresa);
+        $http.delete('/empresas/' + newEmpresa._id)
+            .success(function(data) {
+                $scope.newEmpresa = {};
+                $scope.empresas = data;
+                $scope.selected = false;
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
 
     $http.get('/empresas').success(function(data){
             $scope.empresas = data;
@@ -46,4 +64,24 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $timeout)
         .error(function(data) {
             console.log('Error: ' + data);
         });
+
+    // Función para registrar a una empresa
+    $scope.registrarEmpresa = function() {
+        $http.post('/empresa', $scope.newEmpresa)
+            .success(function(data) {
+                $scope.newEmpresa = {};
+                location.reload();
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
+
+    $http.get('/user').success(function(data){
+        $scope.users = data;
+        console.log(data);
+
+    })
+
+
 });
