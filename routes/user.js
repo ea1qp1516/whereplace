@@ -1,4 +1,5 @@
 var crypto = require('crypto');
+var randtoken = require('rand-token');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
@@ -21,6 +22,7 @@ module.exports = function(app) {
 
 // Obtiene todos los objetos Usuarios de la base de datos
     getUsers = function (req, res) {
+        loggedIn(req, res);
         User.find({},{nombre:1,apellidos:1,email:1,favoritos:1,gustos:1},function (err, users) {
                 if (err)
                     res.send(err)
@@ -28,8 +30,21 @@ module.exports = function(app) {
             }
         );
     }
+    loginSucces = function(req,res){
+        console.log(req.user);
+    }
     loginFail = function (req, res) {
         res.status(403).send("Usuario o contraseña incorrecta");
+    }
+
+    loggedIn = function(req,res,next){
+        if (req.user) {
+            console.log("ok");
+            next();
+        } else {
+            console.log("no");
+        }
+
     }
 
 // Guarda un objeto Empresa en base de datos
@@ -99,8 +114,9 @@ module.exports = function(app) {
 
     passport.use(new LocalStrategy(
         function(username, password, done) {
+            var token = randtoken.generate(16);
+            console.log(token);
             var passmd5 = crypto.createHash('md5').update(password).digest("hex");
-            console.log("jas");
             User.findOne({ email: username }, function(err, user) {
                 if (err) { return done(err); }
                 if (!user) {
@@ -109,6 +125,7 @@ module.exports = function(app) {
                 if (!user.validPassword(passmd5)) {
                     return done(null, false, { message: 'Password incorrecta.' });
                 }
+
                 return done(null, user);
             });
         }
@@ -116,7 +133,10 @@ module.exports = function(app) {
 
     app.get('/user/:user_id', getUser);
     app.get('/user', getUsers);
+
     app.get('/loginFail', loginFail);
+    app.get('/loginSucces', loginSucces);
+
     app.post('/user', newUser);
     app.post('/user/login',
         passport.authenticate('local', {

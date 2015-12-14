@@ -12,6 +12,7 @@ module.exports = function(app) {
     }
 // Obtiene todos los objetos Empresa de la base de datos
     getEmpresas = function (req, res) {
+        console.log(req.isAuthenticated());
         Empresa.find({},{nombre:1,direccion:1,ciudad:1,descripcion:1,email:1,telefono:1,puntuacion:1,tags:1,comentarios:1,detalles:1, created_at:1, updated_at: 1},function (err, empresa) {
                 if (err)
                     res.send(err)
