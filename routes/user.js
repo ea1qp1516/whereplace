@@ -21,7 +21,6 @@ module.exports = function(app, passport) {
 
 // Obtiene todos los objetos Usuarios de la base de datos
     getUsers = function (req, res) {
-        loggedIn(req, res);
         User.find({},{nombre:1,apellidos:1,email:1,favoritos:1,gustos:1},function (err, users) {
                 if (err)
                     res.send(err)
