@@ -1,6 +1,21 @@
+<div class="page-sidebar md-shadow-z-2-i  navbar-collapse collapse">
 
-<div data-ng-include="'tpl/sidebar.html'" data-ng-controller="SidebarController"
-     class="page-sidebar md-shadow-z-2-i  navbar-collapse collapse">
+	<ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" ng-class="{'page-sidebar-menu-closed': settings.layout.pageSidebarClosed}">
+		<li class="heading">
+		<h3>GENERAL</h3>
+	</li>
+		<li class="start">
+			<a href="#/dashboard.html">
+				<i class="icon-user"></i>
+				<span class="title">{{empresas.length}} Empresas Registradas</span>
+			</a>
+			<a href="#/dashboard.html">
+				<i class="icon-user"></i>
+				<span class="title">{{users.length}} Usuarios Registrados</span>
+			</a>
+		</li>
+	</ul>
+	<!-- END SIDEBAR MENU -->
 </div>
 <body class="page-md page-header-fixed page-sidebar-closed-hide-logo " ng-controller="MainController">
 <!-- BEGIN CONTAINER -->
