@@ -284,17 +284,95 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
             }
         })
 
+        // User Profile
+        .state("profile", {
+            url: "/profile",
+            templateUrl: "views/profile/main.html",
+            data: {pageTitle: 'User Profile', pageSubTitle: 'user profile sample'},
+            controller: "UserProfileController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
+                            '../../../assets/admin/pages/css/profile.css',
+                            '../../../assets/admin/pages/css/tasks.css',
+
+                            '../../../assets/global/plugins/jquery.sparkline.min.js',
+                            '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
+
+                            '../../../assets/admin/pages/scripts/profile.js',
+
+                            '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
+                            '../../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css',
+                            '../../../assets/global/plugins/jquery-tags-input/jquery.tagsinput.css',
+                            '../../../assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css',
+                            '../../../assets/global/plugins/typeahead/typeahead.css',
+
+                            '../../../assets/global/plugins/fuelux/js/spinner.min.js',
+                            '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
+                            '../../../assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js',
+                            '../../../assets/global/plugins/jquery.input-ip-address-control-1.0.min.js',
+                            '../../../assets/global/plugins/bootstrap-pwstrength/pwstrength-bootstrap.min.js',
+                            '../../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js',
+                            '../../../assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js',
+                            '../../../assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js',
+                            '../../../assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js',
+                            '../../../assets/global/plugins/typeahead/handlebars.min.js',
+                            '../../../assets/global/plugins/typeahead/typeahead.bundle.min.js',
+                            '../../../assets/admin/pages/scripts/components-form-tools.js',
+
+                            'js/controllers/UserProfileController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
+        // User Profile Dashboard
+        .state("profile.dashboard", {
+            url: "/dashboard",
+            templateUrl: "views/profile/dashboard.html",
+            data: {pageTitle: 'User Profile', pageSubTitle: 'user profile dashboard sample'}
+        })
+
+        // User Profile Account
+        .state("profile.account", {
+            url: "/account",
+            templateUrl: "views/profile/account.html",
+            data: {pageTitle: 'User Account', pageSubTitle: 'user profile account sample'}
+        })
+
 
 }]);
 
 
 /*MetronicApp.controller('LoginController',['$cookies','$cookieStore', function ($scope, $http, $state, $cookies, $cookieStore) {
+ $scope.loginUser = {};
+ $scope.login = function () {
+ $http.post('/user/login', $scope.loginUser)
+ .success(function (data) {
+ console.log($scope.user);
+ $cookieStore.put('username', data.nombre);
+ $state.go('main');
+ })
+ .error(function (data) {
+ console.log('Error: ' + data);
+ $state.go('index');
+ });
+ }
+
+
+ }]);*/
+
+MetronicApp.controller('LoginController', function ($scope, $http, $state) {
     $scope.loginUser = {};
     $scope.login = function () {
         $http.post('/user/login', $scope.loginUser)
             .success(function (data) {
-                console.log($scope.user);
-                $cookieStore.put('username', data.nombre);
+                console.log(data);
                 $state.go('main');
             })
             .error(function (data) {
@@ -304,24 +382,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
     }
 
 
-}]);*/
-
-MetronicApp.controller('LoginController', function ($scope, $http, $state) {
-     $scope.loginUser = {};
-     $scope.login = function () {
-         $http.post('/user/login', $scope.loginUser)
-             .success(function (data) {
-             console.log(data);
-             $state.go('main');
-         })
-         .error(function (data) {
-             console.log('Error: ' + data);
-             $state.go('index');
-         });
-     }
-
-
- });
+});
 
 MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
 
@@ -358,7 +419,7 @@ MetronicApp.controller('MainController', function ($scope, $http) {
     $scope.empresas = {};
     //var userName = $cookies.get('username');
     console.log($scope.user);
-   // $cookies.put('username', $scope.user.Nombre);
+    // $cookies.put('username', $scope.user.Nombre);
 
     $http.get('/empresas').success(function (data) {
 

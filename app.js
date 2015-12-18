@@ -12,11 +12,15 @@ var requests = require("requests");
 var crypto = require('crypto');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var session      = require('express-session');
+var session = require('express-session');
+
+require('./config/passport')(passport);
+var app = express();
+app.use(session({ secret: 'zasentodalaboca' }));
 
 mongoose.connect("mongodb://localhost/whereplace");
 
-var app = express();
+
 
 var allowCrossDomain = function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -46,7 +50,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(allowCrossDomain);
 
-app.use(session({ secret: 'estoesunaprueba' }));
+app.use(session({ secret: '3f3b6994ec1dfda4c36de216d8fa03e3' }));
 app.use(passport.initialize());
 app.use(passport.session());
 

@@ -28,7 +28,7 @@ module.exports = function(app) {
         Empresa.create(
             {
                 nombre: req.body.nombre,
-                direccion: req.body.username,
+                direccion: req.body.direccion,
                 ciudad: req.body.ciudad,
                 descripcion: req.body.descripcion,
                 email: req.body.email,

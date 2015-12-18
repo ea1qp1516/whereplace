@@ -82,7 +82,7 @@
 
                                 <h3>Comentarios</h3>
 
-                                <div class="media" ng-repeat="comentario in empresa.comentarios">
+                                <div class="media" data-ng-repeat="comentario in empresa.comentarios">
 
                                     <a href="javascript:;" class="pull-left">
                                         <img alt="" src="../../assets/admin/pages/media/blog/9.jpg"
@@ -112,14 +112,14 @@
                                             <label class="control-label">Name <span class="required">
 												* </span>
                                             </label>
-                                            <input type="text" class="form-control" ng-model="newComment.user">
+                                            <input type="text" class="form-control" data-ng-model="newComment.user">
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">Descripción <span class="required">
 												* </span>
                                             </label>
                                             <textarea class="col-md-10 form-control" rows="8"
-                                                      ng-model="newComment.comentario"></textarea>
+                                                      data-ng-model="newComment.comentario"></textarea>
                                         </div>
                                         <button class="margin-top-20 btn blue" type="submit"
                                                 ng-click="nuevoComentario()">Publicar
