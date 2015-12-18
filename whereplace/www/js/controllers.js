@@ -100,7 +100,6 @@ angular.module('app.controllers', [])
   console.log("posting login");
 
   $scope.loginPost = function() {
-    console.log($scope);
     $http.post(url + '/user/login', $scope.user)
       .success(function (data) {
         console.log(data);
