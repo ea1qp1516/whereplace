@@ -50,7 +50,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(allowCrossDomain);
 
-app.use(session({ secret: 'estoesunaprueba' }));
+app.use(session({ secret: '3f3b6994ec1dfda4c36de216d8fa03e3' }));
 app.use(passport.initialize());
 app.use(passport.session());
 

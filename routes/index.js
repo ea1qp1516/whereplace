@@ -1,28 +1,33 @@
-/**
- * Created by Usuario on 16/12/2015.
- */
-
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 
-router.get('/', function(req, res, next){
-    res.render('/paneladmin', {title: 'Oauth Example Facebook'});
+/* GET home page. */
+router.get('/', function(req, res, next) {
+    res.render('index', { title: 'Manuapp Oath' });
 });
-
-router.get('/detalles', isAuth, function(req, res, next){
-    res.render('detalles', {title:'Your profile page', user : req.user});
+//route for showing the profile page
+router.get('/profile', isAuth,  function(req, res, next) {
+    res.render('profile', { title: 'Your profile page', user: req.user });
 });
-
-router.get('/logout', function(req, res, next){
+//route for logging out
+router.get('/logout', function(req, res, next) {
     req.logout();
     res.redirect('/');
 });
+//facebook authentication
+router.get('/auth/facebook',passport.authenticate('facebook', {
+    scope: ['public_profile', 'email'] }));
 
-router.get('/auth/facebook', passport.authenicate('facebook', {scope: ['public_profile', 'email']}));
+router.get('/auth/facebook/callback',passport.authenticate ('facebook', {
+    successRedirect: '/profile',
+    failureRedirect: '/'
+}));
 
-router.get('/auth/facebook/callback', passport.authenicate('facebook', {successRedirect: '/detalles',
-                                                                        failureRedirect: '/'}));
-
+function isAuth (req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    res.redirect('/');
+}
 
 module.exports = router;
