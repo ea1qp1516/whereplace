@@ -124,10 +124,6 @@ module.exports = function(app, passport) {
     app.get('/user/:user_id', getUser);
     app.get('/user', getUsers);
 
-    app.get('/loginFail', loginFail);
-    app.get('/loginSucces',isLoggedIn, function(req, res) {
-        res.send(req.user);
-    });
     app.post('/user', newUser);
     app.post('/user/login',
         passport.authenticate('local'), function(req,res){
