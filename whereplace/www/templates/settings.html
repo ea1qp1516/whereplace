@@ -1,24 +1,15 @@
 <ion-view view-title="Settings">
     <ion-content ng-class="{expanded:$scope.isExpanded}">
-        <div class="hero slide-up" style="background-image: url('img/disco.jpg');">
-            <div class="content">
-                <div class="avatar" style="background-image: url('img/urtasun.jpg');"></div>
-                <h3><a class="light">Xavier Urtasun</a></h3>
-                <h4>EETAC Student</h4>
-            </div>
-        </div>
-        
+
         <h4 class="content padding double-padding-x">Tag Settings</h4>
         <div class="list animate-fade-slide-in-right">
             <form class="list">
-            <ion-toggle toggle-class="toggle-positive">Bar</ion-toggle>
-            <ion-toggle toggle-class="toggle-positive">Restaurantes</ion-toggle>
-            <ion-toggle toggle-class="toggle-positive">Discoteca</ion-toggle>
-            <ion-toggle toggle-class="toggle-positive">Teatros</ion-toggle>
-            <ion-toggle toggle-class="toggle-positive">Cine</ion-toggle>
-            <ion-toggle toggle-class="toggle-positive">Cafeterias</ion-toggle>
+            <ion-toggle ng-model="comida">Comida</ion-toggle>
+            <ion-toggle ng-model="diversion">Diversion</ion-toggle>
+            <ion-toggle ng-model="nocturno">Nocturno</ion-toggle>
+            <ion-toggle ng-model="compras">Compras</ion-toggle>
         </form>
-        <button class="button button-stable button-icon  icon-left ">Enviar</button>
+        <button class="button button-stable button-icon  icon-left " ng-click="changeGustos()">Enviar</button>
         </div>
     </ion-content>
 </ion-view>

@@ -1,6 +1,10 @@
 /* global angular, document, window */
 'use strict';
 
+var url = "http://localhost:3000";
+
+//10.83.55.226
+//localhost
 angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function($scope, $ionicModal, $ionicPopover, $timeout) {
@@ -87,15 +91,35 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('LoginCtrl', function($scope, $timeout, $stateParams, ionicMaterialInk) {
+.controller('LoginCtrl', function($scope, $timeout, $stateParams, ionicMaterialInk, $http) {
     $scope.$parent.clearFabs();
     $timeout(function() {
         $scope.$parent.hideHeader();
     }, 0);
     ionicMaterialInk.displayEffect();
+
+})
+
+.controller('loginPost', function($scope,$state, $http) {
+    $scope.loginPost = function() {
+        $http.post(url + '/user/login', $scope.user)
+            .success(function (data) {
+                console.log(data);
+                $state.go('app.profile',{user:data});
+            })
+    }
+})
+.controller('EmpresasCtrl', function($scope,$state, $http) {
+        $http.get(url + '/empresas')
+            .success(function (data) {
+                console.log(data);
+                $scope.empresas = data;
+            })
+
 })
 
 .controller('FriendsCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {
+    $scope.favoritos = $stateParams.favoritos;
     // Set Header
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
@@ -114,8 +138,9 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
-.controller('ProfileCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
+.controller('ProfileCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk, $state) {
     // Set Header
+    console.log($stateParams.user);
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
     $scope.isExpanded = false;
@@ -134,6 +159,18 @@ angular.module('starter.controllers', [])
             startVelocity: 3000
         });
     }, 700);
+
+    $scope.user = $stateParams.user;
+
+    $scope.getFavoritos = function(){
+        console.log($stateParams.user.favoritos);
+        $state.go('app.friends',{favoritos:$stateParams.user.favoritos})
+    }
+    $scope.getGustos = function(){
+        $state.go('app.settings',{gustos:$stateParams.user.gustos})
+
+    }
+
 
     // Set Ink
     ionicMaterialInk.displayEffect();
@@ -156,26 +193,41 @@ angular.module('starter.controllers', [])
     ionicMaterialInk.displayEffect();
 })
 
-.controller('GalleryCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {
-    $scope.$parent.showHeader();
-    $scope.$parent.clearFabs();
-    $scope.isExpanded = true;
-    $scope.$parent.setExpanded(true);
-    $scope.$parent.setHeaderFab(false);
-
-    // Activate ink for controller
-    ionicMaterialInk.displayEffect();
-
-    ionicMaterialMotion.pushDown({
-        selector: '.push-down'
+.controller('SettingsCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk, $state) {
+    $stateParams.gustos.forEach(function(gusto){
+        if(gusto=="comida") {
+            $scope.comida= true;
+        }
+        if(gusto=="diversion") {
+            $scope.diversion= true;
+        }
+        if(gusto=="nocturno") {
+            $scope.nocturno= true;
+        }
+        if(gusto=="compras") {
+            $scope.compras= true;
+        }
     });
-    ionicMaterialMotion.fadeSlideInRight({
-        selector: '.animate-fade-slide-in .item'
-    });
 
-})
+    $scope.changeGustos = function(){
+        var newGustos = [];
+        if($scope.comida) {
+            newGustos.push("comida");
+        }
+        if($scope.diversion) {
+            newGustos.push("diversion");
+        }
+        if($scope.nocturno) {
+            newGustos.push("nocturno");
+        }
+        if($scope.compras) {
+            newGustos.push("compras");
+        }
+        console.log(newGustos);
+    }
 
-.controller('SettingsCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
+
+    $scope.comida = true;
     // Set Header
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();

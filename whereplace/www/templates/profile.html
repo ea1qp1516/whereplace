@@ -1,43 +1,28 @@
 <ion-view view-title="Profile">
     <ion-content ng-class="{expanded:$scope.isExpanded}">
         <div class="hero slide-up" style="background-image: url('img/disco.jpg');">
-            <div class="content">
-                <div class="avatar" style="background-image: url('img/urtasun.jpg');"></div>
-                <h3><a class="light">Xavier Urtasun</a></h3>
-                <h4>EETAC Student</h4>
-            </div>
+        <div class="content">
+            <div class="avatar" style="background-image: url('img/urtasun.jpg');"></div>
+            <h3><a class="light">{{user.nombre}}</a></h3>
+            <h4>{{user.apellidos}}</h4>
         </div>
+    </div>
         <div class="tabs tabs-dark tabs-icon-top static">
             <a ui-sref="app.activity" class="tab-item">
-                <i class="icon ion-arrow-graph-up-right"></i> Comments
+                <i class="icon ion-chatbubbles"></i> Comments
             </a>
-            <a ui-sref="app.friends" class="tab-item">
-                <i class="icon ion-android-people"></i> Favorites
+            <a ng-click="getFavoritos()" class="tab-item">
+                <i class="icon ion-android-people"></i> Favoritos
             </a>
-            <a ui-sref="app.gallery" class="tab-item">
-                <i class="icon ion-images"></i> Photos
+            <a ng-click="getGustos()" class="tab-item">
+                <i class="icon ion-happy-outline"></i> Gustos
             </a>
         </div>
         <h4 class="content padding double-padding-x">Favorites</h4>
-        <div class="list animate-fade-slide-in-right">
-            <a ui-sref="app.friends" class="item item-avatar item-icon-right">
-                <!-- <img src="img/jon-snow.jpg"> -->
-                <h2>Discoteca Titus</h2>
-                <p>El mejor sitio de desconexión</p>
-                <i class="icon ion-chatbubble muted"></i>
-            </a>
-            <a ui-sref="app.friends" class="item item-avatar item-icon-right">
-                <!-- <img src="img/sansa.jpg"> -->
-                <h2>Bar la Matraca</h2>
-                <p>Las mejores tapas del mundo</p>
-                <i class="icon ion-chatbubble muted"></i>
-            </a>
-            <a ui-sref="app.friends" class="item item-avatar item-icon-right">
-                <!-- <img src="img/tyrion.jpg"> -->
-                <h2>Teatro Tivoli</h2>
-                <p>Mamma Mia</p>
-                <i class="icon ion-chatbubble muted"></i>
-            </a>
+        <div class="list animate-fade-slide-in-right" ng-repeat="favorito in user.favoritos">
+            <h2>{{favorito.nombre}}</h2>
+            <p>{{favorito.descripcion}}</p>
         </div>
+
     </ion-content>
 </ion-view>
