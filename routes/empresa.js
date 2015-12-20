@@ -137,7 +137,7 @@ module.exports = function(app) {
 
 
     app.get('/empresa/:empresa_id', getEmpresa);
-    app.get('/', getEmpresas);
+   // app.get('/', getEmpresas);
 // Crear una nueva Empresa
     app.get('/empresas', getEmpresas);
     app.delete('/empresas/delete/:empresa_id', borrarEmpresa);

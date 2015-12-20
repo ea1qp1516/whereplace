@@ -16,6 +16,8 @@ var LocalStrategy = require('passport-local').Strategy;
 require('./config/passport')(passport);
 var app = express();
 
+app.use(session({ secret: '3f3b6994ec1dfda4c36de216d8fa03e3' }));
+
 mongoose.connect("mongodb://localhost/whereplace");
 
 
@@ -53,6 +55,7 @@ app.use(passport.session());
 
 require('./routes/empresa')(app);
 require('./routes/user')(app, passport);
+require('./routes/index')(app, passport);
 
 
 
