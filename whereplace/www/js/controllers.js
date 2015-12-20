@@ -1,144 +1,203 @@
-var url = "http://10.83.55.226:3000";
+/* global angular, document, window */
+'use strict';
 
-//10.83.55.226
-//localhost
-angular.module('app.controllers', [])
+angular.module('starter.controllers', [])
 
-.controller('registroCtrl', function($scope) {
+.controller('AppCtrl', function($scope, $ionicModal, $ionicPopover, $timeout) {
+    // Form data for the login modal
+    $scope.loginData = {};
+    $scope.isExpanded = false;
+    $scope.hasHeaderFabLeft = false;
+    $scope.hasHeaderFabRight = false;
 
-})
-
-.controller('usuarioCtrl', function($scope,$state) {
-
-
-    $scope.userRegistro = function() {
-      var now = new Date();
-      console.log($scope.newUser);
-      $state.go('gustos',{user:$scope.newUser});
-    }
-})
-
-.controller('empresaCtrl', function($scope) {
-
-})
-
-.controller('gustosCtrl', function($scope, Gustos, $stateParams, $state, $http) {
-    $scope.newUser = $stateParams.user;
-    console.log("estoi en gustos");
-    console.log(Gustos);
-    $scope.gustos = Gustos.all();
-
-    $scope.userGustos = function(gustos) {
-      console.log(gustos);
-      var newGustos = [];
-      gustos.forEach(function(gusto){
-        if(gusto.checked) {
-          newGustos.push(gusto.name);
-        }
-      });
-      $scope.newUser.gustos = newGustos;
-      console.log($scope.newUser.genero)
-      $http.post(url + '/user/', $scope.newUser)
-       .success(function (data) {
-       console.log(data);
-       $state.go('resultadoBusqueda',{empresas:data});
-       })
-    }
-
-})
-
-.controller('resultadoBusquedaCtrl', function($scope, $state,$stateParams) {
-    $scope.goLista = function() {
-      console.log($stateParams.empresas);
-      $state.go('empresas',{empresas:$stateParams.empresas});
-    }
-
-})
-
-.controller('empresasCtrl', function($scope,$stateParams) {
-
-    console.log($stateParams.empresas);
-    $scope.empresas = $stateParams.empresas;
-
-})
-
-.controller('tipoDeNegocioCtrl', function($scope) {
-
-})
-
-.controller('signupCtrl', function($scope) {
-
-})
-
-.controller('googleMapsCtrl', function($scope) {
-
-})
-
-.controller('loginFacebookCtrl', function($scope) {
-
-})
-
-.controller('perfilusuarioCtrl', function($scope) {
-
-})
-
-.controller('favoritosCtrl', function($scope) {
-
-})
-
-.controller('settingsCtrl', function($scope) {
-
-})
-
-.controller('aboutCtrl', function($scope) {
-
-})
-
-.controller('loginPost',function($scope,$http,$state) {
-  console.log("posting login");
-
-  $scope.loginPost = function() {
-    $http.post(url + '/user/login', $scope.user)
-      .success(function (data) {
-        console.log(data);
-        $state.go('resultadoBusqueda',{empresas:data});
-      })
-  }
-})
-
-.controller('googleMapsCtrl', function($scope, $ionicLoading, $state) {
-    google.maps.event.addDomListener(window, 'load', function() {
-        var myLatlng = new google.maps.LatLng(37.3000, -120.4833);
-
-        var mapOptions = {
-            center: myLatlng,
-            zoom: 16,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-
-        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-        navigator.geolocation.getCurrentPosition(function(pos) {
-            map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-            var myLocation = new google.maps.Marker({
-                position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
-                map: map,
-                title: "My Location"
-            });
+    var navIcons = document.getElementsByClassName('ion-navicon');
+    for (var i = 0; i < navIcons.length; i++) {
+        navIcons.addEventListener('click', function() {
+            this.classList.toggle('active');
         });
+    }
 
-        $scope.map = map;
+    ////////////////////////////////////////
+    // Layout Methods
+    ////////////////////////////////////////
+
+    $scope.hideNavBar = function() {
+        document.getElementsByTagName('ion-nav-bar')[0].style.display = 'none';
+    };
+
+    $scope.showNavBar = function() {
+        document.getElementsByTagName('ion-nav-bar')[0].style.display = 'block';
+    };
+
+    $scope.noHeader = function() {
+        var content = document.getElementsByTagName('ion-content');
+        for (var i = 0; i < content.length; i++) {
+            if (content[i].classList.contains('has-header')) {
+                content[i].classList.toggle('has-header');
+            }
+        }
+    };
+
+    $scope.setExpanded = function(bool) {
+        $scope.isExpanded = bool;
+    };
+
+    $scope.setHeaderFab = function(location) {
+        var hasHeaderFabLeft = false;
+        var hasHeaderFabRight = false;
+
+        switch (location) {
+            case 'left':
+                hasHeaderFabLeft = true;
+                break;
+            case 'right':
+                hasHeaderFabRight = true;
+                break;
+        }
+
+        $scope.hasHeaderFabLeft = hasHeaderFabLeft;
+        $scope.hasHeaderFabRight = hasHeaderFabRight;
+    };
+
+    $scope.hasHeader = function() {
+        var content = document.getElementsByTagName('ion-content');
+        for (var i = 0; i < content.length; i++) {
+            if (!content[i].classList.contains('has-header')) {
+                content[i].classList.toggle('has-header');
+            }
+        }
+
+    };
+
+    $scope.hideHeader = function() {
+        $scope.hideNavBar();
+        $scope.noHeader();
+    };
+
+    $scope.showHeader = function() {
+        $scope.showNavBar();
+        $scope.hasHeader();
+    };
+
+    $scope.clearFabs = function() {
+        var fabs = document.getElementsByClassName('button-fab');
+        if (fabs.length && fabs.length > 1) {
+            fabs[0].remove();
+        }
+    };
+})
+
+.controller('LoginCtrl', function($scope, $timeout, $stateParams, ionicMaterialInk) {
+    $scope.$parent.clearFabs();
+    $timeout(function() {
+        $scope.$parent.hideHeader();
+    }, 0);
+    ionicMaterialInk.displayEffect();
+})
+
+.controller('FriendsCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {
+    // Set Header
+    $scope.$parent.showHeader();
+    $scope.$parent.clearFabs();
+    $scope.$parent.setHeaderFab('left');
+
+    // Delay expansion
+    $timeout(function() {
+        $scope.isExpanded = true;
+        $scope.$parent.setExpanded(true);
+    }, 300);
+
+    // Set Motion
+    ionicMaterialMotion.fadeSlideInRight();
+
+    // Set Ink
+    ionicMaterialInk.displayEffect();
+})
+
+.controller('ProfileCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
+    // Set Header
+    $scope.$parent.showHeader();
+    $scope.$parent.clearFabs();
+    $scope.isExpanded = false;
+    $scope.$parent.setExpanded(false);
+    $scope.$parent.setHeaderFab(false);
+
+    // Set Motion
+    $timeout(function() {
+        ionicMaterialMotion.slideUp({
+            selector: '.slide-up'
+        });
+    }, 300);
+
+    $timeout(function() {
+        ionicMaterialMotion.fadeSlideInRight({
+            startVelocity: 3000
+        });
+    }, 700);
+
+    // Set Ink
+    ionicMaterialInk.displayEffect();
+})
+
+.controller('ActivityCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
+    $scope.$parent.showHeader();
+    $scope.$parent.clearFabs();
+    $scope.isExpanded = true;
+    $scope.$parent.setExpanded(true);
+    $scope.$parent.setHeaderFab('right');
+
+    $timeout(function() {
+        ionicMaterialMotion.fadeSlideIn({
+            selector: '.animate-fade-slide-in .item'
+        });
+    }, 200);
+
+    // Activate ink for controller
+    ionicMaterialInk.displayEffect();
+})
+
+.controller('GalleryCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {
+    $scope.$parent.showHeader();
+    $scope.$parent.clearFabs();
+    $scope.isExpanded = true;
+    $scope.$parent.setExpanded(true);
+    $scope.$parent.setHeaderFab(false);
+
+    // Activate ink for controller
+    ionicMaterialInk.displayEffect();
+
+    ionicMaterialMotion.pushDown({
+        selector: '.push-down'
+    });
+    ionicMaterialMotion.fadeSlideInRight({
+        selector: '.animate-fade-slide-in .item'
     });
 
 })
 
+.controller('SettingsCtrl', function($scope, $stateParams, $timeout, ionicMaterialMotion, ionicMaterialInk) {
+    // Set Header
+    $scope.$parent.showHeader();
+    $scope.$parent.clearFabs();
+    $scope.isExpanded = false;
+    $scope.$parent.setExpanded(false);
+    $scope.$parent.setHeaderFab(false);
 
+    // Set Motion
+    $timeout(function() {
+        ionicMaterialMotion.slideUp({
+            selector: '.slide-up'
+        });
+    }, 300);
 
+    $timeout(function() {
+        ionicMaterialMotion.fadeSlideInRight({
+            startVelocity: 3000
+        });
+    }, 700);
 
+    // Set Ink
+    ionicMaterialInk.displayEffect();
+})
 
-
-
-
-
-
-
+;
