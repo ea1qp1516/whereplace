@@ -28,14 +28,6 @@ module.exports = function(app, passport) {
             }
         );
     }
-    loginSucces = function(req,res){
-        user = req.user;
-        console.log(req.user);
-        res.send(user);
-    }
-    loginFail = function (req, res) {
-        res.status(403).send(req.message);
-    }
 
 
 // Guarda un objeto Empresa en base de datos
@@ -95,6 +87,7 @@ module.exports = function(app, passport) {
     }
 
 
+
     passport.serializeUser(function(user, done) {
         done(null, user);
     });
@@ -131,17 +124,16 @@ module.exports = function(app, passport) {
     app.get('/user/:user_id', getUser);
     app.get('/user', getUsers);
 
-    app.get('/loginFail', loginFail);
-    app.get('/loginSucces',isLoggedIn, function(req, res) {
-        res.send(req.user);
-    });
     app.post('/user', newUser);
-
     app.post('/user/login',
-        passport.authenticate('local', {
-            successRedirect: '/loginSucces',
-            failureRedirect: '/loginFail'
-        })
+        passport.authenticate('local'), function(req,res){
+            if(req.user){
+                res.send(req.user);
+            }
+            if(!req.user){
+                res.status(403).send(req.message)
+            }
+        }
     );
     app.post('/user/modify/:user_id', updateUser);
     app.get('*', function(req, res) {
@@ -152,12 +144,14 @@ module.exports = function(app, passport) {
 function isLoggedIn(req, res, next) {
 
     // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
+    if (req.isAuthenticated()) {
         console.log(req.isAuthenticated());
         return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/loginFail');
+    }
+    else
+    {
+        res.redirect('/loginFail');
+    }
 }
 
 

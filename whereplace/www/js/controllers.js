@@ -13,8 +13,6 @@ angular.module('app.controllers', [])
 
     $scope.userRegistro = function() {
       var now = new Date();
-      var age = now.getFullYear() - $scope.newUser.edad.getFullYear();
-      $scope.newUser.edad = age;
       console.log($scope.newUser);
       $state.go('gustos',{user:$scope.newUser});
     }
@@ -109,7 +107,6 @@ angular.module('app.controllers', [])
 })
 
 .controller('googleMapsCtrl', function($scope, $ionicLoading, $state) {
-    console.log("HOLA");
     google.maps.event.addDomListener(window, 'load', function() {
         var myLatlng = new google.maps.LatLng(37.3000, -120.4833);
 
