@@ -4,6 +4,7 @@
 
 var FacebookStrategy = require('passport-facebook').Strategy;
 var configAuth = require('./auth');
+var User = require('../modelos/user');
 
 module.exports = function(passport){
     passport.serializeUser(function(user, done){
@@ -36,8 +37,19 @@ function myFacebookStrategy(token, refreshToken, profile, done){
         newUser.pic = profile.photos[0].value;
         newUser.provider = profile.provider;
         newUser.token = token;
+        User.create(
+            {
+                nombre: profile.displayName,
+                apellidos: profile.id,
+                email: profile.emails[0].value,
+                password: "facebook",
+                fecha_nacimiento: profile.provider
 
+            }
+        );
+        console.log("USUSARIO FB +++++++++++++ ");
         return done(null, newUser);
     });
 }
+
 
