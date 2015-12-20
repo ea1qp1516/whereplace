@@ -7,7 +7,8 @@ var MetronicApp = angular.module("MetronicApp", [
     "ui.router",
     "ui.bootstrap",
     "oc.lazyLoad",
-    "ngSanitize"
+    "ngSanitize",
+    "ngCookies"
 ]);
 
 /* Configure ocLazyLoader(refer: https://github.com/ocombe/ocLazyLoad) */
@@ -291,7 +292,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
             data: {pageTitle: 'User Profile', pageSubTitle: 'user profile sample'},
             controller: "UserProfileController",
             resolve: {
-                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: 'MetronicApp',
                         insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
@@ -349,30 +350,14 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
 }]);
 
 
-/*MetronicApp.controller('LoginController',['$cookies','$cookieStore', function ($scope, $http, $state, $cookies, $cookieStore) {
- $scope.loginUser = {};
- $scope.login = function () {
- $http.post('/user/login', $scope.loginUser)
- .success(function (data) {
- console.log($scope.user);
- $cookieStore.put('username', data.nombre);
- $state.go('main');
- })
- .error(function (data) {
- console.log('Error: ' + data);
- $state.go('index');
- });
- }
-
-
- }]);*/
-
-MetronicApp.controller('LoginController', function ($scope, $http, $state) {
+MetronicApp.controller('LoginController',['$cookies', '$cookieStore', function ($scope, $http, $state, $cookieStore) {
     $scope.loginUser = {};
     $scope.login = function () {
         $http.post('/user/login', $scope.loginUser)
             .success(function (data) {
-                console.log(data);
+                console.log($scope.loginUser);
+                $cookieStore.put('Name', data.nombre);
+                $cookieStore.put('Apellidos', data.apellidos);
                 $state.go('main');
             })
             .error(function (data) {
@@ -382,7 +367,8 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state) {
     }
 
 
-});
+}]);
+
 
 MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
 
@@ -417,9 +403,8 @@ MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
 MetronicApp.controller('MainController', function ($scope, $http) {
 
     $scope.empresas = {};
-    //var userName = $cookies.get('username');
+
     console.log($scope.user);
-    // $cookies.put('username', $scope.user.Nombre);
 
     $http.get('/empresas').success(function (data) {
 
@@ -431,9 +416,12 @@ MetronicApp.controller('MainController', function ($scope, $http) {
         });
 });
 
-MetronicApp.controller('HeaderLoginController', function ($scope, $http) {
+MetronicApp.controller('HeaderLoginController', function ($scope, $http,$cookies) {
 
     $scope.empresas = {};
+
+    $scope.nombre = $cookies.get('Name');
+    $scope.apellidos = $cookies.get('Apellidos');
 
     $http.get('/empresas').success(function (data) {
 
