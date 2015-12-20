@@ -3,6 +3,10 @@
 logs
 *.log
 /.idea
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin
 npm-debug.log*
 
 #Oauth

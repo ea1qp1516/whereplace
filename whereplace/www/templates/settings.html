@@ -1,41 +1,24 @@
-<!DOCTYPE html>
-<html>
-  <head>
-  <link href="lib/ionic/css/style.css" rel="stylesheet">
-  <script src="js/app.js"></script>
-    <script src="js/controllers.js"></script>
-    <script src="js/routes.js"></script>
-    <script src="js/services.js"></script>
-    <script src="js/directives.js"></script>
-  </head>
-  <body>
-      <ion-view title="Settings">
-
-        <ion-content padding="'true'" class="has-header">
-            <ion-toggle ion-toggle-text ng-model="simple">
-              Enviar Notificaciones: 
-            </ion-toggle>
-            <a href="#about" class="AboutButton">About</a>
-        </ion-content>
-
-        <div class="tabs tabs-icon-top tabs-positive">
-                      <a class="tab-item" href="#/perfilusuario">
-                              <i class="icon ion-home"></i>
-                              Perfil
-                          </a>
-                          <a class="tab-item" href="#/favoritos">
-                              <i class="icon ion-search"></i>
-                              Busqueda
-                          </a>
-                          <a class="tab-item" href="#/favoritos">
-                              <i class="icon ion-star"></i>
-                              Favorito
-                          </a>
-                          <a class="tab-item" href="#/settings">
-                              <i class="icon ion-gear-a"></i>
-                              Ajustes
-                          </a>
+<ion-view view-title="Settings">
+    <ion-content ng-class="{expanded:$scope.isExpanded}">
+        <div class="hero slide-up" style="background-image: url('img/disco.jpg');">
+            <div class="content">
+                <div class="avatar" style="background-image: url('img/urtasun.jpg');"></div>
+                <h3><a class="light">Xavier Urtasun</a></h3>
+                <h4>EETAC Student</h4>
+            </div>
         </div>
-      </ion-view>
-  </body>
-</html>
+        
+        <h4 class="content padding double-padding-x">Tag Settings</h4>
+        <div class="list animate-fade-slide-in-right">
+            <form class="list">
+            <ion-toggle toggle-class="toggle-positive">Bar</ion-toggle>
+            <ion-toggle toggle-class="toggle-positive">Restaurantes</ion-toggle>
+            <ion-toggle toggle-class="toggle-positive">Discoteca</ion-toggle>
+            <ion-toggle toggle-class="toggle-positive">Teatros</ion-toggle>
+            <ion-toggle toggle-class="toggle-positive">Cine</ion-toggle>
+            <ion-toggle toggle-class="toggle-positive">Cafeterias</ion-toggle>
+        </form>
+        <button class="button button-stable button-icon  icon-left ">Enviar</button>
+        </div>
+    </ion-content>
+</ion-view>

@@ -7,48 +7,47 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var http = require("http");
 var cookies = require("cookies");
-var cors = require("cors");
 var requests = require("requests");
 var crypto = require('crypto');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
+var LocalStrategy = require('passport-local').Strategy;
 
 require('./config/passport')(passport);
 var app = express();
-app.use(session({ secret: 'zasentodalaboca' }));
+
+app.use(session({ secret: '3f3b6994ec1dfda4c36de216d8fa03e3' }));
 
 mongoose.connect("mongodb://localhost/whereplace");
 
 
 
-var allowCrossDomain = function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, XMLHttpRequest');
-
-  // intercept OPTIONS method
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
   if ('OPTIONS' == req.method) {
     res.send(200);
-  }
-  else {
+  } else {
     next();
   }
-};
+});
+
+
 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(allowCrossDomain);
 
 app.use(session({ secret: '3f3b6994ec1dfda4c36de216d8fa03e3' }));
 app.use(passport.initialize());
@@ -56,6 +55,7 @@ app.use(passport.session());
 
 require('./routes/empresa')(app);
 require('./routes/user')(app, passport);
+require('./routes/index')(app, passport);
 
 
 
