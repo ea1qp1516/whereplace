@@ -2,10 +2,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Manuapp Oath' });
-});
+module.exports = function(app, passport){
 //route for showing the profile page
 router.get('/profile', isAuth,  function(req, res, next) {
     res.render('profile', { title: 'Your profile page', user: req.user });
@@ -16,8 +13,10 @@ router.get('/logout', function(req, res, next) {
     res.redirect('/');
 });
 //facebook authentication
-router.get('/auth/facebook',passport.authenticate('facebook', {
-    scope: ['public_profile', 'email'] }));
+app.get('/auth/facebook',passport.authenticate('facebook', {
+   scope: ['public_profile', 'email'] }));
+
+
 
 router.get('/auth/facebook/callback',passport.authenticate ('facebook', {
     successRedirect: '/profile',
@@ -31,3 +30,5 @@ function isAuth (req, res, next) {
 }
 
 module.exports = router;
+
+}
