@@ -1,3 +1,8 @@
+var url = "http://localhost:3000";
+
+//10.83.55.226
+//localhost
+
 angular.module('your_app_name.controllers', [])
 
 .controller('AuthCtrl', function($scope, $ionicConfig) {
@@ -7,18 +12,34 @@ angular.module('your_app_name.controllers', [])
 // APP
 .controller('AppCtrl', function($scope, $ionicConfig) {
 
+		var user = JSON.parse(window.localStorage['user'] || '{}');
+		console.log(user);
+		$scope.user = user;
+
+})
+.controller('ProfileCtrl', function($scope, $ionicConfig) {
+
+	var user = JSON.parse(window.localStorage['user'] || '{}');
+	console.log(user);
+	$scope.user = user;
+
 })
 
 //LOGIN
-.controller('LoginCtrl', function($scope, $state, $templateCache, $q, $rootScope) {
+.controller('LoginCtrl', function($scope, $state, $templateCache, $q, $rootScope, $http) {
+
 	$scope.doLogIn = function(){
-		$state.go('app.feeds-categories');
+		$http.post(url + '/user/login', $scope.user)
+			.success(function (data) {
+				console.log(data);
+				window.localStorage['user'] = JSON.stringify(data);
+				$state.go('app.feeds-categories',{user:data});
+			})
 	};
 
 	$scope.user = {};
 
-	$scope.user.email = "john@doe.com";
-	$scope.user.pin = "12345";
+	$scope.user.email = "";
 
 	// We need this for the form validation
 	$scope.selected_tab = "";
@@ -32,7 +53,7 @@ angular.module('your_app_name.controllers', [])
 .controller('SignupCtrl', function($scope, $state) {
 	$scope.user = {};
 
-	$scope.user.email = "john@doe.com";
+	$scope.user.email = "";
 
 	$scope.doSignUp = function(){
 		$state.go('app.feeds-categories');
@@ -212,7 +233,12 @@ angular.module('your_app_name.controllers', [])
 	$http.get('feeds-categories.json').success(function(response) {
 		var category = _.find(response, {id: $scope.categoryId});
 		$scope.categoryTitle = category.title;
-		$scope.category_sources = category.feed_sources;
+	});
+
+	$http.get(url +'/empresas/'+$stateParams.categoryId).success(function(empresas) {
+
+		$scope.empresas = empresas;
+
 	});
 })
 

@@ -113,6 +113,14 @@ module.exports = function(app) {
             });
 
     }
+    getEmpresasByGustos = function(req,res){
+        Empresa.find({"tags":req.params.gusto},{nombre:1,direccion:1,ciudad:1,descripcion:1,email:1,telefono:1,puntuacion:1,tags:1,comentarios:1,detalles:1, created_at:1, updated_at: 1},function (err, empresa) {
+                if (err)
+                    res.send(err)
+                res.json(empresa); // devuelve todas las Empresas en JSON
+            }
+        );
+    }
 
     empresalogin = function(req,res)
     {
@@ -140,6 +148,7 @@ module.exports = function(app) {
    // app.get('/', getEmpresas);
 // Crear una nueva Empresa
     app.get('/empresas', getEmpresas);
+    app.get('/empresas/:gusto', getEmpresasByGustos);
     app.delete('/empresas/delete/:empresa_id', borrarEmpresa);
     app.post('/empresa/modify/:empresa_id', updateEmpresa);
     app.post('/empresa/:empresa_id/comment', addComment);

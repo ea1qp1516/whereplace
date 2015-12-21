@@ -1,18 +1,18 @@
 <ion-view class="category-feeds-view">
   <ion-nav-title>
-    <span>{{categoryTitle}} feeds</span>
+    <span>{{categoryTitle}}</span>
   </ion-nav-title>
   <ion-content>
     <div class="list category-feeds">
-      <a ng-repeat="source in category_sources" class="item item-icon-right" ui-sref="app.feed-entries({categoryId: categoryId, sourceId: (source.title | slugify)})">
+      <a ng-repeat="empresa in empresas" class="item item-icon-right" ui-sref="app.feed-entries({categoryId: categoryId, sourceId: (source.title | slugify)})">
         <div class="thumbnail-outer">
           <pre-img ratio="_1_1" helper-class="">
-            <img class="thumbnail" ng-src="{{source.image}}" spinner-on-load>
+            <img class="thumbnail" ng-src="{{empresa.image}}" spinner-on-load>
           </pre-img>
         </div>
         <div>
-          <span class="title">{{source.title}}</span>
-          <p class="description">{{source.description}}</p>
+          <span class="title">{{empresa.nombre}}</span>
+          <p class="description">{{empresa.descripcion}}</p>
         </div>
         <i class="icon ion-arrow-right-c"></i>
       </a>

@@ -8,7 +8,7 @@ angular.module('underscore', [])
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('your_app_name', [
+angular.module('WherePlace', [
   'ionic',
   'angularMoment',
   'your_app_name.controllers',
@@ -183,7 +183,8 @@ angular.module('your_app_name', [
         templateUrl: "views/app/feeds/feeds-categories.html",
         controller: 'FeedsCategoriesCtrl'
       }
-    }
+    },
+    params :{'user':{}}
   })
 
   .state('app.category-feeds', {
@@ -193,7 +194,8 @@ angular.module('your_app_name', [
         templateUrl: "views/app/feeds/category-feeds.html",
         controller: 'CategoryFeedsCtrl'
       }
-    }
+    },
+    params:{'empresas':{}}
   })
 
   .state('app.feed-entries', {
@@ -261,7 +263,8 @@ angular.module('your_app_name', [
     url: "/profile",
     views: {
       'menuContent': {
-        templateUrl: "views/app/profile.html"
+        templateUrl: "views/app/profile.html",
+        controller: 'ProfileCtrl'
       }
     }
   })
