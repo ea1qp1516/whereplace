@@ -54,6 +54,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
             }
         }
     })
+    .state('app.empresas', {
+        url: '/empresas',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/empresas.html',
+                controller: 'EmpresasCtrl'
+            }
+        }
+    })
 
     .state('app.friends', {
         url: '/friends',
@@ -70,15 +79,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
                     }, 900);
                 }
             }
-        }
+        },
+        params:{'favoritos':{}}
     })
 
-    .state('app.gallery', {
-        url: '/gallery',
+    .state('app.gustos', {
+        url: '/gustos',
         views: {
             'menuContent': {
                 templateUrl: 'templates/gallery.html',
-                controller: 'GalleryCtrl'
+                controller: 'GustosCtrl'
             },
             'fabContent': {
                 template: '<button id="fab-gallery" class="button button-fab button-fab-top-right expanded button-energized-900 drop"><i class="icon ion-heart"></i></button>',
@@ -119,7 +129,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
                     }, 800);*/
                 }
             }
-        }
+        },
+        params:{'user':{}}
+    })
+    .state('loginPost', {
+        url: '/login',
+        templateUrl: 'templates/login.html',
+        controller: 'loginPost'
     })
 
     .state('app.settings', {
@@ -129,7 +145,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionic-material', 'io
                 templateUrl: 'templates/settings.html',
                 controller: 'SettingsCtrl'
             }
-        }
+        },
+        params:{'gustos':{}}
     })
     ;
 
