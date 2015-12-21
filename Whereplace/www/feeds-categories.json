@@ -52,12 +52,12 @@
 	},
 	{
 		"id":"politics",
-		"title":"Politics",
+		"title":"Busqueda Personalizada",
 		"image":"img/feeds/politics.jpg"
 	},
 	{
 		"id":"technology",
-		"title":"Technology",
+		"title":"Mis Gustos",
 		"image":"img/feeds/technology.jpg"
 	}
 ]
