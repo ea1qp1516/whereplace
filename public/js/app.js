@@ -171,11 +171,22 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
 
         })
 
-        .state('main', {
+        .state("main", {
             url: "/main",
             templateUrl: "views/main_dummy.html",
-            controller: "MainController"
+            controller: "MainController",
+            resolve: {
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
 
+                            'js/controllers/MainController.js'
+                        ]
+                    });
+                }]
+            }
         })
 
         // Registrar
@@ -289,7 +300,6 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
         .state("profile", {
             url: "/profile",
             templateUrl: "views/profile/main.html",
-            data: {pageTitle: 'User Profile', pageSubTitle: 'user profile sample'},
             controller: "UserProfileController",
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -339,25 +349,41 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
             data: {pageTitle: 'User Profile', pageSubTitle: 'user profile dashboard sample'}
         })
 
-        // User Profile Account
-        .state("profile.account", {
+
+        .state('profile.account', {
             url: "/account",
             templateUrl: "views/profile/account.html",
-            data: {pageTitle: 'User Account', pageSubTitle: 'user profile account sample'}
+            controller: "UserProfileController",
+            resolve: {
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([{
+                        name: 'angularFileUpload',
+                        files: [
+                            '../../../assets/global/plugins/angularjs/plugins/angular-file-upload/angular-file-upload.min.js',
+                        ]
+                    }, {
+                        name: 'MetronicApp',
+                        files: [
+                            'js/controllers/UserProfileController.js'
+                        ]
+                    }]);
+                }]
+            }
         })
-
 
 }]);
 
 
-MetronicApp.controller('LoginController',['$cookies', '$cookieStore', function ($scope, $http, $state, $cookieStore) {
+MetronicApp.controller('LoginController', function ($scope, $http, $state, $cookieStore) {
     $scope.loginUser = {};
     $scope.login = function () {
         $http.post('/user/login', $scope.loginUser)
             .success(function (data) {
-                console.log($scope.loginUser);
+                console.log(data);
                 $cookieStore.put('Name', data.nombre);
                 $cookieStore.put('Apellidos', data.apellidos);
+                $cookieStore.put('IdUser', data._id);
+
                 $state.go('main');
             })
             .error(function (data) {
@@ -367,7 +393,7 @@ MetronicApp.controller('LoginController',['$cookies', '$cookieStore', function (
     }
 
 
-}]);
+});
 
 
 MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
@@ -400,28 +426,14 @@ MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
 
 });
 
-MetronicApp.controller('MainController', function ($scope, $http) {
+
+
+MetronicApp.controller('HeaderLoginController', function ($scope, $http, $cookieStore) {
 
     $scope.empresas = {};
 
-    console.log($scope.user);
-
-    $http.get('/empresas').success(function (data) {
-
-            $scope.empresas = data;
-            console.log(data);
-        })
-        .error(function (data) {
-            console.log('Error: ' + data);
-        });
-});
-
-MetronicApp.controller('HeaderLoginController', function ($scope, $http,$cookies) {
-
-    $scope.empresas = {};
-
-    $scope.nombre = $cookies.get('Name');
-    $scope.apellidos = $cookies.get('Apellidos');
+    $scope.nombre = $cookieStore.get('Name');
+    $scope.apellidos = $cookieStore.get('Apellidos');
 
     $http.get('/empresas').success(function (data) {
 

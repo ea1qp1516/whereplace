@@ -1,163 +1,144 @@
 <div class="row">
-	<div class="col-md-50">
-		<div class="portlet light" style="background-color: white;">
-			<div class="portlet-title tabbable-line">
-				<div class="caption caption-md">
-					<i class="icon-globe theme-font hide"></i>
-					<span class="caption-subject font-blue-madison bold uppercase">Profile Account</span>
-				</div>
-				<ul class="nav nav-tabs">
-					<li class="active">
-						<a href="#" data-target="#tab_1_1" data-toggle="tab">Información personal</a>
-					</li>
-					<li>
-						<a href="#" data-target="#tab_1_2" data-toggle="tab">Cambiar Avatar</a>
-					</li>
-					<li>
-						<a href="#" data-target="#tab_1_3" data-toggle="tab">Cambiar contraseña</a>
-					</li>
-				</ul>
-			</div>
-				<div class="portlet-body">
-					<div class="tab-content">
-						<!-- PERSONAL INFO TAB -->
-						<div class="tab-pane active" id="tab_1_1">
-							<form role="form" action="#">
-								<div class="form-group">
-									<label class="control-label">Nombre</label>
-									<input type="text" placeholder="Toni" class="form-control"/>
-								</div>
+    <div class="col-md-50">
+        <div class="portlet light" style="background-color: white;">
+            <div class="portlet-title tabbable-line">
+                <div class="caption caption-md">
+                    <i class="icon-globe theme-font hide"></i>
+                    <span class="caption-subject font-blue-madison bold uppercase">Profile Account</span>
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#" data-target="#tab_1_1" data-toggle="tab">Información personal</a>
+                    </li>
+                    <li>
+                        <a href="#" data-target="#tab_1_2" data-toggle="tab">Cambiar Avatar</a>
+                    </li>
+                    <li>
+                        <a href="#" data-target="#tab_1_3" data-toggle="tab">Cambiar contraseña</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="portlet-body">
+                <div class="tab-content">
+                    <!-- PERSONAL INFO TAB -->
+                    <div class="tab-pane active" id="tab_1_1" ng-controller="UserProfileController">
+                        <form role="form">
+                            <div class="form-group">
+                                <label class="control-label">Nombre</label>
+                                <input type="text" placeholder="Toni" class="form-control" ng-model="user.nombre"/>
+                            </div>
 
-								<div class="form-group">
-									<label class="control-label">Apellido</label>
-									<input type="text" placeholder="Oller" class="form-control"/>
-								</div>
+                            <div class="form-group">
+                                <label class="control-label">Apellido</label>
+                                <input type="text" placeholder="Oller" class="form-control" ng-model="user.apellidos"/>
+                            </div>
 
-								<div class="form-group">
-									<label class="control-label">Gustos</label>
+                            <div class="form-group">
+                                <label class="control-label">Gustos</label>
 
-									<div style="width: 300px; margin-left: 0px;" class="bootstrap-switch-container"><span style="width: 1000px;" class="bootstrap-switch-handle-on bootstrap-switch-primary"></span>
-										<span style="width: 49px;" class="bootstrap-switch-label">&nbsp;</span><span style="width: 100px;"
-																													 class="bootstrap-switch-handle-off bootstrap-switch-default"></span>
-										<input checked="" class="make-switch" data-size="normal" type="checkbox"> Bares </div>
-
-
-									<div style="width: 300px; margin-left: 0px;" class="bootstrap-switch-container"><span style="width: 49px;" class="bootstrap-switch-handle-on bootstrap-switch-primary"></span>
-										<span style="width: 49px;" class="bootstrap-switch-label">&nbsp;</span><span style="width: 49px;"
-																													 class="bootstrap-switch-handle-off bootstrap-switch-default"></span>
-										<input checked="" class="make-switch" data-size="normal" type="checkbox">    Restaurantes   </div>
-
-									<div style="width: 300px; margin-left: 0px;" class="bootstrap-switch-container"><span style="width: 49px;" class="bootstrap-switch-handle-on bootstrap-switch-primary"></span>
-										<span style="width: 49px;" class="bootstrap-switch-label">&nbsp;</span><span style="width: 49px;"
-																													 class="bootstrap-switch-handle-off bootstrap-switch-default"></span>
-										<input checked="" class="make-switch" data-size="normal" type="checkbox">  Centro Comerciales
-
-										<div style="width: 300px; margin-left: 0px;" class="bootstrap-switch-container"><span style="width: 49px;" class="bootstrap-switch-handle-on bootstrap-switch-primary"></span>
-											<span style="width: 49px;" class="bootstrap-switch-label">&nbsp;</span><span style="width: 49px;"
-																														 class="bootstrap-switch-handle-off bootstrap-switch-default"></span>
-											<input checked="" class="make-switch" data-size="normal" type="checkbox"> Gimnasios
-
-											<div style="width: 300px; margin-left: 0px;" class="bootstrap-switch-container"><span style="width: 49px;" class="bootstrap-switch-handle-on bootstrap-switch-primary"></span>
-												<span style="width: 49px;" class="bootstrap-switch-label">&nbsp;</span><span style="width: 49px;"
-																															 class="bootstrap-switch-handle-off bootstrap-switch-default"></span>
-												<input checked="" class="make-switch" data-size="normal" type="checkbox">Club de Alterne  </div>  </div> </div> </div>
+                                <div style="width: 300px; margin-left: 0px;" class="bootstrap-switch-container"><span
+                                        style="width: 1000px;"
+                                        class="bootstrap-switch-handle-on bootstrap-switch-primary"></span>
+                                    <span style="width: 49px;" class="bootstrap-switch-label">&nbsp;</span><span
+                                            style="width: 100px;"
+                                            class="bootstrap-switch-handle-off bootstrap-switch-default"></span>
+                                    <input class="make-switch" data-size="normal" type="checkbox" ng-model="user.gustos" ng-checked="comida"> Comida
+                                </div>
 
 
+                                <div style="width: 300px; margin-left: 0px;" class="bootstrap-switch-container"><span
+                                        style="width: 49px;"
+                                        class="bootstrap-switch-handle-on bootstrap-switch-primary"></span>
+                                    <span style="width: 49px;" class="bootstrap-switch-label">&nbsp;</span><span
+                                            style="width: 49px;"
+                                            class="bootstrap-switch-handle-off bootstrap-switch-default"></span>
+                                    <input class="make-switch" data-size="normal" type="checkbox" ng-model="user.gustos" ng-checked="comida"> Diversión
+                                </div>
 
-								<br>
+                                <div style="width: 300px; margin-left: 0px;" class="bootstrap-switch-container"><span
+                                        style="width: 49px;"
+                                        class="bootstrap-switch-handle-on bootstrap-switch-primary"></span>
+                                    <span style="width: 49px;" class="bootstrap-switch-label">&nbsp;</span><span
+                                            style="width: 49px;"
+                                            class="bootstrap-switch-handle-off bootstrap-switch-default"></span>
+                                    <input class="make-switch" data-size="normal" type="checkbox" ng-model="user.gustos" ng-checked="nocturno"> Nocturno
 
-								<div class="form-group">
-									<label class="control-label">Biografia</label>
-									<br>
-									<textarea class="form-control" rows="3" placeholder="Somo estudiantes de EETAC."></textarea>
-								</div>
-								<div class="form-group">
-									<label class="control-label">Web Personal</label>
-									<input type="text" placeholder="https://wordpress.com/read/blog/feed/37844287" class="form-control"/>
-								</div>
-								<div class="margiv-top-10">
-									<a href="#" class="btn green-haze">
-										Guardar </a>
-									<a href="#" class="btn default">
-										Cancelar </a>
-								</div>
-							</form>
-						</div>
-						<!-- END PERSONAL INFO TAB -->
-						<!-- CHANGE AVATAR TAB -->
-						<div class="tab-pane" id="tab_1_2">
-							<p>
+                                    <div style="width: 300px; margin-left: 0px;" class="bootstrap-switch-container">
+                                        <span style="width: 49px;"
+                                              class="bootstrap-switch-handle-on bootstrap-switch-primary"></span>
+                                        <span style="width: 49px;" class="bootstrap-switch-label">&nbsp;</span><span
+                                            style="width: 49px;"
+                                            class="bootstrap-switch-handle-off bootstrap-switch-default"></span>
+                                        <input class="make-switch" data-size="normal" type="checkbox" ng-model="user.gustos" ng-checked="compras"> Compras
 
-							</p>
-							<form action="#" role="form">
-								<div class="form-group">
-									<div class="fileinput fileinput-new" data-provides="fileinput">
-										<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-											<img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt=""/>
-										</div>
-										<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;">
-										</div>
-										<div>
-											<br>
-										<span class="btn default btn-file">
-										<span class="fileinput-new">
-										Seleccionar Imagen </span>
-										<span class="fileinput-exists">
-										Change </span>
-										<input type="file" name="...">
-										</span>
-											<a href="#" class="btn default fileinput-exists" data-dismiss="fileinput">
-												Remove </a>
-										</div>
-									</div>
-									<br>
-									<div class="clearfix margin-top-10">
-
-										<span class="label label-danger"> OJO! </span>
-										<br>
-										<span> Firefox, Chrome, Opera, Safari and Internet Explorer 10 </span>
-										<br>
-										<br>
-									</div>
-								</div>
-								<div class="margin-top-10">
-									<a href="#" class="btn green-haze">
-										Submit </a>
-									<a href="#" class="btn default">
-										Cancel </a>
-								</div>
-							</form>
-						</div>
-						<!-- END CHANGE AVATAR TAB -->
-						<!-- CHANGE PASSWORD TAB -->
-						<div class="tab-pane" id="tab_1_3">
-							<form action="#">
-								<div class="form-group">
-									<label class="control-label">Password Actual</label>
-									<input type="password" class="form-control"/>
-								</div>
-								<div class="form-group">
-									<label class="control-label">Nuevo Password</label>
-									<input type="password" class="form-control"/>
-								</div>
-								<div class="form-group">
-									<label class="control-label">Reescribe Nuevo Password</label>
-									<input type="password" class="form-control"/>
-								</div>
-								<div class="margin-top-10">
-									<a href="#" class="btn green-haze">
-										Cambiar </a>
-									<a href="#" class="btn default">
-										Cancelar </a>
-								</div>
-							</form>
-						</div>
-						<!-- END CHANGE PASSWORD TAB -->
+                                    </div>
+                                </div>
+                            </div>
 
 
-						<!-- END PRIVACY SETTINGS TAB -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                            <br>
+
+
+                            <div class="margiv-top-10">
+                                <a href="#" class="btn green-haze">
+                                    Guardar </a>
+                                <a href="#" class="btn default">
+                                    Cancelar </a>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- END PERSONAL INFO TAB -->
+                    <!-- CHANGE AVATAR TAB -->
+                    <div class="tab-pane" id="tab_1_2">
+                        <p>
+
+                        </p>
+                        <!--
+                                                        <div class="portlet-body">
+                                                            <div ng-show="uploader.isHTML5">
+
+                                                                <div class="file-drop-zone margin-bottom-20" nv-file-over="" uploader="uploader" over-class="file-drop-zone-over">
+                                                                    Base drop zone
+                                                                </div>
+                                                            </div>
+
+                                                            Multiple
+                                                            <input nv-file-select="" uploader="uploader" multiple="" type="file"><br>
+                                                            Single
+                                                            <input nv-file-select="" uploader="uploader" type="file">
+                                                        </div>-->
+
+                    </div>
+                    <!-- END CHANGE AVATAR TAB -->
+                    <!-- CHANGE PASSWORD TAB -->
+                    <div class="tab-pane" id="tab_1_3">
+                        <form action="#">
+                            <div class="form-group">
+                                <label class="control-label">Password Actual</label>
+                                <input type="password" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Nuevo Password</label>
+                                <input type="password" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Reescribe Nuevo Password</label>
+                                <input type="password" class="form-control"/>
+                            </div>
+                            <div class="margin-top-10">
+                                <a href="#" class="btn green-haze">
+                                    Cambiar </a>
+                                <a href="#" class="btn default">
+                                    Cancelar </a>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- END CHANGE PASSWORD TAB -->
+
+
+                    <!-- END PRIVACY SETTINGS TAB -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

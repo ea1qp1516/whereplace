@@ -28,6 +28,7 @@
     "rand-token": "^0.2.1",
     "requests": "~0.1.7",
     "serve-favicon": "~2.3.0",
-    "xcode": "^0.8.2"
+    "xcode": "^0.8.2",
+    "fs": "0.0.2"
   }
 }

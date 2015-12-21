@@ -15,7 +15,8 @@ var userSchema = new Schema({
     updated_at: Date,
     contador_comentarios: String,
     favoritos: [String],
-    token: String
+    token: String,
+    avatar: String
 });
 
 userSchema.methods.validPassword = function( pwd ) {
