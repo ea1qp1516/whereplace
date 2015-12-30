@@ -1,0 +1,63 @@
+[
+	{
+		"id":"comida",
+		"title":"Comida",
+		"image":"img/feeds/comida.jpg",
+		"feed_sources":[
+			{
+				"id":"bbc",
+				"title":"BBC",
+				"description":"The latest stories from the World section of the BBC News web site.",
+				"image":"img/feeds/logos/bbc.jpg",
+				"url":"http://feeds.bbci.co.uk/news/world/rss.xml"
+			},
+			{
+				"id":"reuters",
+				"title":"Reuters",
+				"description":"Reuters.com is your source for breaking news, business, financial and investing news, including personal finance and stocks. Reuters is the leading global provider of news, financial information and technology solutions to the world's media, financial institutions, businesses and individuals.",
+				"image":"img/feeds/logos/reuters.jpg",
+				"url":"http://feeds.reuters.com/Reuters/worldNews"
+			},
+			{
+				"id":"cnn",
+				"title":"CNN",
+				"description":"CNN.com delivers up-to-the-minute news and information on the latest top stories, weather, entertainment, politics and more.",
+				"image":"img/feeds/logos/cnn.jpg",
+				"url":"http://rss.cnn.com/rss/cnn_world.rss"
+			},
+			{
+				"id":"the-guardian",
+				"title":"The Guardian",
+				"description":"Latest World news, comment and analysis from the Guardian, the world's leading liberal voice",
+				"image":"img/feeds/logos/the-guardian.jpg",
+				"url":"http://www.theguardian.com/world/rss"
+			}
+		]
+	},
+	{
+		"id":"compras",
+		"title":"Compras",
+		"image":"img/feeds/compras.jpg"
+	},
+	{
+		"id":"diversion",
+		"title":"Diversion",
+		"image":"img/feeds/diversion.jpg"
+	},
+	{
+		"id":"nocturno",
+		"title":"Nocturno",
+		"image":"img/feeds/nocturno.jpg"
+
+	},
+	{
+		"id":"politics",
+		"title":"Busqueda Personalizada",
+		"image":"img/feeds/politics.jpg"
+	},
+	{
+		"id":"technology",
+		"title":"Mis Gustos",
+		"image":"img/feeds/technology.jpg"
+	}
+]
