@@ -88,7 +88,7 @@ MetronicApp.factory('settings', ['$rootScope', function ($rootScope) {
 MetronicApp.controller('AppController', ['$scope', '$rootScope', function ($scope, $rootScope) {
     $scope.$on('$viewContentLoaded', function () {
         Metronic.initComponents(); // init core components
-        //Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive 
+        //Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive
     });
 }]);
 
@@ -353,7 +353,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
         .state('profile.account', {
             url: "/account",
             templateUrl: "views/profile/account.html",
-            controller: "UserProfileController",
+            controller: "FileController",
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
                     return $ocLazyLoad.load([{
@@ -364,7 +364,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
                     }, {
                         name: 'MetronicApp',
                         files: [
-                            'js/controllers/UserProfileController.js'
+                            'js/controllers/FileController.js'
                         ]
                     }]);
                 }]
@@ -400,7 +400,7 @@ MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
 
     $scope.newUser = {};
     $scope.valPassword = {};
-    $scope.error = {};
+    $scope.error = "";
 
     $scope.registrarUser = function () {
         if ($scope.newUser.password == $scope.valPassword.password2) {
@@ -414,6 +414,8 @@ MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
                 })
                 .error(function (data) {
                     console.log('Error: ' + data);
+                    $scope.error = "Las contraseñas no coinciden";
+
                 });
         } else {
             console.log('Errorr');

@@ -89,28 +89,18 @@
                     </div>
                     <!-- END PERSONAL INFO TAB -->
                     <!-- CHANGE AVATAR TAB -->
-                    <div class="tab-pane" id="tab_1_2">
+                    <div class="tab-pane" id="tab_1_2" ng-controller = "FileController">
                         <p>
 
                         </p>
+                        <form name="upload" ng-submit="uploadFile()">
+                          <input type="text" ng-model="name" /><br>
+                          <input type="file" name="file" uploader-model="file" /><br>
+                          <input type="submit" value="Enviar">
+                        </form>
 
 
-
-                                                        <div class="portlet-body">
-                                                            <div ng-show="uploader.isHTML5">
-
-                                                                <div class="file-drop-zone margin-bottom-20" nv-file-over="" uploader="uploader" over-class="file-drop-zone-over">
-                                                                    Base drop zone
-                                                                </div>
-                                                            </div>
-
-                                                            Multiple
-                                                            <input nv-file-select="" uploader="uploader" multiple="" type="file"><br>
-                                                            Single
-                                                            <input nv-file-select="" uploader="uploader" type="file">
-                                                        </div>
-
-                    </div>
+                  </div>
                     <!-- END CHANGE AVATAR TAB -->
                     <!-- CHANGE PASSWORD TAB -->
                     <div class="tab-pane" id="tab_1_3">

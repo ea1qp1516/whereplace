@@ -34,9 +34,9 @@
                                 <div class="input-icon right">
                                     <input class="form-control" type="text" placeholder="Nombre"
                                            ng-model="newUser.nombre" name="name" required>
-                                    <div class="alert alert-danger" ng-show="!formUsuario.$pristine && formUsuario.name.$error.required">
-                                      <strong>EEEE!</strong> Nombre requerido!
-                                    </div>
+                                </div>
+                                <div class="alert alert-danger" ng-show="!formUsuario.$pristine && formUsuario.name.$error.required">
+                                  <strong>Nombre requerido</strong>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +46,10 @@
                             <div class="col-md-4">
                                 <div class="input-icon right">
                                     <input class="form-control" type="text" placeholder="Apellidos"
-                                           ng-model="newUser.apellidos" required>
+                                           ng-model="newUser.apellidos" name="apellidos" required>
+                                </div>
+                                <div class="alert alert-danger" ng-show="!formUsuario.$pristine && formUsuario.apellidos.$error.required">
+                                  <strong>Apellidos requeridos</strong>
                                 </div>
                             </div>
                         </div>
@@ -56,8 +59,7 @@
                             <div class="col-md-4">
                                 <div class="input-icon right">
                                     <input class="form-control" type="password" placeholder="Contraseña"
-                                           ng-model="newUser.password" required>
-
+                                           ng-model="newUser.password" name="pass" required>
                                 </div>
                             </div>
                         </div>
@@ -68,8 +70,11 @@
                                 <div class="input-icon right">
                                     <input class="form-control"  type="password"
                                            placeholder="Confirmar contraseña"
-                                           ng-model="valPassword.password2" required
-                                           >
+                                           ng-model="valPassword.password2" name="pass2" required>
+                                </div>
+                                <div class="alert alert-danger" ng-show="formUsuario.pass.$valid != formUsuario.pass2.$valid">
+                                  <strong>EEEE!</strong> Las contraseñas no coinciden!
+                                  <span class="required">*</span>
                                 </div>
                             </div>
                         </div>
@@ -79,8 +84,10 @@
                             <div class="col-md-4">
                                 <div class="input-icon right">
                                     <input class="form-control" type="email" placeholder="Email"
-                                           ng-model="newUser.email" required>
-
+                                           ng-model="newUser.email" name="correo" required>
+                                </div>
+                                <div class="alert alert-danger" ng-show="formUsuario.correo.$error.email">
+                                  <strong>EEEE!</strong> El formato del correo no es correcto
                                 </div>
                             </div>
                         </div>

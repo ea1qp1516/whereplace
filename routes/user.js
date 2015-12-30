@@ -1,6 +1,7 @@
 var crypto = require('crypto');
 var randtoken = require('rand-token');
 var LocalStrategy = require('passport-local').Strategy;
+var fs = require('fs');
 
 
 module.exports = function (app, passport) {
@@ -27,7 +28,7 @@ module.exports = function (app, passport) {
 
 // Obtiene todos los objetos Usuarios de la base de datos
     getUsers = function (req, res) {
-        User.find({}, {nombre: 1, apellidos: 1, email: 1, favoritos: 1, gustos: 1}, function (err, users) {
+        User.find({}, {nombre: 1, apellidos: 1, email: 1, favoritos: 1, gustos: 1, avatar: 1}, function (err, users) {
                 if (err)
                     res.send(err)
                 res.json(users); // devuelve todos los Users en JSON
@@ -92,6 +93,22 @@ module.exports = function (app, passport) {
 
     }
 
+    app.get('/user/:user_id', getUser);
+    app.get('/user', getUsers);
+
+    app.post('/user', newUser);
+    app.post('/user/login',
+        passport.authenticate('local'), function (req, res) {
+            if (req.user) {
+                res.send(req.user);
+            }
+            if (!req.user) {
+                res.status(403).send(req.message)
+            }
+        }
+    );
+    app.post('/user/modify/:user_id', updateUser);
+    app.post('/user/:user_id', addImages);
 
     passport.serializeUser(function (user, done) {
         done(null, user);
@@ -127,24 +144,6 @@ module.exports = function (app, passport) {
             });
         }
     ));
-
-    app.get('/user/:user_id', getUser);
-    app.get('/user', getUsers);
-
-    app.post('/user', newUser);
-    app.post('/user/login',
-        passport.authenticate('local'), function (req, res) {
-            if (req.user) {
-                res.send(req.user);
-            }
-            if (!req.user) {
-                res.status(403).send(req.message)
-            }
-        }
-    );
-    app.post('/user/modify/:user_id', updateUser);
-    app.post('/user/avatar/:_id', addImages);
-
 };
 
 function isLoggedIn(req, res, next) {
@@ -160,54 +159,24 @@ function isLoggedIn(req, res, next) {
 }
 
 
-
-var fs = require('fs');
-
-addImages = function (req, res) {
-    req.files.file.name = req.params._id + '.jpg';
-
-    var tmp_path = req.files.file.path;
+addImages = function (req, res, next) {
 
 
-    var target_path = './public/assets/avatar' + req.files.file.name;
-
-
-    if (req.files.file.type.indexOf('image') == -1) {
-        res.send('El fichero que deseas subir no es una imagen');
-    } else {
-
-        fs.rename(tmp_path, target_path, function (err) {
-            console.log(err);
-
-            if (err) throw err;
-
-            fs.unlink(tmp_path, function () {
+            fs.mkdir("./public/img/avatar_users" + req.params.user_id);
+            fs.mkdir("./public/img/avatar_users" + req.params.user_id + "/avatar");
+            var tmp_path = req.files.file.path;
+            var ext = req.files.file.type;
+            ext = ext.split('/');
+            var target_path = './public/img/avatar_users' + req.params.user_id + '/avatar/' + req.params.user_id + '.' + ext[1];
+            fs.rename(tmp_path, target_path, function (err) {
                 if (err) throw err;
-
-                User.findOneAndUpdate({"_id": req.params._id}, req.body, function (err, user) {
-
-                    if (!err) {
-                        var nom = user._id;
-                        user.avatar = nom;
-
-                        user.save(function (err) {
-                            if (!err) {
-                                console.log('Updated');
-                                res.send('Update')
-                            }
-                            else {
-                                console.log('ERROR' + err);
-                            }
-
-                        })
-                    }
+                fs.unlink(tmp_path, function () {
+                    if (err) throw err;
                 });
-
             });
-
-        });
-
-    }
-};
-
-
+            User.update( {_id : req.params.user_id},{$set:{avatar : target_path}},
+					         function(err, user) {
+						               if (err)
+							                res.send(err);
+						      });
+  };
