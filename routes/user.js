@@ -2,6 +2,8 @@ var crypto = require('crypto');
 var randtoken = require('rand-token');
 var LocalStrategy = require('passport-local').Strategy;
 var fs = require('fs');
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
 
 
 module.exports = function (app, passport) {
@@ -36,6 +38,18 @@ module.exports = function (app, passport) {
         );
     }
 
+    //Obtiene el avatar del usuario que se le pasa el id
+
+    getAvatar = function (req, res) {
+        User.findOne({"_id": req.params.user_id}, {
+                avatar: 1
+            }, function (err, user) {
+                if (err)
+                    res.send(err)
+                res.json(user);
+            }
+        );
+    }
 
 // Guarda un objeto Empresa en base de datos
     newUser = function (req, res) {
@@ -53,7 +67,8 @@ module.exports = function (app, passport) {
                 password: passmd5,
                 fecha_nacimiento: req.body.fecha_nacimiento,
                 created_at: now,
-                updated_at: now
+                updated_at: now,
+                avatar: req.body.avatar
 
             },
             function (err, user) {
@@ -95,6 +110,7 @@ module.exports = function (app, passport) {
 
     app.get('/user/:user_id', getUser);
     app.get('/user', getUsers);
+    app.get('/user/:user_id/avatar', getAvatar);
 
     app.post('/user', newUser);
     app.post('/user/login',
@@ -108,7 +124,7 @@ module.exports = function (app, passport) {
         }
     );
     app.post('/user/modify/:user_id', updateUser);
-    app.post('/user/:user_id', addImages);
+    app.put('/user/:user_id',multipartMiddleware, addImages);
 
     passport.serializeUser(function (user, done) {
         done(null, user);
@@ -162,21 +178,34 @@ function isLoggedIn(req, res, next) {
 addImages = function (req, res, next) {
 
 
-            fs.mkdir("./public/img/avatar_users" + req.params.user_id);
-            fs.mkdir("./public/img/avatar_users" + req.params.user_id + "/avatar");
+            fs.mkdir("/public/img/avatar_users/" + req.params.user_id);
+            fs.mkdir("/public/img/avatar_users/" + req.params.user_id + "/avatar");
             var tmp_path = req.files.file.path;
             var ext = req.files.file.type;
             ext = ext.split('/');
-            var target_path = './public/img/avatar_users' + req.params.user_id + '/avatar/' + req.params.user_id + '.' + ext[1];
+            var target_path = '/public/img/avatar_users/' + req.params.user_id + '/avatar/' + req.params.user_id + '.' + ext[1];
             fs.rename(tmp_path, target_path, function (err) {
                 if (err) throw err;
                 fs.unlink(tmp_path, function () {
                     if (err) throw err;
                 });
             });
-            User.update( {_id : req.params.user_id},{$set:{avatar : target_path}},
+            
+            User.findById(req.params.user_id, function(err, user) {
+
+                    user.avatar = target_path;
+                    console.log(user.avatar);
+
+                    user.save(function(err) {
+                        if(err) return res.status(500).send(err.message);
+                  res.status(200).jsonp(user);
+                    });
+
+
+          /*  User.update( {_id : req.params.user_id},{$set:{avatar : target_path}},
 					         function(err, user) {
 						               if (err)
 							                res.send(err);
-						      });
-  };
+						      });*/
+  });
+};

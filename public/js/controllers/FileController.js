@@ -1,17 +1,14 @@
 'use strict';
 
-MetronicApp.controller('FileController',['$scope', 'upload', '$cookieStore', '$http', function ($scope, $http, $cookieStore, upload) {
+MetronicApp.controller('FileController',['$scope', '$http', '$cookieStore', 'upload', function ($scope, $http, $cookieStore, upload) {
     $scope.$on('$viewContentLoaded', function () {
         Metronic.initAjax(); // initialize core components
     });
 
-    $scope.uploadFile = function(){
+    $scope.actAvatar = function(){
 
-      var name = $scope.name;
       var file = $scope.file;
-      upload.uploadFile(file).then(function(res){
-        console.log(res);
-      })
+      upload.uploadFile(file);
     }
 }]);
 
@@ -30,28 +27,28 @@ MetronicApp.directive('uploaderModel', ["$parse", function ($parse){
 
 }]);
 
-MetronicApp.service('upload', ["$http", "$q", "$cookieStore", function($http, $q, $cookieStore){
+MetronicApp.service('upload', ["$http", "$cookieStore", function($http,$cookieStore){
 
       this.uploadFile  = function(file){
 
-        var deferred = $q.defer();
+
         var formData = new FormData();
         formData.append("file", file);
 
-        return $http.post("/user/" + $cookieStore.get('IdUser'), formData, {
+        return $http.put("/user/" + $cookieStore.get('IdUser'), formData, {
+          transformRequest: angular.identity,
           headers: {
-            "Content-type": undefined
-          },
-          transformRequest: formData
-        })
-        .success(function(res){
-          deferred.resolve(res);
-        })
-        .error(function(msg,code){
-          deferred.reject(msg);
-        })
-        return deferred.promise;
-      }
+            'Content-type': undefined
+          }
 
+        })
+        .success(function(){
+          return false;
+        })
+        .error(function(){
+          return true;
+        });
 
-}])
+      };
+
+}]);

@@ -220,7 +220,8 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
                             '../../../assets/global/plugins/typeahead/typeahead.bundle.min.js',
                             '../../../assets/admin/pages/scripts/components-form-tools.js',
                             '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.css',
-                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.js'
+                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.js',
+                            'js/controllers/RegisterController.js'
                         ]
                     }]);
                 }]
@@ -394,41 +395,6 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state, $cook
 
 
 });
-
-
-MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
-
-    $scope.newUser = {};
-    $scope.valPassword = {};
-    $scope.error = "";
-
-    $scope.registrarUser = function () {
-        if ($scope.newUser.password == $scope.valPassword.password2) {
-
-            $http.post('/user', $scope.newUser)
-                .success(function () {
-
-                    $scope.newUser = {};
-                    $state.go('index');
-
-                })
-                .error(function (data) {
-                    console.log('Error: ' + data);
-                    $scope.error = "Las contraseñas no coinciden";
-
-                });
-        } else {
-            console.log('Errorr');
-        }
-
-    };
-    $scope.volver = function () {
-        $state.go('index');
-    };
-
-});
-
-
 
 MetronicApp.controller('HeaderLoginController', function ($scope, $http, $cookieStore) {
 
