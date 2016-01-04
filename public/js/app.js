@@ -384,6 +384,7 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state, $cook
                 $cookieStore.put('Name', data.nombre);
                 $cookieStore.put('Apellidos', data.apellidos);
                 $cookieStore.put('IdUser', data._id);
+                $cookieStore.put('Avatar',data.avatar);
 
                 $state.go('main');
             })
@@ -402,6 +403,7 @@ MetronicApp.controller('HeaderLoginController', function ($scope, $http, $cookie
 
     $scope.nombre = $cookieStore.get('Name');
     $scope.apellidos = $cookieStore.get('Apellidos');
+    $scope.avatar = $cookieStore.get('Avatar');
 
     $http.get('/empresas').success(function (data) {
 
