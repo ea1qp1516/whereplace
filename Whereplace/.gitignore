@@ -17,12 +17,6 @@ dist/
 www/dist/
 www/fonts/
 .DS_Store
-www/js/templates.js
-www/js/views.js
-www/css/ionic.app.min.css
-www/css/ionic.app.css
-www/lib/
-www/js/tracking-config.js
 
 envato/
 RELEASE/
