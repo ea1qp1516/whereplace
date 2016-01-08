@@ -1,35 +1,49 @@
-/**
- * Created by Usuario on 02/12/2015.
- */
+
 'use strict';
 
-MetronicApp.filter('propsFilter', function() {
-    return function(items, props) {
-        var out = [];
+MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
 
-        if (angular.isArray(items)) {
-            items.forEach(function(item) {
-                var itemMatches = false;
+    $scope.newUser = {};
+    $scope.valPassword = {};
+    $scope.error = "";
+    var numeroAv;
 
-                var keys = Object.keys(props);
-                for (var i = 0; i < keys.length; i++) {
-                    var prop = keys[i];
-                    var text = props[prop].toLowerCase();
-                    if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
-                        itemMatches = true;
-                        break;
-                    }
-                }
 
-                if (itemMatches) {
-                    out.push(item);
-                }
-            });
+    function aleatorio(inferior,superior){
+
+   	  var numPosibilidades = superior - inferior
+   	  var aleat = Math.random() * numPosibilidades
+   	  aleat = Math.round(aleat)
+   	  return parseInt(inferior) + aleat
+}
+
+
+
+    $scope.registrarUser = function () {
+      numeroAv = Math.floor(Math.random() * 11) ;
+      console.log(numeroAv);
+      $scope.newUser.avatar = "../../../assets/avatar/"+numeroAv+".png";
+        if ($scope.newUser.password == $scope.valPassword.password2) {
+
+            $http.post('/user', $scope.newUser)
+                .success(function () {
+
+                    $scope.newUser = {};
+                    $state.go('index');
+
+                })
+                .error(function (data) {
+                    console.log('Error: ' + data);
+                    $scope.error = "Las contraseñas no coinciden";
+
+                });
         } else {
-            // Let the output be the input untouched
-            out = items;
+            console.log('Error');
         }
 
-        return out;
     };
+    $scope.volver = function () {
+        $state.go('index');
+    };
+
 });

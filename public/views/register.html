@@ -25,7 +25,7 @@
             </div>
             <div class="portlet-body form">
                 <!-- BEGIN FORM-->
-                <form name="formUsuario" class="form-horizontal form-bordered ng-pristine ng-valid">
+                <form name="formUsuario" class="form-horizontal form-bordered ng-pristine ng-valid" novalidate>
                     <div class="form-body">
                         <div class="form-group">
                             <label class="control-label col-md-3">Nombre</label>
@@ -33,8 +33,10 @@
                             <div class="col-md-4">
                                 <div class="input-icon right">
                                     <input class="form-control" type="text" placeholder="Nombre"
-                                           ng-model="newUser.nombre">
-
+                                           ng-model="newUser.nombre" name="name" required>
+                                </div>
+                                <div class="alert alert-danger" ng-show="!formUsuario.$pristine && formUsuario.name.$error.required">
+                                  <strong>Nombre requerido</strong>
                                 </div>
                             </div>
                         </div>
@@ -44,7 +46,10 @@
                             <div class="col-md-4">
                                 <div class="input-icon right">
                                     <input class="form-control" type="text" placeholder="Apellidos"
-                                           ng-model="newUser.apellidos">
+                                           ng-model="newUser.apellidos" name="apellidos" required>
+                                </div>
+                                <div class="alert alert-danger" ng-show="!formUsuario.$pristine && formUsuario.apellidos.$error.required">
+                                  <strong>Apellidos requeridos</strong>
                                 </div>
                             </div>
                         </div>
@@ -54,8 +59,7 @@
                             <div class="col-md-4">
                                 <div class="input-icon right">
                                     <input class="form-control" type="password" placeholder="Contraseña"
-                                           ng-model="newUser.password">
-
+                                           ng-model="newUser.password" name="pass" required>
                                 </div>
                             </div>
                         </div>
@@ -66,8 +70,11 @@
                                 <div class="input-icon right">
                                     <input class="form-control"  type="password"
                                            placeholder="Confirmar contraseña"
-                                           ng-model="valPassword.password2" required
-                                           >
+                                           ng-model="valPassword.password2" name="pass2" required>
+                                </div>
+                                <div class="alert alert-danger" ng-show="formUsuario.pass.$valid != formUsuario.pass2.$valid">
+                                  <strong>EEEE!</strong> Las contraseñas no coinciden!
+                                  <span class="required">*</span>
                                 </div>
                             </div>
                         </div>
@@ -77,8 +84,10 @@
                             <div class="col-md-4">
                                 <div class="input-icon right">
                                     <input class="form-control" type="email" placeholder="Email"
-                                           ng-model="newUser.email">
-
+                                           ng-model="newUser.email" name="correo" required>
+                                </div>
+                                <div class="alert alert-danger" ng-show="formUsuario.correo.$error.email">
+                                  <strong>EEEE!</strong> El formato del correo no es correcto
                                 </div>
                             </div>
                         </div>
@@ -95,7 +104,7 @@
                         <div class="row">
                             <div class="col-md-offset-3 col-md-9">
                                 <button type="submit" class="btn purple" style="background-color: #780707"
-                                        ng-click="registrarUser()"><i class="fa fa-check"></i> Registrar
+                                        ng-click="registrarUser()" ><i class="fa fa-check"></i> Registrar
                                 </button>
                                 <button type="button" class="btn default" ng-click="volver()">Cancelar</button>
                             </div>

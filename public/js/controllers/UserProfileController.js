@@ -24,4 +24,5 @@ MetronicApp.controller('UserProfileController', function ($rootScope, $scope, $h
 
 
 
-}); 
+
+});

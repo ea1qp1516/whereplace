@@ -88,7 +88,7 @@ MetronicApp.factory('settings', ['$rootScope', function ($rootScope) {
 MetronicApp.controller('AppController', ['$scope', '$rootScope', function ($scope, $rootScope) {
     $scope.$on('$viewContentLoaded', function () {
         Metronic.initComponents(); // init core components
-        //Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive 
+        //Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive
     });
 }]);
 
@@ -220,7 +220,8 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
                             '../../../assets/global/plugins/typeahead/typeahead.bundle.min.js',
                             '../../../assets/admin/pages/scripts/components-form-tools.js',
                             '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.css',
-                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.js'
+                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.js',
+                            'js/controllers/RegisterController.js'
                         ]
                     }]);
                 }]
@@ -353,7 +354,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
         .state('profile.account', {
             url: "/account",
             templateUrl: "views/profile/account.html",
-            controller: "UserProfileController",
+            controller: "FileController",
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
                     return $ocLazyLoad.load([{
@@ -364,7 +365,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
                     }, {
                         name: 'MetronicApp',
                         files: [
-                            'js/controllers/UserProfileController.js'
+                            'js/controllers/FileController.js'
                         ]
                     }]);
                 }]
@@ -383,6 +384,7 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state, $cook
                 $cookieStore.put('Name', data.nombre);
                 $cookieStore.put('Apellidos', data.apellidos);
                 $cookieStore.put('IdUser', data._id);
+                $cookieStore.put('Avatar',data.avatar);
 
                 $state.go('main');
             })
@@ -395,45 +397,13 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state, $cook
 
 });
 
-
-MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
-
-    $scope.newUser = {};
-    $scope.valPassword = {};
-    $scope.error = {};
-
-    $scope.registrarUser = function () {
-        if ($scope.newUser.password == $scope.valPassword.password2) {
-
-            $http.post('/user', $scope.newUser)
-                .success(function () {
-
-                    $scope.newUser = {};
-                    $state.go('index');
-
-                })
-                .error(function (data) {
-                    console.log('Error: ' + data);
-                });
-        } else {
-            console.log('Errorr');
-        }
-
-    };
-    $scope.volver = function () {
-        $state.go('index');
-    };
-
-});
-
-
-
 MetronicApp.controller('HeaderLoginController', function ($scope, $http, $cookieStore) {
 
     $scope.empresas = {};
 
     $scope.nombre = $cookieStore.get('Name');
     $scope.apellidos = $cookieStore.get('Apellidos');
+    $scope.avatar = $cookieStore.get('Avatar');
 
     $http.get('/empresas').success(function (data) {
 

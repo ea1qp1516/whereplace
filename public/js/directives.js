@@ -12,7 +12,7 @@ MetronicApp.directive('ngSpinnerBar', ['$rootScope',
 
                 // display the spinner bar whenever the route changes(the content part started loading)
                 $rootScope.$on('$stateChangeStart', function() {
-                    element.removeClass('hide'); // show spinner bar  
+                    element.removeClass('hide'); // show spinner bar
                 });
 
                 // hide the spinner bar on rounte change success(after the content loaded)
@@ -24,7 +24,7 @@ MetronicApp.directive('ngSpinnerBar', ['$rootScope',
                     // auto scorll to page top
                     setTimeout(function () {
                         Metronic.scrollTop(); // scroll to the top on content load
-                    }, $rootScope.settings.layout.pageAutoScrollOnLoad);                    
+                    }, $rootScope.settings.layout.pageAutoScrollOnLoad);
                 });
 
                 // handle errors
@@ -62,5 +62,5 @@ MetronicApp.directive('dropdownMenuHover', function () {
     link: function (scope, elem) {
       elem.dropdownHover();
     }
-  };  
+  };
 });
