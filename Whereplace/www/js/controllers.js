@@ -1,4 +1,4 @@
-var url = "http://localhost:3000";
+var url = "http://10.83.55.226:3000";
 
 //10.83.55.226
 //localhost
