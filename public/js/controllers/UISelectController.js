@@ -38,7 +38,18 @@ MetronicApp.filter('propsFilter', function() {
     };
 });
 
-MetronicApp.controller('UISelectController', function($scope, $http, $timeout) {
+MetronicApp.controller('UISelectController', function($scope, $http, $timeout, $cookieStore, $state) {
+
+      if($cookieStore.get('IdUser') == null){
+
+        $state.go('index');
+
+      }else {
+
+        $state.go('main');
+      }
+
+
     $scope.$on('$viewContentLoaded', function() {
         Metronic.initAjax(); // initialize core components
     });

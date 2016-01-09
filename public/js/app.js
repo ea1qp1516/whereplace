@@ -227,6 +227,42 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
                 }]
             }
         })
+        .state('registerCompany', {
+            url: "/register_company",
+            templateUrl: "views/registercompany.html",
+            controller: "RegisterController",
+            resolve: {
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([{
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
+                            '../../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css',
+                            '../../../assets/global/plugins/jquery-tags-input/jquery.tagsinput.css',
+                            '../../../assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css',
+                            '../../../assets/global/plugins/typeahead/typeahead.css',
+
+                            '../../../assets/global/plugins/fuelux/js/spinner.min.js',
+                            '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
+                            '../../../assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js',
+                            '../../../assets/global/plugins/jquery.input-ip-address-control-1.0.min.js',
+                            '../../../assets/global/plugins/bootstrap-pwstrength/pwstrength-bootstrap.min.js',
+                            '../../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js',
+                            '../../../assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js',
+                            '../../../assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js',
+                            '../../../assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js',
+                            '../../../assets/global/plugins/typeahead/handlebars.min.js',
+                            '../../../assets/global/plugins/typeahead/typeahead.bundle.min.js',
+                            '../../../assets/admin/pages/scripts/components-form-tools.js',
+                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.css',
+                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.js',
+                            'js/controllers/RegisterController.js'
+                        ]
+                    }]);
+                }]
+            }
+        })
         .state('adminpanel', {
             url: "/adminpanel",
             templateUrl: "views/adminpanelbasic.html",
@@ -299,7 +335,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
 
         // User Profile
         .state("profile", {
-            url: "/profile",
+            url: "/perfil",
             templateUrl: "views/profile/main.html",
             controller: "UserProfileController",
             resolve: {
@@ -372,6 +408,8 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
             }
         })
 
+
+
 }]);
 
 
@@ -395,9 +433,10 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state, $cook
     }
 
 
+
 });
 
-MetronicApp.controller('HeaderLoginController', function ($scope, $http, $cookieStore) {
+MetronicApp.controller('HeaderLoginController', function ($scope, $http, $cookieStore, $state) {
 
     $scope.empresas = {};
 
@@ -413,6 +452,16 @@ MetronicApp.controller('HeaderLoginController', function ($scope, $http, $cookie
         .error(function (data) {
             console.log('Error: ' + data);
         });
+
+        $scope.logout = function () {
+
+          $cookieStore.remove('Name');
+          $cookieStore.remove('Apellidos');
+          $cookieStore.remove('IdUser');
+          $cookieStore.remove('Avatar');
+
+          $state.go('index');
+        }
 });
 
 
