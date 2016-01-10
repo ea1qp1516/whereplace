@@ -1,11 +1,12 @@
 <ion-view class="profile-view">
     <ion-nav-title>
-        <span>{{empresa.nombre}}</span>
+        <span>{{user.nombre}} {{user.apellidos}}</span>
     </ion-nav-title>
     <ion-content>
-        <label class="item item-input">
-            <span class="input-label">Username</span>
-            <input type="text">
+        <label class="item item-input" ng-model="id">
+            <textarea placeholder="Escriba su comentario" rows="8" cols="10" ng-model="commentario">
+	        </textarea>
         </label>
+        <div class="button icon-right ion-chevron-right button-assertive" ng-controller="GustosCtrl" ng-click="newComment(commentario,id)">Enviar</div>
     </ion-content>
 </ion-view>

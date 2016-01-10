@@ -1,11 +1,15 @@
 <ion-view class="bookmarks-view">
   <ion-nav-title>
-    <span>Bookmarks</span>
+    <span>Gustos</span>
   </ion-nav-title>
   <ion-content>
-    <ion-toggle ng-model="comida" toggle-class="toggle-dark">Comida</ion-toggle>
-    <ion-toggle ng-model="diversion" toggle-class="toggle-dark">Diversion</ion-toggle>
-    <ion-toggle ng-model="nocturno" toggle-class="toggle-dark">Nocturno</ion-toggle>
-    <ion-toggle ng-model="compras" toggle-class="toggle-dark">Compras</ion-toggle>
+    <ion-toggle ng-model="comida" toggle-class="toggle-dark" ng-checked="comida">Comida</ion-toggle>
+    <ion-toggle ng-model="diversion" toggle-class="toggle-dark" ng-checked="diversion">Diversion</ion-toggle>
+    <ion-toggle ng-model="nocturno" toggle-class="toggle-dark" ng-checked="nocturno">Nocturno</ion-toggle>
+    <ion-toggle ng-model="compras" toggle-class="toggle-dark" ng-checked="compras">Compras</ion-toggle>
+    <div class="item item-divider"></div>
+
+    <div class="button icon-right ion-chevron-right button-assertive" ng-controller="GustosCtrl" ng-click="actualizar()">Actualizar</div>
   </ion-content>
+
 </ion-view>
