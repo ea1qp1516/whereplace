@@ -5,10 +5,23 @@ MetronicApp.controller('FileController',['$scope', '$http', '$cookieStore', 'upl
         Metronic.initAjax(); // initialize core components
     });
 
+
+    $scope.user = {};
+    $http.get('/user/' + $cookieStore.get('IdUser')).success(function (data) {
+
+            $scope.user = data;
+
+        })
+        .error(function (data) {
+            console.log('Error: ' + data);
+        });
+
+
     $scope.actAvatar = function(){
 
       var file = $scope.file;
-      upload.uploadFile(file);
+      var user = $scope.user;
+      upload.uploadFile(file,user);
     }
 }]);
 
@@ -29,13 +42,17 @@ MetronicApp.directive('uploaderModel', ["$parse", function ($parse){
 
 MetronicApp.service('upload', ["$http", "$cookieStore", function($http,$cookieStore){
 
-      this.uploadFile  = function(file){
+      this.uploadFile  = function(file,user){
 
 
         var formData = new FormData();
         formData.append("file", file);
+        $.each(user, function (key, value) {
+                  console.log(key + " - " + value);
+                  formData.append(key, value);
+              });
 
-        return $http.put("/user/" + $cookieStore.get('IdUser'), formData, {
+        return $http.post("/user/modify_avatar/" + $cookieStore.get('IdUser'), formData, {
           transformRequest: angular.identity,
           headers: {
             'Content-type': undefined

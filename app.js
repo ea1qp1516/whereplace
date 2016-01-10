@@ -12,6 +12,7 @@ var crypto = require('crypto');
 var passport = require('passport');
 var session = require('express-session');
 var LocalStrategy = require('passport-local').Strategy;
+var fs = require('fs');
 
 require('./config/passport')(passport);
 var app = express();
