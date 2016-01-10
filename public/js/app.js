@@ -335,7 +335,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
 
         // User Profile
         .state("profile", {
-            url: "/perfil",
+            url: "/profile",
             templateUrl: "views/profile/main.html",
             controller: "UserProfileController",
             resolve: {
@@ -452,16 +452,6 @@ MetronicApp.controller('HeaderLoginController', function ($scope, $http, $cookie
         .error(function (data) {
             console.log('Error: ' + data);
         });
-
-        $scope.logout = function () {
-
-          $cookieStore.remove('Name');
-          $cookieStore.remove('Apellidos');
-          $cookieStore.remove('IdUser');
-          $cookieStore.remove('Avatar');
-
-          $state.go('index');
-        }
 });
 
 
