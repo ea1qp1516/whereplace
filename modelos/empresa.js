@@ -21,15 +21,13 @@ var empresaSchema = {
     password:String,
     telefono: String,
     puntuacion: String,
+    tipo : String, //Campo de prueba borrar
     tags:[String],
     comentarios:[comentarioSchema],
     detalles:[String],
     created_at: Date,
     updated_at: Date,
 };
-
-
-
 
 module.exports = mongoose.model("Comentario", comentarioSchema);
 
