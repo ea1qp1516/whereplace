@@ -123,6 +123,7 @@ module.exports = function (app, passport) {
             }
         }
     );
+    
     app.post('/user/modify/:user_id', updateUser);
     app.put('/user/:user_id',multipartMiddleware, addImages);
 

@@ -11,10 +11,13 @@
 
     }
 </style>
+
 <body>
 <div data-ng-include="'tpl/header_login.html'" ng-controller="HeaderController"
      class="page-header md-shadow-z-1-i navbar navbar-fixed-top">
+
 </div>
+
 <div class="row" ng-controller="MainController">
     <div class="col-md-4">
         <!-- BEGIN: ACCORDION DEMO -->
@@ -60,6 +63,22 @@
         </div>
         <!-- END: ACCORDION DEMO -->
     </div>
+
+<div class="form-group">
+                <label class="col-md-3 control-label"></label>
+                <div class="col-md-6">
+                    <ui-select multiple ng-model="multipleDemo.selectedPeople" theme="bootstrap" ng-disabled="disabled">
+                        <ui-select-match placeholder="Selecciona tus gustos...">{{$item.name}}</ui-select-match>
+                        <ui-select-choices repeat="person in people | propsFilter: {name: $select.search, age: $select.search}">
+                            {{person.name}}
+                        </ui-select-choices>
+                    </ui-select>
+                   <!-- <p>Selected: {{multipleDemo.selectedPeople}}</p>-->
+                    <p></p>
+
+                </div>
+            </div>
+
 
 
     <div class="col-md-8" ng-controller="MapCtrl" style="position: fixed; right: 0;">

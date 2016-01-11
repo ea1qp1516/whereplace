@@ -96,6 +96,7 @@ module.exports = function(app) {
 
     updateEmpresa = function(req,res){
         if (req.body.password) {
+            console.log("update Vaaaaaaa");
             var passmd5 = crypto.createHash('md5').update(req.body.password).digest("hex");
         }
         var now = new Date();
@@ -125,19 +126,18 @@ module.exports = function(app) {
     empresalogin = function(req,res)
     {
         console.log(req.body);
-        User.findOne({"username":req.body.username},function (err, user) {
-                console.log(user.password);
+        Empresa.findOne({"nombre":req.body.nombre},function (err, empresa) {
                 if (err)
                     res.send(err)
-                if(req.body.password == user.password){
+                if(req.body.password == empresa.password){
                     console.log("logIN OK");
-                    res.json(user);
+                    res.json(empresa);
                 }
-                else
+                else{
                     res.send("LogIN FAIL");
+                
                 console.log("LOGIN FAIL");
-
-                // devuelve el user seleccionado/home/urtasun/WebstormProjects/whereplace/modelos/empresa.js
+            }
             }
         );
     }

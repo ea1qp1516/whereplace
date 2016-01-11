@@ -3,15 +3,12 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
   <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,700,300italic' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700' rel='stylesheet' type='text/css'>
 
 </head>
 <!-- BEGIN BODY -->
-<body class="login" ng-controller="RegisterController">
+<body class="login" ng-controller="EditController">
 <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
 <div class="menu-toggler sidebar-toggler">
 </div>
@@ -31,7 +28,7 @@
         <div class="portlet box blue-hoki">
             <div class="portlet-title">
                 <div class="caption">
-                    Registro Empresa
+                    Modificar datos de tu Empresa
                 </div>
             </div>
             <div class="portlet-body form">
@@ -39,10 +36,34 @@
                 <form action="#"  class="form-horizontal form-bordered ng-pristine ng-valid">
                     <div class="form-body">
                         <div class="form-group">
+                            <label class="control-label col-md-3">Nombre de la Empresa</label>
+                            <div class="col-md-4">
+                                <div class="input-icon right">
+                                    <input class="form-control" type="text" placeholder="Nombre" ng-model="loginempresa.nombre">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Password</label>
+                            <div class="col-md-4">
+                                <div class="input-icon right">
+                                    <input class="form-control" type="text" placeholder="Password" ng-model="loginempresa.password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3"></label>
+                            <div class="col-md-4">
+                              <button type="button" class="btn default" ng-click="login()" >Cargar datos</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="control-label col-md-3">Nombre</label>
                             <div class="col-md-4">
                                 <div class="input-icon right">
-                                    <input class="form-control" type="text" placeholder="Nombre" ng-model="empresa.nombre">
+                                    <input class="form-control" type="text" placeholder="Nombre" ng-model="empresa.nombre"></input>
 
                                 </div>
                             </div>
@@ -51,7 +72,7 @@
                             <label class="control-label col-md-3">Dirección</label>
                             <div class="col-md-4">
                                 <div class="input-icon right">
-                                    <input class="form-control" type="text" placeholder="Dirección" ng-model="empresa.direccion">
+                                    <input class="form-control" type="text" placeholder="Dirección" ng-model="empresa.direccion"></input>
                                 </div>
                             </div>
                         </div>
@@ -124,8 +145,7 @@
                                         <p>Acepta tarjeta de crédito <input type="checkbox" name="tarjeta"> </p>
                                         </div>
                                         <div class="modal-footer">
-                                          <button type="button" class="btn btn-default" data-dismiss="modal"
-                                          ng-click="empresa.puntuacion=comida">Aceptar</button>
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>
                                         </div>
                                       </div>
                                     </div>
@@ -219,7 +239,7 @@
                     <div class="form-actions">
                         <div class="row">
                             <div class="col-md-offset-3 col-md-9">
-                                <button type="submit" class="btn purple" style="background-color: #780707"   ng-click="registrarEmpresa()"><i class="fa fa-check"></i> Registrar</button>
+                                <button type="submit" class="btn purple" style="background-color: #780707" ng-click="editar()"><i class="fa fa-check" ></i> Editar</button>
                                 <button type="button" class="btn default" ng-click="volver()">Cancelar</button>
                             </div>
                         </div>
