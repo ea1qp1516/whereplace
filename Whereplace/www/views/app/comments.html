@@ -8,7 +8,7 @@
             <input type="search" placeholder="Search">
         </label>
         <div class="list category-feeds">
-            <a ng-repeat="empresa in empresas" class="item item-icon-right" ng-controller="CategoryFeedsCtrl" ng-click="detailEmpresa(empresa._id)">
+            <a ng-repeat="empresa in empresas" class="item item-icon-right" ng-click="detailEmpresa(empresa._id)">
                 <div>
                     <span class="title">{{empresa.nombre}}</span>
                     <p class="description">{{empresa.descripcion}}</p>

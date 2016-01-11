@@ -218,6 +218,15 @@ angular.module('WherePlace', [
     },
     params: {empresa:{}}
   })
+  .state('app.comentarios', {
+    url: "/mycomments",
+    views: {
+      'menuContent': {
+        templateUrl: "views/app/comments.html",
+        controller: 'CommentsCtrl'
+      }
+    }
+  })
 
 
   //WORDPRESS

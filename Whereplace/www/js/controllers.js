@@ -1,7 +1,8 @@
-var url = "http://192.168.1.109:3000";
+var url = "http://10.83.55.226:3000";
 
 //10.83.55.226
 //localhost
+//192.168.1.109
 
 angular.module('your_app_name.controllers', [])
 
@@ -259,15 +260,20 @@ angular.module('your_app_name.controllers', [])
 	var idempresa = empresa._id;
 	console.log($stateParams.empresa);
 	$scope.empresa = empresa;
+	$scope.favorito = true;
 
 
 	$scope.NewComment = function(){
 		console.log($scope.empresa);
 		$state.go("app.newComment",{empresa:$scope.empresa});
 	}
+	$scope.changing= function(){
+		console.log("helo");
+	}
 
 
-})
+
+	})
 
 .controller('NewCommentCtrl', function($scope,$state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService) {
 	console.log($stateParams.empresa);
@@ -280,17 +286,19 @@ angular.module('your_app_name.controllers', [])
 
 
 
-	$scope.newComment = function(comentario,id) {
+	$scope.newComment = function(commentario,id) {
 
 		var comentario = {
-			comentario : comentario,
+			comentario : commentario,
 			user : user.nombre + " "+ user.apellidos,
 			user_id :user._id
 		}
 		console.log(comentario);
+		console.log($scope.commentario);
 		console.log(id);
 
 		$http.post(url +'/empresa/'+id+'/comment',comentario).success(function(response) {
+			console.log(response);
 			$state.go("app.feed-entries",{empresa:response});
 		});
 
@@ -346,66 +354,49 @@ angular.module('your_app_name.controllers', [])
 })
 
 // TINDER CARDS
-.controller('TinderCardsCtrl', function($scope, $http) {
+.controller('CommentsCtrl', function($scope, $http) {
 
-	$scope.cards = [];
+		var user = JSON.parse(window.localStorage['user'] || '{}');
 
-
-	$scope.addCard = function(img, name) {
-		var newCard = {image: img, name: name};
-		newCard.id = Math.random();
-		$scope.cards.unshift(angular.extend({}, newCard));
-	};
-
-	$scope.addCards = function(count) {
-		$http.get('http://api.randomuser.me/?results=' + count).then(function(value) {
-			angular.forEach(value.data.results, function (v) {
-				$scope.addCard(v.user.picture.large, v.user.name.first + " " + v.user.name.last);
-			});
+		$http.get(url +'/empresas/comentarios/'+user._id).success(function(response) {
+			console.log(response);
+			$scope.empresas = response;
 		});
-	};
+		$scope.detailEmpresa = function(idempresa) {
 
-	$scope.addFirstCards = function() {
-		$scope.addCard("https://dl.dropboxusercontent.com/u/30675090/envato/tinder-cards/left.png","Nope");
-		$scope.addCard("https://dl.dropboxusercontent.com/u/30675090/envato/tinder-cards/right.png", "Yes");
-	};
+			$http.get(url +'/empresa/'+idempresa).success(function(empresa) {
 
-	$scope.addFirstCards();
-	$scope.addCards(5);
+				$state.go("app.feed-entries",{empresa:empresa});
 
-	$scope.cardDestroyed = function(index) {
-		$scope.cards.splice(index, 1);
-		$scope.addCards(1);
-	};
 
-	$scope.transitionOut = function(card) {
-		console.log('card transition out');
-	};
+			});
+		};
 
-	$scope.transitionRight = function(card) {
-		console.log('card removed to the right');
-		console.log(card);
-	};
 
-	$scope.transitionLeft = function(card) {
-		console.log('card removed to the left');
-		console.log(card);
-	};
+
 })
 
 
 // BOOKMARKS
-.controller('GustosCtrl', function($scope, $rootScope, BookMarkService, $state) {
+.controller('GustosCtrl', function($scope, $rootScope, BookMarkService, $state, $http) {
 
 		var user = JSON.parse(window.localStorage['user'] || '{}');
 
+		$http.get(url +'/user/'+user._id).success(function(response) {
+			window.localStorage['user'] = JSON.stringify(response);
+		});
+
+
+		var user = JSON.parse(window.localStorage['user'] || '{}');
 		var gustos = user.gustos;
 
+
+
+		console.log(gustos);
 		var comida;
 		var diversion;
 		var nocturno;
 		var compras;
-		console.log(gustos);
 		gustos.forEach(function(gusto){
 			console.log(gusto);
 			if(gusto=="comida"){
@@ -421,32 +412,36 @@ angular.module('your_app_name.controllers', [])
 				compras = true;
 			}
 		})
+
 		$scope.comida = comida;
 		$scope.diversion = diversion;
 		$scope.nocturno = nocturno;
 		$scope.compras = compras;
 
 
-		$scope.actualizar = function(){
-			console.log(comida);
-			console.log(diversion);
-			console.log(nocturno);
-			console.log(compras);
-			var gustos =[];
-			if(comida ==true){
-				gustos.push("comida");
+		$scope.actualizar = function(gustos){
+			var gustosArray =[];
+			if(gustos.comida ==true){
+				gustosArray.push("comida");
 			}
-			if(diversion ==true){
-				gustos.push("diversion");
+			if(gustos.diversion ==true){
+				gustosArray.push("diversion");
 			}
-			if(nocturno ==true){
-				gustos.push("nocturno");
+			if(gustos.nocturno ==true){
+				gustosArray.push("nocturno");
 			}
-			if(compras ==true){
-				gustos.push("compras");
+			if(gustos.compras ==true){
+				gustosArray.push("compras");
 			}
-			console.log(gustos);
+			var gustoTag = {
+				gustos : gustosArray
+			}
+			$http.post(url +'/user/modify/'+user._id,gustoTag).success(function(response) {
+				console.log(response);
+				$state.go("app.feeds-categories");
+			});
 		}
+
 
 
 })

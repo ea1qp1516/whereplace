@@ -158,9 +158,21 @@ module.exports = function(app) {
         );
     }
 
+    empresasbyComments = function(req,res) {
+
+        Empresa.find({"comentarios.user_id": "569297a16ca8b6782a006ca3"},function(err,empresas){
+            if (err)
+                res.send(err);
+            else
+                res.json(empresas);
+        });
+    }
+
+
 
 
     app.get('/empresa/:empresa_id', getEmpresa);
+    app.get('/empresas/comentarios/:user_id',empresasbyComments);
    // app.get('/', getEmpresas);
 // Crear una nueva Empresa
     app.get('/empresas', getEmpresas);
