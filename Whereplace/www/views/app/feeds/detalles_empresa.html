@@ -1,0 +1,39 @@
+<ion-view class="profile-view">
+    <ion-nav-title>
+        <span>{{empresa.nombre}}</span>
+    </ion-nav-title>
+    <ion-content>
+        <div class="top-content row">
+            <div class="profile-container">
+                <div class="user-image-container">
+                    <pre-img ratio="_1_1" helper-class="rounded-image">
+                        <img class="user-image" ng-src="http://i0.wp.com/alt1040.com/files/2014/06/poly-wallpaper-2-800x450.jpg?resize=800%2C450" spinner-on-load>
+                    </pre-img>
+                </div>
+                <div class="user-name">{{empresa.ciudad}}</div>
+                <div class="user-twitter">{{empresa.descripcion}}</div>
+            </div>
+            <div class="user-background-image-outer">
+                <div multi-bg="['http://applediario.com/wp-content/uploads/2012/02/ox-mountain-lion-galaxy-wallpaper.png']"></div>
+            </div>
+        </div>
+
+        <div class="list category-feeds">
+            <a ng-repeat="comentario in empresa.comentarios" class="item item-icon-right">
+                <div>
+                    <span class="title">{{comentario.user}}</span>
+                    <p class="description">{{comentario.comentario}}</p>
+                </div>
+                <i class="icon ion-arrow-right-c"></i>
+            </a>
+        </div>
+        <div class="bottom-content">
+            <div class="user-bio">
+                <a ng-controller="FeedEntriesCtrl" ng-click="NewComment(empresa)"> New Comment
+                </a>
+                <div>{{empresa.direccion}}</div>
+
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

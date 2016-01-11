@@ -125,7 +125,7 @@ module.exports = function (app, passport) {
     );
     
     app.post('/user/modify/:user_id', updateUser);
-    app.put('/user/:user_id',multipartMiddleware, addImages);
+    app.post('/user/modify_avatar/:user_id',multipartMiddleware, addImages);
 
     passport.serializeUser(function (user, done) {
         done(null, user);
@@ -179,34 +179,34 @@ function isLoggedIn(req, res, next) {
 addImages = function (req, res, next) {
 
 
-            fs.mkdir("/public/img/avatar_users/" + req.params.user_id);
-            fs.mkdir("/public/img/avatar_users/" + req.params.user_id + "/avatar");
+            fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_users/" + req.params.user_id);
+            fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_users/" + req.params.user_id + "/avatar");
             var tmp_path = req.files.file.path;
             var ext = req.files.file.type;
             ext = ext.split('/');
-            var target_path = '/public/img/avatar_users/' + req.params.user_id + '/avatar/' + req.params.user_id + '.' + ext[1];
+            var target_path = '/home/nacho/EAProject/whereplace/public/img/avatar_users/' + req.params.user_id + '/avatar/' + req.params.user_id + '.' + ext[1];
             fs.rename(tmp_path, target_path, function (err) {
                 if (err) throw err;
                 fs.unlink(tmp_path, function () {
                     if (err) throw err;
                 });
             });
-            
-            User.findById(req.params.user_id, function(err, user) {
 
-                    user.avatar = target_path;
-                    console.log(user.avatar);
+            console.log(req.body);
 
-                    user.save(function(err) {
-                        if(err) return res.status(500).send(err.message);
-                  res.status(200).jsonp(user);
-                    });
+            var now = new Date();
+            User.update({_id: req.params.user_id}, req.body,
+                function (err, user) {
+                    if (err)
+                        res.send(err);
+
+                    User.findOne({"_id": req.params.user_id}, {__v: 0, password: 0}, function (err, user) {
+                            if (err)
+                                res.send(err)
+                            res.json(user);
+                        }
+                    );
+                });
 
 
-          /*  User.update( {_id : req.params.user_id},{$set:{avatar : target_path}},
-					         function(err, user) {
-						               if (err)
-							                res.send(err);
-						      });*/
-  });
 };

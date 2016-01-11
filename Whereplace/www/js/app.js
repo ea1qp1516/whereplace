@@ -197,16 +197,28 @@ angular.module('WherePlace', [
     },
     params:{'empresas':{}}
   })
+    .state('app.newComment', {
+      url: "/comment",
+      views: {
+        'menuContent': {
+          templateUrl: "views/app/feeds/add-comment.html",
+          controller: 'NewCommentCtrl'
+        }
+      },
+      params: {empresa:{}}
+    })
 
   .state('app.feed-entries', {
-    url: "/feed-entries/:categoryId/:sourceId",
+    url: "/feed-entries",
     views: {
       'menuContent': {
-        templateUrl: "views/app/feeds/feed-entries.html",
+        templateUrl: "views/app/feeds/detalles_empresa.html",
         controller: 'FeedEntriesCtrl'
       }
-    }
+    },
+    params: {empresa:{}}
   })
+
 
   //WORDPRESS
   .state('app.wordpress', {
@@ -269,12 +281,12 @@ angular.module('WherePlace', [
     }
   })
 
-  .state('app.bookmarks', {
-    url: "/bookmarks",
+  .state('app.gustos', {
+    url: "/gustos",
     views: {
       'menuContent': {
-        templateUrl: "views/app/bookmarks.html",
-        controller: 'BookMarksCtrl'
+        templateUrl: "views/app/gustos.html",
+        controller: 'GustosCtrl'
       }
     }
   })

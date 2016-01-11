@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var path = require("path");
 var passport = require('passport');
 
 module.exports = function(app, passport){
@@ -22,6 +23,12 @@ app.get('/auth/facebook/callback',passport.authenticate ('facebook', {
     successRedirect: 'http://localhost:3000/#/profile',
     failureRedirect: '/'
 }));
+
+app.get('/img/:iduser', function(req, res, next) {
+    console.log( req.params.iduser);
+    res.sendFile(__dirname +  '/public/assets/img/'+req.params.iduser+'/'+ 'avatar.png');
+
+});
 
 function isAuth (req, res, next) {
     if (req.isAuthenticated())

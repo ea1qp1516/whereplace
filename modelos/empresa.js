@@ -6,9 +6,11 @@ var mongoose = require('mongoose');
 
 var comentarioSchema = {
     comentario: String,
-        created_at: Date,
-        user: String
+    created_at: Date,
+    user: String,
+    user_id: String
 };
+
 
 var empresaSchema = {
     nombre:String,
