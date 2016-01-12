@@ -1,4 +1,4 @@
-var url = "http://10.83.55.226:3000";
+var url = "http://192.168.1.39:3000";
 
 //10.83.55.226
 //localhost
@@ -255,21 +255,62 @@ angular.module('your_app_name.controllers', [])
 //this method brings posts for a source provider
 .controller('FeedEntriesCtrl', function($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService) {
 
+	var user = JSON.parse(window.localStorage['user'] || '{}');
 
-	var empresa = $stateParams.empresa;
-	var idempresa = empresa._id;
+	var empresaEntrada = $stateParams.empresa;
+	var idempresa = empresaEntrada._id;
 	console.log($stateParams.empresa);
-	$scope.empresa = empresa;
-	$scope.favorito = true;
+	$scope.empresa = empresaEntrada;
+	$scope.favorito = false;
+	$scope.formClass ='icon ion-ios-star-outline';
+
+	user.favoritos.forEach(function(empresa){
+		if (empresa._id == empresaEntrada._id){
+			$scope.favorito = true;
+			$scope.formClass ='icon ion-ios-star';
+		}
+		})
+
+
 
 
 	$scope.NewComment = function(){
 		console.log($scope.empresa);
 		$state.go("app.newComment",{empresa:$scope.empresa});
 	}
-	$scope.changing= function(){
-		console.log("helo");
+
+
+
+
+	$scope.changing= function(favorito){
+		if (favorito==true){
+			$scope.formClass ='icon ion-ios-star-outline';
+			$scope.favorito = false;
+			var favSend = {
+				user_id: user._id,
+				function: 'drop',
+				empresa: empresaEntrada
+			}
+			$http.post(url +'/user/favorito',favSend).success(function(response) {
+
+			});
+		}
+		if (favorito==false){
+			$scope.formClass ='icon ion-ios-star';
+			$scope.favorito = true;
+			var favSend = {
+				user_id: user._id,
+				function: 'add',
+				empresa: empresaEntrada
+			}
+			$http.post(url +'/user/favorito',favSend).success(function(response) {
+
+			});
+		}
+		console.log(favorito);
 	}
+
+
 
 
 
@@ -354,13 +395,14 @@ angular.module('your_app_name.controllers', [])
 })
 
 // TINDER CARDS
-.controller('CommentsCtrl', function($scope, $http) {
+.controller('CommentsCtrl', function($scope, $http, $state) {
 
 		var user = JSON.parse(window.localStorage['user'] || '{}');
 
 		$http.get(url +'/empresas/comentarios/'+user._id).success(function(response) {
 			console.log(response);
 			$scope.empresas = response;
+			$scope.numComments = response.length;
 		});
 		$scope.detailEmpresa = function(idempresa) {
 
@@ -375,6 +417,33 @@ angular.module('your_app_name.controllers', [])
 
 
 })
+.controller('FavoritosCtrl', function($scope, $http, $state) {
+
+	var user = JSON.parse(window.localStorage['user'] || '{}');
+
+	$http.get(url +'/user/'+user._id).success(function(response) {
+		var user = response;
+		console.log(user);
+		$scope.empresas = user.favoritos;
+		$scope.numFavoritos = user.favoritos.length;
+
+		window.localStorage['user'] = JSON.stringify(response);
+	});
+	$scope.detailEmpresa = function(idempresa) {
+
+		$http.get(url +'/empresa/'+idempresa).success(function(empresa) {
+
+			$state.go("app.feed-entries",{empresa:empresa});
+
+
+		});
+	};
+
+
+
+})
+
+
 
 
 // BOOKMARKS

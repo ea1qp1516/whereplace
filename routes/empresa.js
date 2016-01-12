@@ -94,8 +94,8 @@ module.exports = function(app) {
                     }
                     else{
                         Empresa.findById(req.params.empresa_id,function(err,empresa){
-                            if(error){
-                                res.json(error);
+                            if(err){
+                                res.json(err);
                             }
                             else{
                                 res.json(empresa);
@@ -111,10 +111,6 @@ module.exports = function(app) {
     }
 
     updateEmpresa = function(req,res){
-        if (req.body.password) {
-            console.log("update Vaaaaaaa");
-            var passmd5 = crypto.createHash('md5').update(req.body.password).digest("hex");
-        }
         var now = new Date();
         Empresa.update( {_id :      req.params.empresa_id},req.body,
             function(err, user) {
@@ -141,7 +137,6 @@ module.exports = function(app) {
 
     empresalogin = function(req,res)
     {
-        console.log(req.body);
         Empresa.findOne({"nombre":req.body.nombre},function (err, empresa) {
                 if (err)
                     res.send(err)
@@ -159,8 +154,18 @@ module.exports = function(app) {
     }
 
     empresasbyComments = function(req,res) {
+        console.log("Hola");
 
         Empresa.find({"comentarios.user_id": "569297a16ca8b6782a006ca3"},function(err,empresas){
+            if (err)
+                res.send(err);
+            else
+                res.json(empresas);
+        });
+    }
+    getBusqueda = function(req,res) {
+        var regex = new RegExp(req.body.busqueda, "i");
+        Empresa.find({"nombre" : regex},function(err,empresas){
             if (err)
                 res.send(err);
             else
@@ -177,7 +182,10 @@ module.exports = function(app) {
 // Crear una nueva Empresa
     app.get('/empresas', getEmpresas);
     app.get('/empresas/:gusto', getEmpresasByGustos);
+
     app.delete('/empresas/delete/:empresa_id', borrarEmpresa);
+
+    app.post('/empresas/busquedas',getBusqueda);
     app.post('/empresa/modify/:empresa_id', updateEmpresa);
     app.post('/empresa/:empresa_id/comment', addComment);
     app.post('/empresa', newEmpresa);

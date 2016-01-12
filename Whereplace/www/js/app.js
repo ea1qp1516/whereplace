@@ -227,6 +227,15 @@ angular.module('WherePlace', [
       }
     }
   })
+  .state('app.favoritos', {
+    url: "/myfavoritos",
+    views: {
+      'menuContent': {
+        templateUrl: "views/app/favoritos.html",
+        controller: 'FavoritosCtrl'
+      }
+    }
+      })
 
 
   //WORDPRESS

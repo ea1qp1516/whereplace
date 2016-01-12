@@ -4,7 +4,7 @@
 
 var FacebookStrategy = require('passport-facebook').Strategy;
 var configAuth = require('./auth');
-var User = require('../modelos/user');
+var User = require('../modelos/empresa');
 
 module.exports = function(passport){
     passport.serializeUser(function(user, done){

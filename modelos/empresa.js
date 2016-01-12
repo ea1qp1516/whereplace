@@ -29,6 +29,9 @@ var empresaSchema = {
     updated_at: Date,
 };
 
+
+
+
 module.exports = mongoose.model("Comentario", comentarioSchema);
 
 module.exports = mongoose.model("Empresa", empresaSchema);

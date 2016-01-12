@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+<ion-view class="category-feeds-view" ng-controller="FavoritosCtrl">
+    <ion-nav-title>
+        <span>Tiene {{numFavoritos}} empresas favoritas.</span>
+    </ion-nav-title>
+    <ion-content>
+        <label class="item item-input">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="search" placeholder="Search">
+        </label>
+        <div class="list category-feeds">
+            <a ng-repeat="empresa in empresas" class="item item-icon-right" ng-click="detailEmpresa(empresa._id)">
+                <div>
+                    <span class="title">{{empresa.nombre}}</span>
+                    <p class="description">{{empresa.descripcion}}</p>
+                </div>
+                <i class="icon ion-arrow-right-c"></i>
+            </a>
+        </div>
+    </ion-content>
+</ion-view>
