@@ -34,7 +34,6 @@ module.exports = function(app) {
                 email: req.body.email,
                 password: req.body.password,
                 telefono:req.body.telefono,
-                puntuacion: req.body.puntuacion,
                 tags: req.body.tags,
                 detalles:req.body.detalles,
                 created_at: now,
@@ -110,6 +109,25 @@ module.exports = function(app) {
 
     }
 
+    addRate = function(req,res){
+        Empresa.findById(req.params.empresa_id,function(err,empresa){
+                if (err)
+                    res.send(err)
+                console.log(empresa);
+                empresa.puntuacion = req.body;
+                empresa.save( function(error, data){
+                    if(error){
+                        res.json(error);
+                    }
+                    else{
+                        res.json(data);
+                    }
+                });
+
+        });
+
+    }
+
     updateEmpresa = function(req,res){
         var now = new Date();
         Empresa.update( {_id :      req.params.empresa_id},req.body,
@@ -153,25 +171,35 @@ module.exports = function(app) {
         );
     }
 
-    empresasbyComments = function(req,res) {
-        console.log("Hola");
+getPuntuacion = function(req,res){
 
-        Empresa.find({"comentarios.user_id": "569297a16ca8b6782a006ca3"},function(err,empresas){
-            if (err)
-                res.send(err);
-            else
-                res.json(empresas);
-        });
-    }
-    getBusqueda = function(req,res) {
-        var regex = new RegExp(req.body.busqueda, "i");
-        Empresa.find({"nombre" : regex},function(err,empresas){
-            if (err)
-                res.send(err);
-            else
-                res.json(empresas);
-        });
-    }
+  Empresa.findOne({"_id":req.params.empresa_id},{puntuacion:1},function (err, empresa) {
+          if (err)
+              res.send(err)
+          res.json(empresa); // devuelve todas las Empresas en JSON
+      }
+  );
+
+}
+empresasbyComments = function(req,res) {
+    console.log("Hola");
+
+    Empresa.find({"comentarios.user_id": "569297a16ca8b6782a006ca3"},function(err,empresas){
+        if (err)
+            res.send(err);
+        else
+            res.json(empresas);
+    });
+}
+getBusqueda = function(req,res) {
+    var regex = new RegExp(req.body.busqueda, "i");
+    Empresa.find({"nombre": regex}, function (err, empresas) {
+        if (err)
+            res.send(err);
+        else
+            res.json(empresas);
+    });
+}
 
 
 
@@ -183,12 +211,15 @@ module.exports = function(app) {
     app.get('/empresas', getEmpresas);
     app.get('/empresas/:gusto', getEmpresasByGustos);
 
+    app.get('/empresas/:empresa_id/puntuacion', getPuntuacion);
     app.delete('/empresas/delete/:empresa_id', borrarEmpresa);
 
     app.post('/empresas/busquedas',getBusqueda);
     app.post('/empresa/modify/:empresa_id', updateEmpresa);
     app.post('/empresa/:empresa_id/comment', addComment);
+    app.post('/empresa/:empresa_id/rating', addRate);
     app.post('/empresa', newEmpresa);
     app.post('/empresa/login', empresalogin);
+
 
 }

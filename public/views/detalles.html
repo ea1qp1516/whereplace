@@ -43,6 +43,18 @@
                                         </div>
                                         <div class="col-md-6 blog-tag-data-inner">
                                             <ul class="list-inline">
+                                              <li>
+                                                <div class="ec-stars-wrapper" ng-show ="mostrarEstrellas">
+                                                      <a  ng-click="puntuar(1)">&#9733;</a>
+                                                      <a  ng-click="puntuar(2)">&#9733;</a>
+                                                      <a  ng-click="puntuar(3)">&#9733;</a>
+                                                      <a  ng-click="puntuar(4)">&#9733;</a>
+                                                      <a  ng-click="puntuar(5)">&#9733;</a>
+                                                </div>
+                                                <div class="ec-stars-wrapper" ng-show ="mostrarMensaje">
+                                                      <h3>{{NoPuedes}}</h3>
+                                                </div>
+                                              </li>
                                                 <li>
                                                     <i class="fa fa-calendar"></i>
                                                     <a href="javascript:;">
@@ -101,7 +113,7 @@
                                 <div class="media" data-ng-repeat="comentario in empresa.comentarios">
 
                                     <a href="javascript:;" class="pull-left">
-                                        <img alt="" src="../../assets/admin/pages/media/blog/9.jpg"
+                                        <img alt="" src={{comentario.avatar}}}}
                                              class="media-object">
                                     </a>
 

@@ -37,10 +37,12 @@ MetronicApp.controller('MainController', function ($scope, $http) {
     });
 
     $scope.empresas = {};
-
+    
     $http.get('/empresas').success(function (data) {
 
             $scope.empresas = data;
+
+
             var index;
             for (index = 0; index < $scope.empresas.length; index++) {
                 direcciones.push($scope.empresas[index].direccion);
@@ -58,7 +60,6 @@ MetronicApp.controller('MainController', function ($scope, $http) {
 
             $scope.busquedas = data;
 
-
         })
             .error(function (data) {
                 console.log('Error: ' + data);
@@ -69,6 +70,7 @@ MetronicApp.controller('MainController', function ($scope, $http) {
     $scope.seleccionarEmpresa = function(id){
 
     }
+
 
 
 });
