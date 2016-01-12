@@ -2,6 +2,7 @@ var url = "http://10.83.55.226:3000";
 
 //10.83.55.226
 //localhost
+//192.168.1.109
 
 angular.module('your_app_name.controllers', [])
 
@@ -33,6 +34,7 @@ angular.module('your_app_name.controllers', [])
 			.success(function (data) {
 				console.log(data);
 				window.localStorage['user'] = JSON.stringify(data);
+
 				$state.go('app.feeds-categories',{user:data});
 			})
 	};
@@ -225,14 +227,13 @@ angular.module('your_app_name.controllers', [])
 })
 
 //bring specific category providers
-.controller('CategoryFeedsCtrl', function($scope, $http, $stateParams) {
+.controller('CategoryFeedsCtrl', function($scope, $http, $stateParams, $state) {
 	$scope.category_sources = [];
 
 	$scope.categoryId = $stateParams.categoryId;
 
 	$http.get('feeds-categories.json').success(function(response) {
 		var category = _.find(response, {id: $scope.categoryId});
-		$scope.categoryTitle = category.title;
 	});
 
 	$http.get(url +'/empresas/'+$stateParams.categoryId).success(function(empresas) {
@@ -240,46 +241,71 @@ angular.module('your_app_name.controllers', [])
 		$scope.empresas = empresas;
 
 	});
+	$scope.detailEmpresa = function(idempresa) {
+
+		$http.get(url +'/empresa/'+idempresa).success(function(empresa) {
+
+			$state.go("app.feed-entries",{empresa:empresa});
+
+
+		});
+	};
 })
 
 //this method brings posts for a source provider
-.controller('FeedEntriesCtrl', function($scope, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService) {
-	$scope.feed = [];
+.controller('FeedEntriesCtrl', function($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService) {
 
-	var categoryId = $stateParams.categoryId,
-			sourceId = $stateParams.sourceId;
 
-	$scope.doRefresh = function() {
+	var empresa = $stateParams.empresa;
+	var idempresa = empresa._id;
+	console.log($stateParams.empresa);
+	$scope.empresa = empresa;
+	$scope.favorito = true;
 
-		$http.get('feeds-categories.json').success(function(response) {
 
-			$ionicLoading.show({
-				template: 'Loading entries...'
-			});
+	$scope.NewComment = function(){
+		console.log($scope.empresa);
+		$state.go("app.newComment",{empresa:$scope.empresa});
+	}
+	$scope.changing= function(){
+		console.log("helo");
+	}
 
-			var category = _.find(response, {id: categoryId }),
-					source = _.find(category.feed_sources, {id: sourceId });
 
-			$scope.sourceTitle = source.title;
 
-			FeedList.get(source.url)
-			.then(function (result) {
-				$scope.feed = result.feed;
-				$ionicLoading.hide();
-				$scope.$broadcast('scroll.refreshComplete');
-			}, function (reason) {
-				$ionicLoading.hide();
-				$scope.$broadcast('scroll.refreshComplete');
-			});
+	})
+
+.controller('NewCommentCtrl', function($scope,$state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService) {
+	console.log($stateParams.empresa);
+	var empresa = $stateParams.empresa;
+	$scope.id = empresa._id;
+	console.log($scope.id);
+	var user = JSON.parse(window.localStorage['user'] || '{}');
+	$scope.user = user;
+	$scope.commentario = "";
+
+
+
+	$scope.newComment = function(commentario,id) {
+
+		var comentario = {
+			comentario : commentario,
+			user : user.nombre + " "+ user.apellidos,
+			user_id :user._id
+		}
+		console.log(comentario);
+		console.log($scope.commentario);
+		console.log(id);
+
+		$http.post(url +'/empresa/'+id+'/comment',comentario).success(function(response) {
+			console.log(response);
+			$state.go("app.feed-entries",{empresa:response});
 		});
+
+
 	};
 
-	$scope.doRefresh();
 
-	$scope.bookmarkPost = function(post){
-		$ionicLoading.show({ template: 'Post Saved!', noBackdrop: true, duration: 1000 });
-		BookMarkService.bookmarkFeedPost(post);
-	};
 })
 
 // SETTINGS
@@ -328,70 +354,96 @@ angular.module('your_app_name.controllers', [])
 })
 
 // TINDER CARDS
-.controller('TinderCardsCtrl', function($scope, $http) {
+.controller('CommentsCtrl', function($scope, $http) {
 
-	$scope.cards = [];
+		var user = JSON.parse(window.localStorage['user'] || '{}');
 
-
-	$scope.addCard = function(img, name) {
-		var newCard = {image: img, name: name};
-		newCard.id = Math.random();
-		$scope.cards.unshift(angular.extend({}, newCard));
-	};
-
-	$scope.addCards = function(count) {
-		$http.get('http://api.randomuser.me/?results=' + count).then(function(value) {
-			angular.forEach(value.data.results, function (v) {
-				$scope.addCard(v.user.picture.large, v.user.name.first + " " + v.user.name.last);
-			});
+		$http.get(url +'/empresas/comentarios/'+user._id).success(function(response) {
+			console.log(response);
+			$scope.empresas = response;
 		});
-	};
+		$scope.detailEmpresa = function(idempresa) {
 
-	$scope.addFirstCards = function() {
-		$scope.addCard("https://dl.dropboxusercontent.com/u/30675090/envato/tinder-cards/left.png","Nope");
-		$scope.addCard("https://dl.dropboxusercontent.com/u/30675090/envato/tinder-cards/right.png", "Yes");
-	};
+			$http.get(url +'/empresa/'+idempresa).success(function(empresa) {
 
-	$scope.addFirstCards();
-	$scope.addCards(5);
+				$state.go("app.feed-entries",{empresa:empresa});
 
-	$scope.cardDestroyed = function(index) {
-		$scope.cards.splice(index, 1);
-		$scope.addCards(1);
-	};
 
-	$scope.transitionOut = function(card) {
-		console.log('card transition out');
-	};
+			});
+		};
 
-	$scope.transitionRight = function(card) {
-		console.log('card removed to the right');
-		console.log(card);
-	};
 
-	$scope.transitionLeft = function(card) {
-		console.log('card removed to the left');
-		console.log(card);
-	};
+
 })
 
 
 // BOOKMARKS
-.controller('BookMarksCtrl', function($scope, $rootScope, BookMarkService, $state) {
+.controller('GustosCtrl', function($scope, $rootScope, BookMarkService, $state, $http) {
 
-	$scope.bookmarks = BookMarkService.getBookmarks();
+		var user = JSON.parse(window.localStorage['user'] || '{}');
 
-	// When a new post is bookmarked, we should update bookmarks list
-	$rootScope.$on("new-bookmark", function(event){
-		$scope.bookmarks = BookMarkService.getBookmarks();
-	});
+		$http.get(url +'/user/'+user._id).success(function(response) {
+			window.localStorage['user'] = JSON.stringify(response);
+		});
 
-	$scope.goToFeedPost = function(link){
-		window.open(link, '_blank', 'location=yes');
-	};
-	$scope.goToWordpressPost = function(postId){
-		$state.go('app.post', {postId: postId});
-	};
+
+		var user = JSON.parse(window.localStorage['user'] || '{}');
+		var gustos = user.gustos;
+
+
+
+		console.log(gustos);
+		var comida;
+		var diversion;
+		var nocturno;
+		var compras;
+		gustos.forEach(function(gusto){
+			console.log(gusto);
+			if(gusto=="comida"){
+				comida = true;
+			}
+			if(gusto=="diversion"){
+				diversion = true;
+			}
+			if(gusto=="nocturno"){
+				nocturno = true;
+			}
+			if(gusto=="compras"){
+				compras = true;
+			}
+		})
+
+		$scope.comida = comida;
+		$scope.diversion = diversion;
+		$scope.nocturno = nocturno;
+		$scope.compras = compras;
+
+
+		$scope.actualizar = function(gustos){
+			var gustosArray =[];
+			if(gustos.comida ==true){
+				gustosArray.push("comida");
+			}
+			if(gustos.diversion ==true){
+				gustosArray.push("diversion");
+			}
+			if(gustos.nocturno ==true){
+				gustosArray.push("nocturno");
+			}
+			if(gustos.compras ==true){
+				gustosArray.push("compras");
+			}
+			var gustoTag = {
+				gustos : gustosArray
+			}
+			$http.post(url +'/user/modify/'+user._id,gustoTag).success(function(response) {
+				console.log(response);
+				$state.go("app.feeds-categories");
+			});
+		}
+
+
+
 })
 
 // WORDPRESS
@@ -489,3 +541,4 @@ angular.module('your_app_name.controllers', [])
 })
 
 ;
+

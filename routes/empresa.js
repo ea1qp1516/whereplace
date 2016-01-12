@@ -77,19 +77,35 @@ module.exports = function(app) {
 
     }
     addComment = function(req,res){
+
         Empresa.findById(req.params.empresa_id,function(err,empresa){
                 if (err)
                     res.send(err)
-                console.log(empresa);
-                empresa.comentarios.push(req.body);
+                var now = new Date();
+                var comentario ={
+                    user : req.body.user,
+                    user_id : req.body.user_id,
+                    comentario : req.body.comentario,
+                    created_at : now
+                }
+                empresa.comentarios.push(comentario);
                 empresa.save( function(error, data){
                     if(error){
                         res.json(error);
                     }
                     else{
-                        res.json(data);
+                        Empresa.findById(req.params.empresa_id,function(err,empresa){
+                            if(error){
+                                res.json(error);
+                            }
+                            else{
+                                res.json(empresa);
+                            }
+                        });
+
                     }
-                });
+                }
+                );
 
         });
 
@@ -116,6 +132,7 @@ module.exports = function(app) {
 
     updateEmpresa = function(req,res){
         if (req.body.password) {
+            console.log("update Vaaaaaaa");
             var passmd5 = crypto.createHash('md5').update(req.body.password).digest("hex");
         }
         var now = new Date();
@@ -145,23 +162,23 @@ module.exports = function(app) {
     empresalogin = function(req,res)
     {
         console.log(req.body);
-        User.findOne({"username":req.body.username},function (err, user) {
-                console.log(user.password);
+        Empresa.findOne({"nombre":req.body.nombre},function (err, empresa) {
                 if (err)
                     res.send(err)
-                if(req.body.password == user.password){
+                if(req.body.password == empresa.password){
                     console.log("logIN OK");
-                    res.json(user);
+                    res.json(empresa);
                 }
-                else
+                else{
                     res.send("LogIN FAIL");
+                
                 console.log("LOGIN FAIL");
-
-                // devuelve el user seleccionado/home/urtasun/WebstormProjects/whereplace/modelos/empresa.js
+            }
             }
         );
     }
 
+<<<<<<< HEAD
 getPuntuacion = function(req,res){
 
   Empresa.findOne({"_id":req.params.empresa_id},{puntuacion:1},function (err, empresa) {
@@ -172,11 +189,23 @@ getPuntuacion = function(req,res){
   );
 
 }
+=======
+    empresasbyComments = function(req,res) {
+
+        Empresa.find({"comentarios.user_id": "569297a16ca8b6782a006ca3"},function(err,empresas){
+            if (err)
+                res.send(err);
+            else
+                res.json(empresas);
+        });
+    }
+>>>>>>> origin/dev
 
 
 
 
     app.get('/empresa/:empresa_id', getEmpresa);
+    app.get('/empresas/comentarios/:user_id',empresasbyComments);
    // app.get('/', getEmpresas);
 // Crear una nueva Empresa
     app.get('/empresas', getEmpresas);
