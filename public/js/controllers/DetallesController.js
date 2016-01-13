@@ -15,6 +15,16 @@ MetronicApp.controller('DetallesController', function($scope, $http, $stateParam
     $scope.$on('$viewContentLoaded', function () {
         Metronic.initAjax(); // initialize core components
     });
+    var map;
+    var myLatLng = {lat: 41.396311, lng: 1.9589427999999316};
+    var geolocation;
+    var geocoder;
+    var direccion;
+    var contador;
+    var calificacion;
+    var users = new Array();
+    var userPuntuador;
+    var booleano;
 
 
     $scope.empresa = {};

@@ -1,4 +1,4 @@
-var url = "http://10.83.55.226:3000";
+var url = "http://10.83.21.191:3000";
 
 //10.83.55.226
 //localhost
@@ -513,6 +513,131 @@ angular.module('your_app_name.controllers', [])
 
 
 })
+
+  .controller('DetallesController', function($scope, $http, $stateParams) {
+
+    $scope.empresa = {};
+    $scope.newComment = {};
+    $scope.newPuntuacion = {};
+    $scope.NoPuedes = {};
+    $scope.mostrarEstrellas = true;
+    $scope.mostrarMensaje = false;
+    //userPuntuador = $cookieStore.get('IdUser');
+    console.log(userPuntuador);
+
+
+
+
+    $http.get('/empresa/' + $stateParams.empresa_id).success(function (data) {
+
+      $scope.empresa = data;
+      direccion = $scope.empresa.direccion;
+      contador = $scope.empresa.puntuacion.contador;
+      calificacion = $scope.empresa.puntuacion.puntuacion;
+      if(contador == null && calificacion == null){
+        contador = 0;
+        calificacion = 0;
+      }
+      users = $scope.empresa.puntuacion.users;
+      console.log(users.length);
+
+    })
+      .error(function (data) {
+        console.log('Error: ' + data);
+      });
+
+    $scope.nuevoComentario = function() {
+
+     // $scope.newComment.user = $cookieStore.get('Name') + " " + $cookieStore.get('Apellidos');
+      //$scope.newComment.avatar = $cookieStore.get('Avatar');
+      console.log($scope.newComment);
+      $http.post('/empresa/' + $stateParams.empresa_id + '/comment', $scope.newComment)
+        .success(function(data) {
+
+          $scope.empresa.comentarios = data.comentarios;
+          $scope.newComment = {};
+
+        })
+        .error(function(data) {
+          console.log('Error: ' + data);
+        });
+    };
+
+    $scope.puntuar = function(puntuacion){
+      if(users.length == 0){
+        booleano = 1;
+        if(booleano == 1){
+
+          //users.push($cookieStore.get('IdUser'));
+          $scope.newPuntuacion.users = users;
+
+          ++contador;
+          console.log("Contador: " +contador);
+          var puntuacion_final= (calificacion + puntuacion);
+          console.log("Puntuacion Final: " + puntuacion_final);
+
+          $scope.newPuntuacion.puntuacion = puntuacion_final;
+          $scope.newPuntuacion.contador = contador;
+
+        }else{
+          $scope.mostrarEstrellas=false;
+          $scope.mostrarMensaje = true;
+          $scope.NoPuedes = "Ya has puntuado, grácias!";
+        }
+
+      }else {
+        var i;
+        for(i in users){
+          console.log("Users: " + users[i]);
+          if(users[i] == userPuntuador){
+            booleano = 0;
+          }else{
+            booleano = 1;
+          }
+        }
+
+        if(booleano == 1){
+
+          //users.push($cookieStore.get('IdUser'));
+          $scope.newPuntuacion.users = users;
+
+          ++contador;
+          console.log("Contador: " +contador);
+          var puntuacion_final= (calificacion + puntuacion);
+          console.log("Puntuacion Final: " + puntuacion_final);
+
+          $scope.newPuntuacion.puntuacion = puntuacion_final;
+          $scope.newPuntuacion.contador = contador;
+
+        }else{
+          $scope.mostrarEstrellas=false;
+          $scope.mostrarMensaje = true;
+          $scope.NoPuedes = "Ya has puntuado, gracias por tu colaboración!";
+        }
+
+      }
+
+      $http.post('/empresa/' + $stateParams.empresa_id + '/rating', $scope.newPuntuacion)
+        .success(function(data) {
+
+          $scope.newPuntuacion = {};
+
+        })
+        .error(function(data) {
+          console.log('Error: ' + data);
+        });
+
+
+    };
+
+
+
+  })
+
+
+
+
+
 
 // WORDPRESS
 .controller('WordpressCtrl', function($scope, $http, $ionicLoading, PostService, BookMarkService) {
