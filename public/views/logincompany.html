@@ -1,0 +1,82 @@
+
+<head>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,700,300italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700' rel='stylesheet' type='text/css'>
+
+</head>
+<!-- BEGIN BODY -->
+<body class="login" ng-controller="logincompanyController">
+<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+<div class="menu-toggler sidebar-toggler">
+</div>
+<!-- END SIDEBAR TOGGLER BUTTON -->
+<!-- BEGIN LOGO -->
+<div class="logo">
+
+    <img src="../../assets/global/img/logo_whereplace_trans2.png" style="height: 120px; display:block; margin : 0 auto;" alt=""/>
+
+</div>
+<br>
+<br>
+<!-- END LOGO -->
+<!-- BEGIN LOGIN -->
+<div class="container">
+    <div class="col-md-6">
+        <div class="portlet box blue-hoki">
+            <div class="portlet-title" style="background-color: #50A5C7">
+                <div class="caption">
+                    Haz Login para ver tu Empresa
+                </div>
+            </div>
+                  <div class="portlet-body form">
+                        <!-- BEGIN FORM-->
+                        <form action="#"  class="form-horizontal form-bordered ng-pristine ng-valid">
+                            <div class="form-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Nombre de la Empresa</label>
+                                <div class="col-md-4">
+                                    <div class="input-icon right">
+                                        <input class="form-control" type="text" placeholder="Nombre" ng-model="loginempresa.nombre">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Password</label>
+                                <div class="col-md-4">
+                                    <div class="input-icon right">
+                                        <input class="form-control" type="text" placeholder="Password" ng-model="loginempresa.password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                    <label class="control-label col-md-3"></label>
+                                    <div class="col-md-4">
+
+                                    <a type="submit" class="btn purple" style="background-color: #50A5C7" ng-click="login()" ><i class="fa fa-sign-in" ></i>Haz LogIn</a>
+
+                                    <button type="submit" class="btn default" ng-click="login()" href="#/edit_company" >Login </button>
+
+
+                                    </div>
+                            </div>
+                            </div>
+                        </form>
+                        <!-- END FORM-->
+                  </div>
+        </div>
+
+    </div>
+</div>
+<div class="copyright hide">
+    2015 © WherePlace.
+</div>
+<script>
+    ComponentsFormTools.init(); // init todo page
+</script>
+<!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->

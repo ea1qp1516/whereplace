@@ -26,8 +26,8 @@
 <div class="container">
     <div class="col-md-6">
         <div class="portlet box blue-hoki">
-            <div class="portlet-title">
-                <div class="caption">
+            <div class="portlet-title" style="background-color: #50A5C7">
+                <div class="caption" >
                     Modificar datos de tu Empresa
                 </div>
             </div>
@@ -35,30 +35,6 @@
                 <!-- BEGIN FORM-->
                 <form action="#"  class="form-horizontal form-bordered ng-pristine ng-valid">
                     <div class="form-body">
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Nombre de la Empresa</label>
-                            <div class="col-md-4">
-                                <div class="input-icon right">
-                                    <input class="form-control" type="text" placeholder="Nombre" ng-model="loginempresa.nombre">
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Password</label>
-                            <div class="col-md-4">
-                                <div class="input-icon right">
-                                    <input class="form-control" type="text" placeholder="Password" ng-model="loginempresa.password">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3"></label>
-                            <div class="col-md-4">
-                              <button type="button" class="btn default" ng-click="login()" >Cargar datos</button>
-                            </div>
-                        </div>
-
                         <div class="form-group">
                             <label class="control-label col-md-3">Nombre</label>
                             <div class="col-md-4">
@@ -234,17 +210,16 @@
                                       
                                     </div>
                                   </div>     
-                            
                         </div>
                     <div class="form-actions">
                         <div class="row">
                             <div class="col-md-offset-3 col-md-9">
-                                <button type="submit" class="btn purple" style="background-color: #780707" ng-click="editar()"><i class="fa fa-check" ></i> Editar</button>
-                                <button type="button" class="btn default" ng-click="volver()">Cancelar</button>
+                                <button type="submit" class="btn purple" style="background-color: #1DC00B" ng-click="editar()"><i class="fa fa-check" ></i> Editar</button>
+                                <button type="button" class="btn purple" ng-click="volver()" style="background-color: #8B8787"><i class="fa fa-times" ></i>Cancelar</button>
+                                <button type="button" class="btn purple" ng-click="eliminar()" style="background-color: #D73C3C"><i class="fa fa-trash-o fa-lg"></i>Eliminar</button>
                             </div>
                         </div>
                     </div>
-
                 </form>
                 <!-- END FORM-->
             </div>

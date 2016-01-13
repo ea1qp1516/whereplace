@@ -76,35 +76,19 @@ module.exports = function(app) {
 
     }
     addComment = function(req,res){
-
         Empresa.findById(req.params.empresa_id,function(err,empresa){
                 if (err)
                     res.send(err)
-                var now = new Date();
-                var comentario ={
-                    user : req.body.user,
-                    user_id : req.body.user_id,
-                    comentario : req.body.comentario,
-                    created_at : now
-                }
-                empresa.comentarios.push(comentario);
+                console.log(empresa);
+                empresa.comentarios.push(req.body);
                 empresa.save( function(error, data){
                     if(error){
                         res.json(error);
                     }
                     else{
-                        Empresa.findById(req.params.empresa_id,function(err,empresa){
-                            if(error){
-                                res.json(error);
-                            }
-                            else{
-                                res.json(empresa);
-                            }
-                        });
-
+                        res.json(data);
                     }
-                }
-                );
+                });
 
         });
 
@@ -120,7 +104,7 @@ module.exports = function(app) {
             function(err, user) {
                 if (err)
                     res.send(err);
-                // Obtine y devuelve todas las empresas tras crear una de ellas
+                // Obtine y devuelve todas las empresas tras cryptoear una de ellas
                 Empresa.findOne({"_id":req.params.empresa_id},{__v:0, password:0},function (err, user) {
                         if (err)
                             res.send(err)
@@ -158,21 +142,9 @@ module.exports = function(app) {
         );
     }
 
-    empresasbyComments = function(req,res) {
-
-        Empresa.find({"comentarios.user_id": "569297a16ca8b6782a006ca3"},function(err,empresas){
-            if (err)
-                res.send(err);
-            else
-                res.json(empresas);
-        });
-    }
-
-
 
 
     app.get('/empresa/:empresa_id', getEmpresa);
-    app.get('/empresas/comentarios/:user_id',empresasbyComments);
    // app.get('/', getEmpresas);
 // Crear una nueva Empresa
     app.get('/empresas', getEmpresas);
