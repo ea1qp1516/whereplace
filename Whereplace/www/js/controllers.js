@@ -1,4 +1,4 @@
-var url = "http://192.168.1.39:3000";
+var url = "http://10.83.55.226:3000";
 
 //10.83.55.226
 //localhost
@@ -278,7 +278,6 @@ angular.module('your_app_name.controllers', [])
 		console.log($scope.empresa);
 		$state.go("app.newComment",{empresa:$scope.empresa});
 	}
-
 
 
 
@@ -577,36 +576,37 @@ angular.module('your_app_name.controllers', [])
 
 .controller('ImagePickerCtrl', function($scope, $rootScope, $cordovaCamera) {
 
-	$scope.images = [];
 
 	$scope.selImages = function() {
-
-		window.imagePicker.getPictures(
-			function(results) {
-				for (var i = 0; i < results.length; i++) {
-					console.log('Image URI: ' + results[i]);
-					$scope.images.push(results[i]);
-				}
-				if(!$scope.$$phase) {
-					$scope.$apply();
-				}
-			}, function (error) {
-				console.log('Error: ' + error);
-			}
-		);
+		var options =   {
+			quality: 50,
+			destinationType: Camera.DestinationType.FILE_URI,
+			sourceType: 1,      // 0:Photo Library, 1=Camera, 2=Saved Photo Album
+			encodingType: 0     // 0=JPG 1=PNG
+		}
+		navigator.camera.getPicture(onSuccess,onFail,options);
+	}
+	var onSuccess = function(FILE_URI) {
+		console.log(FILE_URI);
+		$scope.picData = FILE_URI;
+		$scope.$apply();
 	};
+	var onFail = function(e) {
+		console.log("On fail " + e);
+	}
+	$scope.send = function() {
+		var myImg = $scope.picData;
+		var options = new FileUploadOptions();
+		options.fileKey="post";
+		options.chunkedMode = false;
+		var params = {};
+		params.user_token = localStorage.getItem('auth_token');
+		params.user_email = localStorage.getItem('email');
+		options.params = params;
+		var ft = new FileTransfer();
+		ft.upload(myImg, encodeURI("https://example.com/posts/"), onUploadSuccess, onUploadFail, options);
+	}
 
-	$scope.removeImage = function(image) {
-		$scope.images = _.without($scope.images, image);
-	};
-
-	$scope.shareImage = function(image) {
-		window.plugins.socialsharing.share(null, null, image);
-	};
-
-	$scope.shareAll = function() {
-		window.plugins.socialsharing.share(null, null, $scope.images);
-	};
 })
 
 ;

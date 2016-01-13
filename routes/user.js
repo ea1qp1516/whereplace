@@ -119,8 +119,8 @@ module.exports = function (app, passport) {
                         }
                         else {
                             User.findById(req.body.user_id, function (err, user) {
-                                if (error) {
-                                    res.json(error);
+                                if (err) {
+                                    res.json(err);
                                 }
                                 else {
                                     res.json(user);
@@ -149,8 +149,8 @@ module.exports = function (app, passport) {
                         }
                         else {
                             User.findById(req.body.user_id, function (err, user) {
-                                if (error) {
-                                    res.json(error);
+                                if (err) {
+                                    res.json(err);
                                 }
                                 else {
                                     res.json(user);
@@ -225,17 +225,7 @@ module.exports = function (app, passport) {
     ));
 };
 
-function isLoggedIn(req, res, next) {
 
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated()) {
-        console.log(req.isAuthenticated());
-        return next();
-    }
-    else {
-        res.redirect('/loginFail');
-    }
-}
 
 
 addImages = function (req, res, next) {

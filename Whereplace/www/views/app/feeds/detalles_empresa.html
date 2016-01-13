@@ -21,7 +21,8 @@
         </div>
 
         <div class="list category-feeds">
-            <a ng-repeat="comentario in empresa.comentarios" class="item item-icon-right">
+            <a ng-repeat="comentario in empresa.comentarios"  class="item item-icon-right">
+
                 <div>
                     <span class="title">{{comentario.user}}</span>
                     <p class="description">{{comentario.comentario}}</p>
@@ -31,10 +32,9 @@
         </div>
         <div class="bottom-content">
             <div class="user-bio">
-                <a  ng-click="NewComment(empresa)"> New Comment
+                <a  ng-click="NewComment(empresa)">  Comment
                 </a>
                 <div>{{empresa.direccion}}</div>
-
             </div>
         </div>
     </ion-content>

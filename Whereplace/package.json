@@ -50,10 +50,6 @@
     "cordova-plugin-splashscreen"
   ],
   "cordovaPlatforms": [
-    "ios",
-    {
-      "platform": "android",
-      "locator": "browser"
-    }
+    "ios"
   ]
 }
