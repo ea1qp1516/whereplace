@@ -255,21 +255,61 @@ angular.module('your_app_name.controllers', [])
 //this method brings posts for a source provider
 .controller('FeedEntriesCtrl', function($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService) {
 
+	var user = JSON.parse(window.localStorage['user'] || '{}');
 
-	var empresa = $stateParams.empresa;
-	var idempresa = empresa._id;
+	var empresaEntrada = $stateParams.empresa;
+	var idempresa = empresaEntrada._id;
 	console.log($stateParams.empresa);
-	$scope.empresa = empresa;
-	$scope.favorito = true;
+	$scope.empresa = empresaEntrada;
+	$scope.favorito = false;
+	$scope.formClass ='icon ion-ios-star-outline';
+
+	user.favoritos.forEach(function(empresa){
+		if (empresa._id == empresaEntrada._id){
+			$scope.favorito = true;
+			$scope.formClass ='icon ion-ios-star';
+		}
+		})
+
+
 
 
 	$scope.NewComment = function(){
 		console.log($scope.empresa);
 		$state.go("app.newComment",{empresa:$scope.empresa});
 	}
-	$scope.changing= function(){
-		console.log("helo");
+
+
+
+	$scope.changing= function(favorito){
+		if (favorito==true){
+			$scope.formClass ='icon ion-ios-star-outline';
+			$scope.favorito = false;
+			var favSend = {
+				user_id: user._id,
+				function: 'drop',
+				empresa: empresaEntrada
+			}
+			$http.post(url +'/user/favorito',favSend).success(function(response) {
+
+			});
+		}
+		if (favorito==false){
+			$scope.formClass ='icon ion-ios-star';
+			$scope.favorito = true;
+			var favSend = {
+				user_id: user._id,
+				function: 'add',
+				empresa: empresaEntrada
+			}
+			$http.post(url +'/user/favorito',favSend).success(function(response) {
+
+			});
+		}
+		console.log(favorito);
 	}
+
+
 
 
 
@@ -354,13 +394,14 @@ angular.module('your_app_name.controllers', [])
 })
 
 // TINDER CARDS
-.controller('CommentsCtrl', function($scope, $http) {
+.controller('CommentsCtrl', function($scope, $http, $state) {
 
 		var user = JSON.parse(window.localStorage['user'] || '{}');
 
 		$http.get(url +'/empresas/comentarios/'+user._id).success(function(response) {
 			console.log(response);
 			$scope.empresas = response;
+			$scope.numComments = response.length;
 		});
 		$scope.detailEmpresa = function(idempresa) {
 
@@ -375,6 +416,33 @@ angular.module('your_app_name.controllers', [])
 
 
 })
+.controller('FavoritosCtrl', function($scope, $http, $state) {
+
+	var user = JSON.parse(window.localStorage['user'] || '{}');
+
+	$http.get(url +'/user/'+user._id).success(function(response) {
+		var user = response;
+		console.log(user);
+		$scope.empresas = user.favoritos;
+		$scope.numFavoritos = user.favoritos.length;
+
+		window.localStorage['user'] = JSON.stringify(response);
+	});
+	$scope.detailEmpresa = function(idempresa) {
+
+		$http.get(url +'/empresa/'+idempresa).success(function(empresa) {
+
+			$state.go("app.feed-entries",{empresa:empresa});
+
+
+		});
+	};
+
+
+
+})
+
+
 
 
 // BOOKMARKS
@@ -508,36 +576,37 @@ angular.module('your_app_name.controllers', [])
 
 .controller('ImagePickerCtrl', function($scope, $rootScope, $cordovaCamera) {
 
-	$scope.images = [];
 
 	$scope.selImages = function() {
-
-		window.imagePicker.getPictures(
-			function(results) {
-				for (var i = 0; i < results.length; i++) {
-					console.log('Image URI: ' + results[i]);
-					$scope.images.push(results[i]);
-				}
-				if(!$scope.$$phase) {
-					$scope.$apply();
-				}
-			}, function (error) {
-				console.log('Error: ' + error);
-			}
-		);
+		var options =   {
+			quality: 50,
+			destinationType: Camera.DestinationType.FILE_URI,
+			sourceType: 1,      // 0:Photo Library, 1=Camera, 2=Saved Photo Album
+			encodingType: 0     // 0=JPG 1=PNG
+		}
+		navigator.camera.getPicture(onSuccess,onFail,options);
+	}
+	var onSuccess = function(FILE_URI) {
+		console.log(FILE_URI);
+		$scope.picData = FILE_URI;
+		$scope.$apply();
 	};
+	var onFail = function(e) {
+		console.log("On fail " + e);
+	}
+	$scope.send = function() {
+		var myImg = $scope.picData;
+		var options = new FileUploadOptions();
+		options.fileKey="post";
+		options.chunkedMode = false;
+		var params = {};
+		params.user_token = localStorage.getItem('auth_token');
+		params.user_email = localStorage.getItem('email');
+		options.params = params;
+		var ft = new FileTransfer();
+		ft.upload(myImg, encodeURI("https://example.com/posts/"), onUploadSuccess, onUploadFail, options);
+	}
 
-	$scope.removeImage = function(image) {
-		$scope.images = _.without($scope.images, image);
-	};
-
-	$scope.shareImage = function(image) {
-		window.plugins.socialsharing.share(null, null, image);
-	};
-
-	$scope.shareAll = function() {
-		window.plugins.socialsharing.share(null, null, $scope.images);
-	};
 })
 
 ;

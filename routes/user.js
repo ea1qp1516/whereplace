@@ -104,6 +104,66 @@ module.exports = function (app, passport) {
 
     }
 
+    addFavorito = function (req, res) {
+        if(req.body.function=='add') {
+            console.log("adding");
+
+            User.findById(req.body.user_id, function (err, user) {
+                if (err)
+                    res.send(err)
+
+                user.favoritos.push(req.body.empresa);
+                user.save(function (error, data) {
+                        if (error) {
+                            res.json(error);
+                        }
+                        else {
+                            User.findById(req.body.user_id, function (err, user) {
+                                if (err) {
+                                    res.json(err);
+                                }
+                                else {
+                                    res.json(user);
+                                }
+                            });
+
+                        }
+                    }
+                );
+
+            });
+        }
+        if(req.body.function=='drop'){
+            console.log("droping");
+            console.log(req.body.empresa._id);
+            console.log(req.body.user_id);
+            User.findById(req.body.user_id, function (err, user) {
+                if (err)
+                    res.send(err)
+
+                User.update(
+                    {_id: req.body.user_id},
+                    {$pull: {favoritos: {_id: req.body.empresa._id}}}, function(err, data){
+                        if (err) {
+                            res.json(err);
+                        }
+                        else {
+                            User.findById(req.body.user_id, function (err, user) {
+                                if (err) {
+                                    res.json(err);
+                                }
+                                else {
+                                    res.json(user);
+                                }
+                            });                        }
+                    }
+                );
+
+            });
+        }
+
+    }
+
     removeUser = function (req, res) {
 
     }
@@ -112,6 +172,8 @@ module.exports = function (app, passport) {
     app.get('/user', getUsers);
     app.get('/user/:user_id/avatar', getAvatar);
 
+
+    app.post('/user/favorito',addFavorito);
     app.post('/user', newUser);
     app.post('/user/login',
         passport.authenticate('local'), function (req, res) {
@@ -163,17 +225,7 @@ module.exports = function (app, passport) {
     ));
 };
 
-function isLoggedIn(req, res, next) {
 
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated()) {
-        console.log(req.isAuthenticated());
-        return next();
-    }
-    else {
-        res.redirect('/loginFail');
-    }
-}
 
 
 addImages = function (req, res, next) {

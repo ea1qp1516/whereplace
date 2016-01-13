@@ -34,7 +34,6 @@ module.exports = function(app) {
                 email: req.body.email,
                 password: req.body.password,
                 telefono:req.body.telefono,
-                puntuacion: req.body.puntuacion,
                 tags: req.body.tags,
                 detalles:req.body.detalles,
                 created_at: now,
@@ -87,6 +86,34 @@ module.exports = function(app) {
                     }
                     else{
                         res.json(data);
+                        Empresa.findById(req.params.empresa_id,function(err,empresa){
+                            if(err){
+                                res.json(err);
+                            }
+                            else{
+                                res.json(empresa);
+                            }
+                        });
+
+                    }
+                });
+
+        });
+
+    }
+
+    addRate = function(req,res){
+        Empresa.findById(req.params.empresa_id,function(err,empresa){
+                if (err)
+                    res.send(err)
+                console.log(empresa);
+                empresa.puntuacion = req.body;
+                empresa.save( function(error, data){
+                    if(error){
+                        res.json(error);
+                    }
+                    else{
+                        res.json(data);
                     }
                 });
 
@@ -95,10 +122,6 @@ module.exports = function(app) {
     }
 
     updateEmpresa = function(req,res){
-        if (req.body.password) {
-            console.log("update Vaaaaaaa");
-            var passmd5 = crypto.createHash('md5').update(req.body.password).digest("hex");
-        }
         var now = new Date();
         Empresa.update( {_id :      req.params.empresa_id},req.body,
             function(err, user) {
@@ -125,7 +148,6 @@ module.exports = function(app) {
 
     empresalogin = function(req,res)
     {
-        console.log(req.body);
         Empresa.findOne({"nombre":req.body.nombre},function (err, empresa) {
                 if (err)
                     res.send(err)
@@ -142,6 +164,37 @@ module.exports = function(app) {
         );
     }
 
+getPuntuacion = function(req,res){
+
+  Empresa.findOne({"_id":req.params.empresa_id},{puntuacion:1},function (err, empresa) {
+          if (err)
+              res.send(err)
+          res.json(empresa); // devuelve todas las Empresas en JSON
+      }
+  );
+
+}
+empresasbyComments = function(req,res) {
+    console.log("Hola");
+
+    Empresa.find({"comentarios.user_id": "569297a16ca8b6782a006ca3"},function(err,empresas){
+        if (err)
+            res.send(err);
+        else
+            res.json(empresas);
+    });
+}
+getBusqueda = function(req,res) {
+    var regex = new RegExp(req.body.busqueda, "i");
+    Empresa.find({"nombre": regex}, function (err, empresas) {
+        if (err)
+            res.send(err);
+        else
+            res.json(empresas);
+    });
+}
+
+
 
 
     app.get('/empresa/:empresa_id', getEmpresa);
@@ -149,10 +202,16 @@ module.exports = function(app) {
 // Crear una nueva Empresa
     app.get('/empresas', getEmpresas);
     app.get('/empresas/:gusto', getEmpresasByGustos);
+
+    app.get('/empresas/:empresa_id/puntuacion', getPuntuacion);
     app.delete('/empresas/delete/:empresa_id', borrarEmpresa);
+
+    app.post('/empresas/busquedas',getBusqueda);
     app.post('/empresa/modify/:empresa_id', updateEmpresa);
     app.post('/empresa/:empresa_id/comment', addComment);
+    app.post('/empresa/:empresa_id/rating', addRate);
     app.post('/empresa', newEmpresa);
     app.post('/empresa/login', empresalogin);
+
 
 }

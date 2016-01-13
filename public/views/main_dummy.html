@@ -16,11 +16,34 @@
 <div data-ng-include="'tpl/header_login.html'" ng-controller="HeaderController"
      class="page-header md-shadow-z-1-i navbar navbar-fixed-top">
 
+
 </div>
 
 <div class="row" ng-controller="MainController">
+
+    <div class="row buscador">
+        <div class="col-md-4">
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="busqueda" ng-change="cargarEmpresas(busqueda)" placeholder="Buscar empresa...">
+                <ul style="background-color: white;">
+
+                    <li ng-repeat="busqueda in busquedas" >
+                        <a  href="#/detalles/{{busqueda._id}}">
+                            {{busqueda.nombre}}                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
     <div class="col-md-4">
+
+
+
         <!-- BEGIN: ACCORDION DEMO -->
+
         <div class="portlet light" style="background-color: white;" ng-repeat="empresa in empresas">
             <div class="portlet-title">
                 <div class="caption font-green-sharp">
@@ -42,7 +65,7 @@
                         <div class="tiles">
                             <div class="tile bg-green-jungle">
                                 <div class="tile-body">
-                                    <h2>{{empresa.puntuacion}}/10</h2>
+                                    <h2>{{((empresa.puntuacion.puntuacion)/empresa.puntuacion.contador)*2}}/10</h2>
                                     <i class="fa fa-star-o"></i>
 
                                 </div>

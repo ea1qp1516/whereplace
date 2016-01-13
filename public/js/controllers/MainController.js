@@ -37,20 +37,40 @@ MetronicApp.controller('MainController', function ($scope, $http) {
     });
 
     $scope.empresas = {};
-
+    
     $http.get('/empresas').success(function (data) {
 
             $scope.empresas = data;
+
+
             var index;
             for (index = 0; index < $scope.empresas.length; index++) {
                 direcciones.push($scope.empresas[index].direccion);
             }
 
 
+    })
+    .error(function (data) {
+        console.log('Error: ' + data);
+    });
+
+    $scope.cargarEmpresas = function(busqueda){
+        var empresa = {busqueda: busqueda};
+        $http.post('/empresas/busquedas',empresa).success(function (data) {
+
+            $scope.busquedas = data;
+
         })
-        .error(function (data) {
-            console.log('Error: ' + data);
-        });
+            .error(function (data) {
+                console.log('Error: ' + data);
+            });
+
+    }
+
+    $scope.seleccionarEmpresa = function(id){
+
+    }
+
 
 
 });

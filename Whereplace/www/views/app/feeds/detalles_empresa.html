@@ -1,7 +1,7 @@
 <ion-view class="profile-view">
     <ion-nav-title>
         <span>{{empresa.nombre}}</span>
-        <i ng-model="favorito" ng-change="changing()" ng-class="{'icon ion-ios-star': favorito, 'icon ion-ios-star-outline': !favorito}" ng-click="favorito=!favorito"></i>
+        <a ng-model="favorito"  ng-click="changing(favorito)" ng-class="formClass"></a>
 
     </ion-nav-title>
     <ion-content>
@@ -21,7 +21,8 @@
         </div>
 
         <div class="list category-feeds">
-            <a ng-repeat="comentario in empresa.comentarios" class="item item-icon-right">
+            <a ng-repeat="comentario in empresa.comentarios"  class="item item-icon-right">
+
                 <div>
                     <span class="title">{{comentario.user}}</span>
                     <p class="description">{{comentario.comentario}}</p>
@@ -31,10 +32,9 @@
         </div>
         <div class="bottom-content">
             <div class="user-bio">
-                <a ng-controller="FeedEntriesCtrl" ng-click="NewComment(empresa)"> New Comment
+                <a  ng-click="NewComment(empresa)">  Comment
                 </a>
                 <div>{{empresa.direccion}}</div>
-
             </div>
         </div>
     </ion-content>
