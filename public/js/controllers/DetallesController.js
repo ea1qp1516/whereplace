@@ -11,7 +11,7 @@ var users = new Array();
 var userPuntuador;
 var booleano;
 
-MetronicApp.controller('DetallesController', function($scope, $http, $stateParams, $cookieStore) {
+MetronicApp.controller('DetallesController', function ($scope, $http, $stateParams, $cookieStore) {
     $scope.$on('$viewContentLoaded', function () {
         Metronic.initAjax(); // initialize core components
     });
@@ -37,114 +37,110 @@ MetronicApp.controller('DetallesController', function($scope, $http, $stateParam
     console.log(userPuntuador);
 
 
-
-
     $http.get('/empresa/' + $stateParams.empresa_id).success(function (data) {
 
-            $scope.empresa = data;
-            direccion = $scope.empresa.direccion;
-            contador = $scope.empresa.puntuacion.contador;
-            calificacion = $scope.empresa.puntuacion.puntuacion;
-            if(contador == null && calificacion == null){
-              contador = 0;
-              calificacion = 0;
-            }
-            users = $scope.empresa.puntuacion.users;
-            console.log(users.length);
+        $scope.empresa = data;
+        direccion = $scope.empresa.direccion;
+        contador = $scope.empresa.puntuacion.contador;
+        calificacion = $scope.empresa.puntuacion.puntuacion;
+        if (contador == null && calificacion == null) {
+            contador = 0;
+            calificacion = 0;
+        }
+        users = $scope.empresa.puntuacion.users;
+        console.log(users.length);
 
-        })
+    })
         .error(function (data) {
             console.log('Error: ' + data);
         });
 
-    $scope.nuevoComentario = function() {
+    $scope.nuevoComentario = function () {
 
         $scope.newComment.user = $cookieStore.get('Name') + " " + $cookieStore.get('Apellidos');
         $scope.newComment.avatar = $cookieStore.get('Avatar');
         console.log($scope.newComment);
         $http.post('/empresa/' + $stateParams.empresa_id + '/comment', $scope.newComment)
-            .success(function(data) {
+            .success(function (data) {
 
                 $scope.empresa.comentarios = data.comentarios;
                 $scope.newComment = {};
 
             })
-            .error(function(data) {
+            .error(function (data) {
                 console.log('Error: ' + data);
             });
     };
 
-    $scope.puntuar = function(puntuacion){
-      if(users.length == 0){
-        booleano = 1;
-        if(booleano == 1){
+    $scope.puntuar = function (puntuacion) {
+        if (users.length == 0) {
+            booleano = 1;
+            if (booleano == 1) {
 
-            users.push($cookieStore.get('IdUser'));
-            $scope.newPuntuacion.users = users;
+                users.push($cookieStore.get('IdUser'));
+                $scope.newPuntuacion.users = users;
 
-            ++contador;
-            console.log("Contador: " +contador);
-            var puntuacion_final= (calificacion + puntuacion);
-            console.log("Puntuacion Final: " + puntuacion_final);
+                ++contador;
+                console.log("Contador: " + contador);
+                var puntuacion_final = (calificacion + puntuacion);
+                console.log("Puntuacion Final: " + puntuacion_final);
 
-            $scope.newPuntuacion.puntuacion = puntuacion_final;
-            $scope.newPuntuacion.contador = contador;
+                $scope.newPuntuacion.puntuacion = puntuacion_final;
+                $scope.newPuntuacion.contador = contador;
 
-          }else{
-            $scope.mostrarEstrellas=false;
-            $scope.mostrarMensaje = true;
-            $scope.NoPuedes = "Ya has puntuado, grácias!";
-        }
-
-      }else {
-        var i;
-        for(i in users){
-          console.log("Users: " + users[i]);
-            if(users[i] == userPuntuador){
-                booleano = 0;
-            }else{
-              booleano = 1;
+            } else {
+                $scope.mostrarEstrellas = false;
+                $scope.mostrarMensaje = true;
+                $scope.NoPuedes = "Ya has puntuado, grácias!";
             }
+
+        } else {
+            var i;
+            for (i in users) {
+                console.log("Users: " + users[i]);
+                if (users[i] == userPuntuador) {
+                    booleano = 0;
+                } else {
+                    booleano = 1;
+                }
+            }
+
+            if (booleano == 1) {
+
+                users.push($cookieStore.get('IdUser'));
+                $scope.newPuntuacion.users = users;
+
+                ++contador;
+                console.log("Contador: " + contador);
+                var puntuacion_final = (calificacion + puntuacion);
+                console.log("Puntuacion Final: " + puntuacion_final);
+
+                $scope.newPuntuacion.puntuacion = puntuacion_final;
+                $scope.newPuntuacion.contador = contador;
+
+            } else {
+                $scope.mostrarEstrellas = false;
+                $scope.mostrarMensaje = true;
+                $scope.NoPuedes = "Ya has puntuado, gracias por tu colaboración!";
+            }
+
         }
 
-        if(booleano == 1){
+        $http.post('/empresa/' + $stateParams.empresa_id + '/rating', $scope.newPuntuacion)
+            .success(function (data) {
 
-            users.push($cookieStore.get('IdUser'));
-            $scope.newPuntuacion.users = users;
+                $scope.newPuntuacion = {};
 
-            ++contador;
-            console.log("Contador: " +contador);
-            var puntuacion_final= (calificacion + puntuacion);
-            console.log("Puntuacion Final: " + puntuacion_final);
-
-            $scope.newPuntuacion.puntuacion = puntuacion_final;
-            $scope.newPuntuacion.contador = contador;
-
-          }else{
-            $scope.mostrarEstrellas=false;
-            $scope.mostrarMensaje = true;
-            $scope.NoPuedes = "Ya has puntuado, gracias por tu colaboración!";
-        }
-
-      }
-
-      $http.post('/empresa/' + $stateParams.empresa_id + '/rating', $scope.newPuntuacion)
-          .success(function(data) {
-
-              $scope.newPuntuacion = {};
-
-          })
-          .error(function(data) {
-              console.log('Error: ' + data);
-          });
+            })
+            .error(function (data) {
+                console.log('Error: ' + data);
+            });
 
 
     };
 
 
-
 });
-
 
 
 function initMap2() {
@@ -158,12 +154,9 @@ function initMap2() {
 }
 
 
-function codeAddress(address)
-{
-    geocoder.geocode( {address:address}, function(results, status)
-    {
-        if (status == google.maps.GeocoderStatus.OK)
-        {
+function codeAddress(address) {
+    geocoder.geocode({address: address}, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
             map.setCenter(results[0].geometry.location);//center the map over the result
             //place a marker at the location
             var marker = new google.maps.Marker(

@@ -1,9 +1,21 @@
-module.exports = function(app) {
+module.exports = function (app) {
 
     var Empresa = require('../modelos/empresa');
+
     // Obtiene una Empresa de la base de datos
     getEmpresa = function (req, res) {
-        Empresa.findOne({"_id":req.params.empresa_id},{nombre:1,direccion:1,ciudad:1,descripcion:1,email:1,telefono:1,puntuacion:1,tags:1,comentarios:1,detalles:1},function (err, empresa) {
+        Empresa.findOne({"_id": req.params.empresa_id}, {
+                nombre: 1,
+                direccion: 1,
+                ciudad: 1,
+                descripcion: 1,
+                email: 1,
+                telefono: 1,
+                puntuaciones: 1,
+                tags: 1,
+                comentarios: 1,
+                detalles: 1
+            }, function (err, empresa) {
                 if (err)
                     res.send(err)
                 res.json(empresa); // devuelve todas las Empresas en JSON
@@ -13,7 +25,20 @@ module.exports = function(app) {
 // Obtiene todos los objetos Empresa de la base de datos
     getEmpresas = function (req, res) {
         console.log(req.isAuthenticated());
-        Empresa.find({},{nombre:1,direccion:1,ciudad:1,descripcion:1,email:1,telefono:1,puntuacion:1,tags:1,comentarios:1,detalles:1, created_at:1, updated_at: 1},function (err, empresa) {
+        Empresa.find({}, {
+                nombre: 1,
+                direccion: 1,
+                ciudad: 1,
+                descripcion: 1,
+                email: 1,
+                telefono: 1,
+                puntuaciones: 1,
+                tags: 1,
+                comentarios: 1,
+                detalles: 1,
+                created_at: 1,
+                updated_at: 1
+            }, function (err, empresa) {
                 if (err)
                     res.send(err)
                 res.json(empresa); // devuelve todas las Empresas en JSON
@@ -33,9 +58,9 @@ module.exports = function(app) {
                 descripcion: req.body.descripcion,
                 email: req.body.email,
                 password: req.body.password,
-                telefono:req.body.telefono,
+                telefono: req.body.telefono,
                 tags: req.body.tags,
-                detalles:req.body.detalles,
+                detalles: req.body.detalles,
                 created_at: now,
                 updated_at: now
             },
@@ -59,7 +84,7 @@ module.exports = function(app) {
         Empresa.remove(
             {
                 nombre: req.body.nombre,
-                _id : req.body._id
+                _id: req.body._id
             },
             function (err, empresa) {
                 if (err) {
@@ -74,61 +99,63 @@ module.exports = function(app) {
             });
 
     }
-    addComment = function(req,res){
-        Empresa.findById(req.params.empresa_id,function(err,empresa){
-                if (err)
-                    res.send(err)
-                console.log(empresa);
-                empresa.comentarios.push(req.body);
-                empresa.save( function(error, data){
-                    if(error){
-                        res.json(error);
-                    }
-                    else{
-                        res.json(data);
-                        Empresa.findById(req.params.empresa_id,function(err,empresa){
-                            if(err){
-                                res.json(err);
-                            }
-                            else{
-                                res.json(empresa);
-                            }
-                        });
+    addComment = function (req, res) {
+        Empresa.findById(req.params.empresa_id, function (err, empresa) {
+            if (err)
+                res.send(err)
+            console.log(empresa);
+            empresa.comentarios.push(req.body);
+            empresa.save(function (error, data) {
+                if (error) {
+                    res.json(error);
+                }
+                else {
+                    res.json(data);
+                    Empresa.findById(req.params.empresa_id, function (err, empresa) {
+                        if (err) {
+                            res.json(err);
+                        }
+                        else {
+                            res.json(empresa);
+                        }
+                    });
 
-                    }
-                });
-
-        });
-
-    }
-
-    addRate = function(req,res){
-        Empresa.findById(req.params.empresa_id,function(err,empresa){
-                if (err)
-                    res.send(err)
-                console.log(empresa);
-                empresa.puntuacion = req.body;
-                empresa.save( function(error, data){
-                    if(error){
-                        res.json(error);
-                    }
-                    else{
-                        res.json(data);
-                    }
-                });
+                }
+            });
 
         });
 
     }
 
-    updateEmpresa = function(req,res){
+    addRate = function (req, res) {
+        Empresa.findById(req.params.empresa_id, function (err, empresa) {
+            if (err)
+                res.send(err)
+
+            empresa.puntuaciones.push(req.body);
+
+            empresa.save(function (error, data) {
+                if (error) {
+                    res.json(error);
+                }
+                else {
+                    res.json(data);
+                }
+            });
+
+        });
+
+    }
+
+
+    updateEmpresa = function (req, res) {
         var now = new Date();
-        Empresa.update( {_id :      req.params.empresa_id},req.body,
-            function(err, user) {
+        Empresa.update({_id: req.params.empresa_id}, req.body,
+            function (err, user) {
                 if (err)
                     res.send(err);
                 // Obtine y devuelve todas las empresas tras cryptoear una de ellas
-                Empresa.findOne({"_id":req.params.empresa_id},{__v:0, password:0},function (err, user) {
+                Empresa.findOne({"_id": req.params.empresa_id}, {__v: 0, password: 0}, function (err, user) {
                         if (err)
                             res.send(err)
                         res.json(user); // devuelve el user seleccionado/home/urtasun/WebstormProjects/whereplace/modelos/empresa.js
@@ -137,8 +164,21 @@ module.exports = function(app) {
             });
 
     }
-    getEmpresasByGustos = function(req,res){
-        Empresa.find({"tags":req.params.gusto},{nombre:1,direccion:1,ciudad:1,descripcion:1,email:1,telefono:1,puntuacion:1,tags:1,comentarios:1,detalles:1, created_at:1, updated_at: 1},function (err, empresa) {
+    getEmpresasByGustos = function (req, res) {
+        Empresa.find({"tags": req.params.gusto}, {
+                nombre: 1,
+                direccion: 1,
+                ciudad: 1,
+                descripcion: 1,
+                email: 1,
+                telefono: 1,
+                puntuacion: 1,
+                tags: 1,
+                comentarios: 1,
+                detalles: 1,
+                created_at: 1,
+                updated_at: 1
+            }, function (err, empresa) {
                 if (err)
                     res.send(err)
                 res.json(empresa); // devuelve todas las Empresas en JSON
@@ -146,59 +186,56 @@ module.exports = function(app) {
         );
     }
 
-    empresalogin = function(req,res)
-    {
-        Empresa.findOne({"nombre":req.body.nombre},function (err, empresa) {
+    empresalogin = function (req, res) {
+        Empresa.findOne({"nombre": req.body.nombre}, function (err, empresa) {
                 if (err)
                     res.send(err)
-                if(req.body.password == empresa.password){
+                if (req.body.password == empresa.password) {
                     console.log("logIN OK");
                     res.json(empresa);
                 }
-                else{
+                else {
                     res.send("LogIN FAIL");
-                
-                console.log("LOGIN FAIL");
-            }
+
+                    console.log("LOGIN FAIL");
+                }
             }
         );
     }
 
-getPuntuacion = function(req,res){
+    getPuntuacion = function (req, res) {
 
-  Empresa.findOne({"_id":req.params.empresa_id},{puntuacion:1},function (err, empresa) {
-          if (err)
-              res.send(err)
-          res.json(empresa); // devuelve todas las Empresas en JSON
-      }
-  );
+        Empresa.findOne({"_id": req.params.empresa_id}, {puntuacion: 1}, function (err, empresa) {
+                if (err)
+                    res.send(err)
+                res.json(empresa); // devuelve todas las Empresas en JSON
+            }
+        );
 
-}
-empresasbyComments = function(req,res) {
-    console.log("Hola");
+    }
+    empresasbyComments = function (req, res) {
+        console.log("Hola");
 
-    Empresa.find({"comentarios.user_id": "569297a16ca8b6782a006ca3"},function(err,empresas){
-        if (err)
-            res.send(err);
-        else
-            res.json(empresas);
-    });
-}
-getBusqueda = function(req,res) {
-    var regex = new RegExp(req.body.busqueda, "i");
-    Empresa.find({"nombre": regex}, function (err, empresas) {
-        if (err)
-            res.send(err);
-        else
-            res.json(empresas);
-    });
-}
-
-
+        Empresa.find({"comentarios.user_id": "569297a16ca8b6782a006ca3"}, function (err, empresas) {
+            if (err)
+                res.send(err);
+            else
+                res.json(empresas);
+        });
+    }
+    getBusqueda = function (req, res) {
+        var regex = new RegExp(req.body.busqueda, "i");
+        Empresa.find({"nombre": regex}, function (err, empresas) {
+            if (err)
+                res.send(err);
+            else
+                res.json(empresas);
+        });
+    }
 
 
     app.get('/empresa/:empresa_id', getEmpresa);
-   // app.get('/', getEmpresas);
+    // app.get('/', getEmpresas);
 // Crear una nueva Empresa
     app.get('/empresas', getEmpresas);
     app.get('/empresas/:gusto', getEmpresasByGustos);
@@ -206,7 +243,7 @@ getBusqueda = function(req,res) {
     app.get('/empresas/:empresa_id/puntuacion', getPuntuacion);
     app.delete('/empresas/delete/:empresa_id', borrarEmpresa);
 
-    app.post('/empresas/busquedas',getBusqueda);
+    app.post('/empresas/busquedas', getBusqueda);
     app.post('/empresa/modify/:empresa_id', updateEmpresa);
     app.post('/empresa/:empresa_id/comment', addComment);
     app.post('/empresa/:empresa_id/rating', addRate);
