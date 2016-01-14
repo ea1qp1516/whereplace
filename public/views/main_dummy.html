@@ -21,30 +21,27 @@
 
 <div class="row" ng-controller="MainController">
 
-    <div class="row buscador">
-        <div class="col-md-4">
-            <div class="input-group">
-                <input type="text" class="form-control" ng-model="busqueda" ng-change="cargarEmpresas(busqueda)" placeholder="Buscar empresa...">
-                <ul style="background-color: white;">
-
+    <div class="row buscador">       
+                <input type="search" id="search" placeholder="Busca un lugar" ng-model="busqueda" ng-change="cargarEmpresas(busqueda)" size="101" class="col-md-6 col-md-offset-3"results = "5"/>
+                <ul class="col-md-6 col-md-offset-3" style="background-color: white" role = "listbox" >
                     <li ng-repeat="busqueda in busquedas" >
                         <a  href="#/detalles/{{busqueda._id}}">
-                            {{busqueda.nombre}}                        </a>
+                            {{busqueda.nombre}}                        
+                        </a>
                     </li>
                 </ul>
-            </div>
-        </div>
-    </div>
+  
+    </div>       
+
+            
+        
+  
 
 
 
-    <div class="col-md-4">
-
-
-
+    <div class="col-md-4" >
         <!-- BEGIN: ACCORDION DEMO -->
-
-        <div class="portlet light" style="background-color: white;" ng-repeat="empresa in empresas">
+        <div class="portlet light" style="background-color: white;" ng-repeat="empresa in empresas" >
             <div class="portlet-title">
                 <div class="caption font-green-sharp">
                     <i class="icon-paper-plane font-green-sharp"></i>
@@ -86,7 +83,7 @@
         </div>
         <!-- END: ACCORDION DEMO -->
     </div>
-    <div class="col-md-8" ng-controller="MapCtrl" style="position: fixed; right: 0;">
+    <div class="col-md-8" ng-controller="MapCtrl" style="position: fixed; right: 0;" >
         <!-- Aquí irá el mapa -->
         <div class="portlet light" style="background-color: white;">
             <div class="portlet-title" id="map" style="height: 800px; ">
