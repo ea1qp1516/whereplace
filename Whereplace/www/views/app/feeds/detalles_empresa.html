@@ -20,6 +20,22 @@
             </div>
         </div>
 
+      <div class="ec-stars-wrapper">
+        <a  ng-click="puntuar(1)">&#9733;</a>
+        <a  ng-click="puntuar(2)">&#9733;</a>
+        <a  ng-click="puntuar(3)">&#9733;</a>
+        <a  ng-click="puntuar(4)">&#9733;</a>
+        <a  ng-click="puntuar(5)">&#9733;</a>
+      </div>
+
+
+      <div>
+       Valoración: {{media}}
+
+      </div>
+
+
+
         <div class="list category-feeds">
             <a ng-repeat="comentario in empresa.comentarios"  class="item item-icon-right">
 
@@ -32,10 +48,20 @@
         </div>
         <div class="bottom-content">
             <div class="user-bio">
-                <a  ng-click="NewComment(empresa)">  Comment
+                <a  ng-click="NewComment(empresa)">Nuevo comentario
                 </a>
-                <div>{{empresa.direccion}}</div>
+              <!--   <a ng-click="cargarMapa()">{{empresa.direccion}}</a>
+              <div ng-show="mostrarMapa" id="map" style="height: 400px; ">
+
+              </div>-->
             </div>
+          <div class="user-bio">
+            <a ng-click="cargarMapa()">{{empresa.direccion}}</a>
+            <!--   <a ng-click="cargarMapa()">{{empresa.direccion}}</a>
+             <div ng-show="mostrarMapa" id="map" style="height: 400px; ">
+
+             </div>-->
+          </div>
         </div>
     </ion-content>
 </ion-view>

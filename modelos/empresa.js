@@ -13,8 +13,7 @@ var comentarioSchema = {
 
 var puntuacionSchema = {
     puntuacion: Number,
-    contador: Number,
-    users: [String]
+    userID: String
 
 };
 
@@ -32,7 +31,7 @@ var empresaSchema = {
     detalles:[String],
     created_at: Date,
     updated_at: Date,
-    puntuacion: puntuacionSchema
+    puntuaciones: [puntuacionSchema]
 };
 
 

@@ -133,7 +133,8 @@ angular.module('WherePlace', [
         templateUrl: "views/app/miscellaneous/maps.html",
         controller: 'MapsCtrl'
       }
-    }
+    },
+     params:{'empresa':{}}
   })
 
   .state('app.image-picker', {
