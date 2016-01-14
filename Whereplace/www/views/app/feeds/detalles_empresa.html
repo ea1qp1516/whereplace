@@ -32,10 +32,20 @@
         </div>
         <div class="bottom-content">
             <div class="user-bio">
-                <a  ng-click="NewComment(empresa)">  Comment
+                <a  ng-click="NewComment(empresa)">Nuevo comentario
                 </a>
-                <div>{{empresa.direccion}}</div>
+              <!--   <a ng-click="cargarMapa()">{{empresa.direccion}}</a>
+              <div ng-show="mostrarMapa" id="map" style="height: 400px; ">
+
+              </div>-->
             </div>
+          <div class="user-bio">
+            <a ng-click="cargarMapa()">{{empresa.direccion}}</a>
+            <!--   <a ng-click="cargarMapa()">{{empresa.direccion}}</a>
+             <div ng-show="mostrarMapa" id="map" style="height: 400px; ">
+
+             </div>-->
+          </div>
         </div>
     </ion-content>
 </ion-view>

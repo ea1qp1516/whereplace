@@ -101,23 +101,35 @@ angular.module('your_app_name.controllers', [])
 	};
 })
 
-.controller('MapsCtrl', function($scope, $ionicLoading) {
+.controller('MapsCtrl', function($scope, $ionicLoading, $stateParams) {
+    console.log($stateParams.empresa);
+   $scope.nombre = $stateParams.empresa.nombre;
+    $scope.descripcion = $stateParams.empresa.descripcion;
 
 	$scope.info_position = {
-		lat: 43.07493,
-		lng: -89.381388
+		lat: {},
+		lng: {}
 	};
 
-	$scope.center_position = {
-		lat: 43.07493,
-		lng: -89.381388
-	};
 
 	$scope.my_location = "";
 
 	$scope.$on('mapInitialized', function(event, map) {
+    geocoder = new google.maps.Geocoder();
 		$scope.map = map;
+    codeAddress($stateParams.empresa.direccion);
 	});
+
+    function codeAddress(address) {
+      geocoder.geocode({address: address}, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          $scope.map.setCenter(results[0].geometry.location);//center the map over the result
+          //place a marker at the location
+          $scope.info_position.lat = results[0].geometry.location.lat();
+          $scope.info_position.lng = results[0].geometry.location.lng();
+        }
+      });
+    }
 
 	$scope.centerOnMe= function(){
 
@@ -263,6 +275,7 @@ angular.module('your_app_name.controllers', [])
 	$scope.empresa = empresaEntrada;
 	$scope.favorito = false;
 	$scope.formClass ='icon ion-ios-star-outline';
+    $scope.mostrarMapa = false;
 
 	user.favoritos.forEach(function(empresa){
 		if (empresa._id == empresaEntrada._id){
@@ -278,10 +291,14 @@ angular.module('your_app_name.controllers', [])
 		console.log($scope.empresa);
 		$state.go("app.newComment",{empresa:$scope.empresa});
 	}
+    $scope.cargarMapa = function(){
+      $state.go("app.maps", {empresa:$scope.empresa});
+
+    }
 
 
 
-	$scope.changing= function(favorito){
+    $scope.changing= function(favorito){
 		if (favorito==true){
 			$scope.formClass ='icon ion-ios-star-outline';
 			$scope.favorito = false;
@@ -308,7 +325,6 @@ angular.module('your_app_name.controllers', [])
 		}
 		console.log(favorito);
 	}
-
 
 
 
