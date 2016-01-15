@@ -2,15 +2,17 @@
 
 MetronicApp.controller('logincompanyController', function ($scope, $http, $state, $cookieStore) {
     $scope.loginempresa = {};
+    console.log($scope.loginempresa);
     $scope.login = function () {
         $http.post('/empresa/login', $scope.loginempresa)
-            .success(function (data ) {
+            .success(function (data) {
+                console.log($scope.loginempresa);
                 console.log(data);
                 $cookieStore.put('Nombre', data.nombre);
                 $cookieStore.put('Email', data.email);
                 $cookieStore.put('IdCompany', data._id);
                 $scope.empresa = data;
-                $state.go('editcompany', {empresa:$scope.empresa});
+                $state.go('editcompany');
             })
             .error(function (data) {
                 console.log('Error: ' + data);
