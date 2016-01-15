@@ -15,7 +15,7 @@
 	<!-- END RESPONSIVE MENU TOGGLER -->
 
 	<!-- BEGIN PAGE TOP -->
-	<div class="page-top">
+	<div class="page-top" ng-show="mostrarBotonesHeader">
 
 		<!-- BEGIN TOP NAVIGATION MENU -->
 		<div class="top-menu">
@@ -30,10 +30,40 @@
 				<a href="#/login"  type="button" class="btn red-thunderbird">Login</a>
 				<a href="#/register"  type="button" class="btn red-flamingo">Registrar</a>
 				</br>
-	
+
 			</ul>
 		</div>
 		<!-- END TOP NAVIGATION MENU -->
+	</div>
+	<div class="page-top" ng-show="mostrarHeaderLogin">
+
+			<!-- END HEADER SEARCH BOX -->
+			<!-- BEGIN TOP NAVIGATION MENU -->
+			<div class="top-menu">
+					<ul class="nav navbar-nav pull-right">
+							<li class="separator hide"></li>
+
+
+							<li class="separator hide"></li>
+						<button type="button" class="btn red-thunderbird" ng-click="logout()">Logout</button>
+							<li class="separator hide"></li>
+							<!-- BEGIN TODO DROPDOWN -->
+
+							<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+							<li class="dropdown dropdown-user dropdown-dark">
+									<a href="#/profile/dashboard" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+							<span class="username username-hide-on-mobile">
+									{{nombre}} {{apellidos}}
+							</span>
+											<!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
+											<img alt="" class="img-circle" src={{avatar}}/>
+									</a>
+
+						</li>
+							<!-- END USER LOGIN DROPDOWN -->
+					</ul>
+			</div>
+			<!-- END TOP NAVIGATION MENU -->
 	</div>
 	<!-- END PAGE TOP -->
 </div>

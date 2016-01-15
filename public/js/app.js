@@ -99,10 +99,21 @@ MetronicApp.controller('AppController', ['$scope', '$rootScope', function ($scop
  ***/
 
 /* Setup Layout Part - Header */
-MetronicApp.controller('HeaderController', ['$scope', function ($scope) {
-    $scope.$on('$includeContentLoaded', function () {
-        Layout.initHeader(); // init header
-    });
+MetronicApp.controller('HeaderController', ['$scope','$cookieStore', function ($scope, $cookieStore) {
+    $scope.mostrarHeader = true;
+    $scope.nombre = $cookieStore.get('Name');
+    $scope.apellidos = $cookieStore.get('Apellidos');
+
+    if($cookieStore.get('IdUser')==null){
+      $scope.mostrarHeaderLogin = false;
+      $scope.mostrarBotonesHeader = true;
+
+    }else{
+      $scope.mostrarBotonesHeader = false;
+      $scope.mostrarHeaderLogin = true;
+    }
+
+
 }]);
 
 /* Setup Layout Part - Sidebar */
@@ -142,7 +153,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
     // UI Select
         .state('index', {
             url: "/",
-            templateUrl: "views/ui_select.html",
+            templateUrl: "views/index.html",
             data: {pageTitle: 'WherePlace', pageSubTitle: 'Tus sitios, tus gustos'},
             controller: "UISelectController",
             resolve: {
@@ -173,7 +184,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
 
         .state("main", {
             url: "/main",
-            templateUrl: "views/main_dummy.html",
+            templateUrl: "views/main.html",
             controller: "MainController",
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
