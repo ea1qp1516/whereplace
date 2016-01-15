@@ -18,6 +18,7 @@ MetronicApp.config(['$ocLazyLoadProvider', function ($ocLazyLoadProvider) {
     });
 }]);
 
+
 /********************************************
  BEGIN: BREAKING CHANGE in AngularJS v1.3.x:
  *********************************************/
@@ -85,8 +86,8 @@ MetronicApp.factory('settings', ['$rootScope', function ($rootScope) {
 }]);
 
 /* Setup App Main Controller */
-MetronicApp.controller('AppController', ['$scope', '$state', function ($scope, $state) {
-      console.log($state.is('index'));
+MetronicApp.controller('AppController', ['$scope', '$state', '$rootScope', function ($scope,$state, $rootScope) {
+
 }]);
 
 /***
@@ -101,10 +102,9 @@ MetronicApp.controller('HeaderController', ['$scope','$cookieStore', '$state', f
     $scope.nombre = $cookieStore.get('Name');
     $scope.apellidos = $cookieStore.get('Apellidos');
 
-    if($state.current.name=="login"){
-        $mostrarHeader = false;
-    }
+
     if($cookieStore.get('IdUser')==null){
+
       $scope.mostrarHeaderLogin = false;
       $scope.mostrarBotonesHeader = true;
 
@@ -124,7 +124,7 @@ MetronicApp.controller('HeaderController', ['$scope','$cookieStore', '$state', f
       $cookieStore.remove('IdUser');
       $cookieStore.remove('Avatar');
 
-      $state.go('logout');
+      $state.go('index');
       $scope.mostrarHeaderLogin = false;
       $scope.mostrarBotonesHeader = true;
     }
@@ -144,12 +144,6 @@ MetronicApp.controller('PageHeadController', ['$scope', function ($scope) {
     });
 }]);
 
-MetronicApp.controller('LoginController', function ($scope, $http, $timeout) {
-    $scope.$on('$viewContentLoaded', function () {
-        Metronic.initAjax(); // initialize core components
-    });
-
-});
 /* Setup Layout Part - Footer */
 MetronicApp.controller('FooterController', ['$scope', function ($scope) {
     $scope.$on('$includeContentLoaded', function () {

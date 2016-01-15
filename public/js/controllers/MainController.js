@@ -109,7 +109,7 @@ function initMap() {
 
 }
 
-function codeAddress(address) {
+function codeAddress(address, next) {
     geocoder.geocode({address: address}, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             map.setCenter(geolocation);
@@ -119,7 +119,7 @@ function codeAddress(address) {
                     position: results[0].geometry.location
                 });
         } else {
-            alert('Geocode was not successful for the following reason: ' + status);
+            alert('EL Geocodes no funciona por la siguiente razón:  ' + status);
         }
     });
 }
