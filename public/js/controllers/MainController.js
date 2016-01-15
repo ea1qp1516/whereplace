@@ -37,7 +37,9 @@ MetronicApp.controller('MainController', function ($scope, $http) {
     });
 
     $scope.empresas = {};
-    
+    $scope.mostrarHeaderLogin = true;
+    $scope.mostrarBotonesHeader = false;
+
     $http.get('/empresas').success(function (data) {
 
             $scope.empresas = data;
@@ -67,8 +69,15 @@ MetronicApp.controller('MainController', function ($scope, $http) {
 
     }
 
-    $scope.seleccionarEmpresa = function(id){
+    $scope.logout = function () {
+      $cookieStore.remove('Name');
+      $cookieStore.remove('Apellidos');
+      $cookieStore.remove('IdUser');
+      $cookieStore.remove('Avatar');
 
+      $state.go('logout');
+      $scope.mostrarHeaderLogin = false;
+      $scope.mostrarBotonesHeader = true;
     }
 
 

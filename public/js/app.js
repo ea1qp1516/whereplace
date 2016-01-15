@@ -85,11 +85,8 @@ MetronicApp.factory('settings', ['$rootScope', function ($rootScope) {
 }]);
 
 /* Setup App Main Controller */
-MetronicApp.controller('AppController', ['$scope', '$rootScope', function ($scope, $rootScope) {
-    $scope.$on('$viewContentLoaded', function () {
-        Metronic.initComponents(); // init core components
-        //Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive
-    });
+MetronicApp.controller('AppController', ['$scope', '$state', function ($scope, $state) {
+      console.log($state.is('index'));
 }]);
 
 /***
@@ -99,11 +96,14 @@ MetronicApp.controller('AppController', ['$scope', '$rootScope', function ($scop
  ***/
 
 /* Setup Layout Part - Header */
-MetronicApp.controller('HeaderController', ['$scope','$cookieStore', function ($scope, $cookieStore) {
+MetronicApp.controller('HeaderController', ['$scope','$cookieStore', '$state', function ($scope, $cookieStore, $state) {
     $scope.mostrarHeader = true;
     $scope.nombre = $cookieStore.get('Name');
     $scope.apellidos = $cookieStore.get('Apellidos');
 
+    if($state.current.name=="login"){
+        $mostrarHeader = false;
+    }
     if($cookieStore.get('IdUser')==null){
       $scope.mostrarHeaderLogin = false;
       $scope.mostrarBotonesHeader = true;
@@ -112,8 +112,22 @@ MetronicApp.controller('HeaderController', ['$scope','$cookieStore', function ($
       $scope.mostrarBotonesHeader = false;
       $scope.mostrarHeaderLogin = true;
     }
+    $scope.login = function () {
+      $state.go('login');
+    }
+    $scope.register = function () {
+      $state.go('register');
+    }
+    $scope.logout = function () {
+      $cookieStore.remove('Name');
+      $cookieStore.remove('Apellidos');
+      $cookieStore.remove('IdUser');
+      $cookieStore.remove('Avatar');
 
-
+      $state.go('logout');
+      $scope.mostrarHeaderLogin = false;
+      $scope.mostrarBotonesHeader = true;
+    }
 }]);
 
 /* Setup Layout Part - Sidebar */
@@ -557,6 +571,8 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state, $cook
                 $cookieStore.put('Avatar',data.avatar);
 
                 $state.go('main');
+                $scope.mostrarBotonesHeader=false;
+                $scope.mostrarHeaderLogin = true;
             })
             .error(function (data) {
                 console.log('Error: ' + data);
@@ -565,26 +581,6 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state, $cook
     }
 });
 
-
-
-
-MetronicApp.controller('HeaderLoginController', function ($scope, $http, $cookieStore, $state) {
-
-    $scope.empresas = {};
-
-    $scope.nombre = $cookieStore.get('Name');
-    $scope.apellidos = $cookieStore.get('Apellidos');
-    $scope.avatar = $cookieStore.get('Avatar');
-
-    $http.get('/empresas').success(function (data) {
-
-            $scope.empresas = data;
-            console.log(data);
-        })
-        .error(function (data) {
-            console.log('Error: ' + data);
-        });
-});
 
 
 MetronicApp.controller('MapCtrl', ['$scope', function ($scope) {
