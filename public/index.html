@@ -75,13 +75,12 @@
 		<div class="bounce3"></div>
 	</div>
 	<!-- END PAGE SPINNER -->
-	<div data-ng-include="'tpl/header.html'" data-ng-controller="HeaderController" ng-show="mostrarHeader" class="page-header md-shadow-z-1-i navbar navbar-fixed-top">
-	</div>
+	
 
 	<!-- BEGIN CONTAINER -->
 	<div class="page-container" style="height: 75%;">
 
-		<div ui-view class="fade-in-up" style="height: 90%;">
+		<div ui-view style="height: 90%;">
 		</div>
 		<!-- END ACTUAL CONTENT -->
 	</div>
@@ -134,13 +133,7 @@
 	<!-- END APP LEVEL JQUERY SCRIPTS -->
 
 
-	<script type="text/javascript">
-		/* Init Metronic's core jquery plugins and layout scripts */
-		$(document).ready(function() {
-			Metronic.init(); // Run metronic theme
-			Metronic.setAssetsPath('../../../assets/'); // Set the assets folder path
-		});
-	</script>
+
 	<!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

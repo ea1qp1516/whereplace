@@ -1,6 +1,6 @@
 'use strict';
 
-MetronicApp.controller('FileController',['$scope', '$http', '$cookieStore', 'upload', function ($scope, $http, $cookieStore, upload) {
+MetronicApp.controller('FileController',['$scope', '$http', '$cookieStore', 'upload', '$state', function ($scope, $http, $cookieStore, upload, $state) {
     $scope.$on('$viewContentLoaded', function () {
         Metronic.initAjax(); // initialize core components
     });
@@ -22,6 +22,7 @@ MetronicApp.controller('FileController',['$scope', '$http', '$cookieStore', 'upl
       var file = $scope.file;
       var user = $scope.user;
       upload.uploadFile(file,user);
+      $state.go('profile.dashboard');
     }
 }]);
 
@@ -42,7 +43,7 @@ MetronicApp.directive('uploaderModel', ["$parse", function ($parse){
 
 MetronicApp.service('upload', ["$http", "$cookieStore", function($http,$cookieStore){
 
-      this.uploadFile  = function(file,user){
+        this.uploadFile  = function(file,user){
 
 
         var formData = new FormData();
@@ -51,7 +52,7 @@ MetronicApp.service('upload', ["$http", "$cookieStore", function($http,$cookieSt
                   console.log(key + " - " + value);
                   formData.append(key, value);
               });
-
+              console.log(formData);
         return $http.post("/user/modify_avatar/" + $cookieStore.get('IdUser'), formData, {
           transformRequest: angular.identity,
           headers: {
