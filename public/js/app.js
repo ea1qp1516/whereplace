@@ -18,6 +18,7 @@ MetronicApp.config(['$ocLazyLoadProvider', function ($ocLazyLoadProvider) {
     });
 }]);
 
+
 /********************************************
  BEGIN: BREAKING CHANGE in AngularJS v1.3.x:
  *********************************************/
@@ -56,12 +57,7 @@ MetronicApp.config(['$ocLazyLoadProvider', function ($ocLazyLoadProvider) {
 }]);
  **/
 
-//AngularJS v1.3.x workaround for old style controller declarition in HTML
-MetronicApp.config(['$controllerProvider', function ($controllerProvider) {
-    // this option might be handy for migrating old apps, but please don't use it
-    // in new ones!
-    $controllerProvider.allowGlobals();
-}]);
+
 
 /********************************************
  END: BREAKING CHANGE in AngularJS v1.3.x:
@@ -85,13 +81,15 @@ MetronicApp.factory('settings', ['$rootScope', function ($rootScope) {
 }]);
 
 /* Setup App Main Controller */
-MetronicApp.controller('AppController', ['$scope', '$rootScope', function ($scope, $rootScope) {
-    $scope.$on('$viewContentLoaded', function () {
-        Metronic.initComponents(); // init core components
-        //Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive
-    });
+MetronicApp.controller('AppController', ['$scope', '$state', '$rootScope', function ($scope,$state, $rootScope) {
+  $scope.about = function () {
+    $state.go('about');
+  }
 }]);
 
+MetronicApp.controller('FooterController', ['$scope', function ($scope) {
+
+}]);
 /***
  Layout Partials.
  By default the partials are loaded through AngularJS ng-include directive. In case they loaded in server side(e.g: PHP include function) then below partial
@@ -99,32 +97,46 @@ MetronicApp.controller('AppController', ['$scope', '$rootScope', function ($scop
  ***/
 
 /* Setup Layout Part - Header */
-MetronicApp.controller('HeaderController', ['$scope', function ($scope) {
-    $scope.$on('$includeContentLoaded', function () {
-        Layout.initHeader(); // init header
-    });
+MetronicApp.controller('HeaderController', ['$scope','$cookieStore', '$state','$http', function ($scope, $cookieStore, $state,$http) {
+    $scope.mostrarHeader = true;
+    $scope.user={};
+
+    if($cookieStore.get('IdUser')==null){
+
+      $scope.mostrarHeaderLogin = false;
+      $scope.mostrarBotonesHeader = true;
+
+    }else{
+      $http.get('/user/'+$cookieStore.get('IdUser')).success(function (data) {
+
+        $scope.user = data;
+      })
+      .error(function (data) {
+          console.log('Error: ' + data);
+      });
+      $scope.mostrarBotonesHeader = false;
+      $scope.mostrarHeaderLogin = true;
+
+    }
+    $scope.login = function () {
+      $state.go('login');
+    }
+    $scope.register = function () {
+      $state.go('register');
+    }
+    $scope.logout = function () {
+      $cookieStore.remove('Name');
+      $cookieStore.remove('Apellidos');
+      $cookieStore.remove('IdUser');
+      $cookieStore.remove('Avatar');
+
+      window.location.href = "/";
+      $scope.mostrarHeaderLogin = false;
+      $scope.mostrarBotonesHeader = true;
+    }
 }]);
 
-/* Setup Layout Part - Sidebar */
-MetronicApp.controller('SidebarController', ['$scope', function ($scope) {
-    $scope.$on('$includeContentLoaded', function () {
-        Layout.initSidebar(); // init sidebar
-    });
-}]);
 
-/* Setup Layout Part - Sidebar */
-MetronicApp.controller('PageHeadController', ['$scope', function ($scope) {
-    $scope.$on('$includeContentLoaded', function () {
-        Demo.init(); // init theme panel
-    });
-}]);
-
-MetronicApp.controller('LoginController', function ($scope, $http, $timeout) {
-    $scope.$on('$viewContentLoaded', function () {
-        Metronic.initAjax(); // initialize core components
-    });
-
-});
 /* Setup Layout Part - Footer */
 MetronicApp.controller('FooterController', ['$scope', function ($scope) {
     $scope.$on('$includeContentLoaded', function () {
@@ -142,7 +154,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
     // UI Select
         .state('index', {
             url: "/",
-            templateUrl: "views/ui_select.html",
+            templateUrl: "views/index.html",
             data: {pageTitle: 'WherePlace', pageSubTitle: 'Tus sitios, tus gustos'},
             controller: "UISelectController",
             resolve: {
@@ -173,7 +185,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
 
         .state("main", {
             url: "/main",
-            templateUrl: "views/main_dummy.html",
+            templateUrl: "views/main.html",
             controller: "MainController",
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -227,6 +239,42 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
                 }]
             }
         })
+        .state('about', {
+            url: "/about",
+            templateUrl: "views/about.html",
+            controller: "AboutController",
+            resolve: {
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([{
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
+                            '../../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css',
+                            '../../../assets/global/plugins/jquery-tags-input/jquery.tagsinput.css',
+                            '../../../assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css',
+                            '../../../assets/global/plugins/typeahead/typeahead.css',
+
+                            '../../../assets/global/plugins/fuelux/js/spinner.min.js',
+                            '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
+                            '../../../assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js',
+                            '../../../assets/global/plugins/jquery.input-ip-address-control-1.0.min.js',
+                            '../../../assets/global/plugins/bootstrap-pwstrength/pwstrength-bootstrap.min.js',
+                            '../../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js',
+                            '../../../assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js',
+                            '../../../assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js',
+                            '../../../assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js',
+                            '../../../assets/global/plugins/typeahead/handlebars.min.js',
+                            '../../../assets/global/plugins/typeahead/typeahead.bundle.min.js',
+                            '../../../assets/admin/pages/scripts/components-form-tools.js',
+                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.css',
+                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.js',
+                            'js/controllers/AboutController.js'
+                        ]
+                    }]);
+                }]
+            }
+        })
         .state('registerCompany', {
             url: "/register_company",
             templateUrl: "views/registercompany.html",
@@ -266,44 +314,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
             }
         })
 
-        .state('editCompany', {
-            url: "/edit_company",
-            templateUrl: "views/editcompany.html",
-            controller: "EditController",
-            resolve: {
-                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
-                    return $ocLazyLoad.load([{
-                        name: 'MetronicApp',
-                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
-                        files: [
-                            '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
-                            '../../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css',
-                            '../../../assets/global/plugins/jquery-tags-input/jquery.tagsinput.css',
-                            '../../../assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css',
-                            '../../../assets/global/plugins/typeahead/typeahead.css',
-
-                            '../../../assets/global/plugins/fuelux/js/spinner.min.js',
-                            '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
-                            '../../../assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js',
-                            '../../../assets/global/plugins/jquery.input-ip-address-control-1.0.min.js',
-                            '../../../assets/global/plugins/bootstrap-pwstrength/pwstrength-bootstrap.min.js',
-                            '../../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js',
-                            '../../../assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js',
-                            '../../../assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js',
-                            '../../../assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js',
-                            '../../../assets/global/plugins/typeahead/handlebars.min.js',
-                            '../../../assets/global/plugins/typeahead/typeahead.bundle.min.js',
-                            '../../../assets/admin/pages/scripts/components-form-tools.js',
-                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.css',
-                            '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.js',
-                            'js/controllers/UISelectController.js',
-                            'js/controllers/EditController.js'
-
-                        ]
-                    }]);
-                }]
-            }
-        })
+        
 
 .state('loginCompany', {
             url: "/login_company",
@@ -529,8 +540,6 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
             }
         })
 
-
-
 }]);
 
 
@@ -546,6 +555,8 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state, $cook
                 $cookieStore.put('Avatar',data.avatar);
 
                 $state.go('main');
+                $scope.mostrarBotonesHeader=false;
+                $scope.mostrarHeaderLogin = true;
             })
             .error(function (data) {
                 console.log('Error: ' + data);
@@ -554,26 +565,6 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state, $cook
     }
 });
 
-
-
-
-MetronicApp.controller('HeaderLoginController', function ($scope, $http, $cookieStore, $state) {
-
-    $scope.empresas = {};
-
-    $scope.nombre = $cookieStore.get('Name');
-    $scope.apellidos = $cookieStore.get('Apellidos');
-    $scope.avatar = $cookieStore.get('Avatar');
-
-    $http.get('/empresas').success(function (data) {
-
-            $scope.empresas = data;
-            console.log(data);
-        })
-        .error(function (data) {
-            console.log('Error: ' + data);
-        });
-});
 
 
 MetronicApp.controller('MapCtrl', ['$scope', function ($scope) {
@@ -604,5 +595,5 @@ MetronicApp.controller('MapCtrl', ['$scope', function ($scope) {
 
 /* Init global settings and run the app */
 MetronicApp.run(["$rootScope", "settings", "$state", function ($rootScope, settings, $state) {
-    $rootScope.$state = $state; // state to be accessed from view
+    $rootScope.$state = $state;// state to be accessed from view
 }]);

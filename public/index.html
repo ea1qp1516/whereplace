@@ -31,6 +31,7 @@
 	<link href="../assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
 	<link href="../assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color"/>
 	<link href="../assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
+	<link href="../assets/admin/layout/css/mn.css" rel="stylesheet" type="text/css"/>
 	<!-- END THEME STYLES -->
 
 <!-- BEGIN DYMANICLY LOADED CSS FILES(all plugin and page related styles must be loaded between GLOBAL and THEME css files ) -->
@@ -74,12 +75,12 @@
 		<div class="bounce3"></div>
 	</div>
 	<!-- END PAGE SPINNER -->
-
+	
 
 	<!-- BEGIN CONTAINER -->
 	<div class="page-container" style="height: 75%;">
 
-		<div ui-view class="fade-in-up" style="height: 90%;">
+		<div ui-view style="height: 90%;">
 		</div>
 		<!-- END ACTUAL CONTENT -->
 	</div>
@@ -132,13 +133,7 @@
 	<!-- END APP LEVEL JQUERY SCRIPTS -->
 
 
-	<script type="text/javascript">
-		/* Init Metronic's core jquery plugins and layout scripts */
-		$(document).ready(function() {
-			Metronic.init(); // Run metronic theme
-			Metronic.setAssetsPath('../../../assets/'); // Set the assets folder path
-		});
-	</script>
+
 	<!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

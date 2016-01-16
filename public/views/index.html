@@ -1,0 +1,50 @@
+<div data-ng-include="'tpl/header.html'" data-ng-controller="HeaderController" ng-show="mostrarHeader" class="page-header md-shadow-z-1-i navbar navbar-fixed-top">
+</div>
+
+<div class="row" style="height: 100%;">
+    <div class="col-md-12" style="height: 100%;">
+        <div class="portlet light image" ng-controller="UISelectController" style="height: 100%;">
+            <div class="portlet-title">
+                <div class="caption font-green-sharp">
+                    <span class="caption-subject bold uppercase"></span>
+                    <span class="caption-helper hide"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label"></label>
+                <div class="col-md-6">
+                    <ui-select multiple ng-model="multipleDemo.selectedPeople" theme="bootstrap" ng-disabled="disabled">
+                        <ui-select-match placeholder="Selecciona tus gustos...">{{$item.name}}</ui-select-match>
+                        <ui-select-choices repeat="person in people | propsFilter: {name: $select.search, age: $select.search}">
+                            {{person.name}}
+                        </ui-select-choices>
+                    </ui-select>
+                   <!-- <p>Selected: {{multipleDemo.selectedPeople}}</p>-->
+                    <p></p>
+
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn red-thunderbird" > <i class="fa fa-filter"></i>Buscar</button>
+                        <button type="button" class="btn red-flamingo"><i class="fa fa-times"></i>Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<br>s
+<font size="3px" style="color: rgb(21,186,228)">¿Eres propietario de una empresa?</a></font>
+<br>
+<br>
+<a href="#/register_company" type="button" class="btn purple" style="background-color: #50A5C7" ><i class="fa fa-pencil"></i>Registrate</a>
+<a href="#/login_company" type="button" class="btn purple" style="background-color: #50A5C7"><i class="fa fa-sign-in"></i>Haz LogIn</a>
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS-->
+<script class="ng-scope"></script>
+<!-- BEGIN MAIN JS -->

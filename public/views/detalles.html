@@ -11,9 +11,6 @@
 
     }
 </style>
-<div data-ng-include="'tpl/header_login.html'" ng-controller="HeaderController"
-     class="page-header md-shadow-z-1-i navbar navbar-fixed-top">
-</div>
 <div class="row" ng-controller="DetallesController">
     <div class="col-md-12">
         <div class="portlet light" style="background-color: white">
@@ -29,7 +26,7 @@
 
                                 <div class="blog-tag-data">
                                     <img src="../../assets/images_emp/prueba.jpg"
-                                         class="img-responsive" alt="">
+                                         class="img-responsive" alt=""> 
 
                                     <div class="row">
                                         <div class="col-md-6">
@@ -113,7 +110,7 @@
                                 <div class="media" data-ng-repeat="comentario in empresa.comentarios">
 
                                     <a href="javascript:;" class="pull-left">
-                                        <img alt="" src={{comentario.avatar}}}}
+                                        <img alt="" src="{{comentario.avatar}}"
                                              class="media-object">
                                     </a>
 
@@ -150,7 +147,7 @@
                             </div>
                             <!--end col-md-9-->
                             <div class="col-md-3 blog-sidebar">
-                                
+
                                 <div class="space20">
                                 </div>
 

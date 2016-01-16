@@ -37,7 +37,9 @@ MetronicApp.controller('MainController', function ($scope, $http) {
     });
 
     $scope.empresas = {};
-    
+    $scope.mostrarHeaderLogin = true;
+    $scope.mostrarBotonesHeader = false;
+
     $http.get('/empresas').success(function (data) {
 
             $scope.empresas = data;
@@ -67,8 +69,15 @@ MetronicApp.controller('MainController', function ($scope, $http) {
 
     }
 
-    $scope.seleccionarEmpresa = function(id){
+    $scope.logout = function () {
+      $cookieStore.remove('Name');
+      $cookieStore.remove('Apellidos');
+      $cookieStore.remove('IdUser');
+      $cookieStore.remove('Avatar');
 
+      $state.go('logout');
+      $scope.mostrarHeaderLogin = false;
+      $scope.mostrarBotonesHeader = true;
     }
 
 
@@ -100,7 +109,7 @@ function initMap() {
 
 }
 
-function codeAddress(address) {
+function codeAddress(address, next) {
     geocoder.geocode({address: address}, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             map.setCenter(geolocation);
@@ -110,7 +119,7 @@ function codeAddress(address) {
                     position: results[0].geometry.location
                 });
         } else {
-            alert('Geocode was not successful for the following reason: ' + status);
+            alert('EL Geocodes no funciona por la siguiente razón:  ' + status);
         }
     });
 }

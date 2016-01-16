@@ -168,6 +168,55 @@ module.exports = function (app, passport) {
 
     }
 
+
+
+    addImages = function (req, res, next) {
+
+
+                fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_users/" + req.params.user_id);
+                fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_users/" + req.params.user_id + "/avatar");
+                var tmp_path = req.files.file.path;
+                console.log(tmp_path);
+                console.log(tmp_path);
+                var ext = req.files.file.type;
+                ext = ext.split('/');
+                var target_path = '/home/nacho/EAProject/whereplace/public/img/avatar_users/' + req.params.user_id + '/avatar/' + req.params.user_id;
+                console.log(target_path);
+                fs.rename(tmp_path, target_path, function (err) {
+                    if (err) throw err;
+                    fs.unlink(tmp_path, function () {
+                        if (err) throw err;
+                    });
+                });
+                avatarUser = target_path.split('/');
+
+                var avatar_final ='/'+ avatarUser[6] + '/' + avatarUser[7] +'/'+avatarUser[8]+'/'+avatarUser[9]+'/'+avatarUser[10];
+                console.log(avatar_final);
+                req.body.avatar=avatar_final;
+                console.log(req.body);
+
+                //var now = new Date();
+
+                User.update({_id: req.params.user_id},req.body,
+                    function (err, user) {
+                        if (err)
+                            res.send(err);
+
+
+                        User.findOne({"_id": req.params.user_id}, {__v: 0, password: 0}, function (err, user) {
+                                if (err)
+                                    res.send(err)
+                                res.json(user);
+                            }
+                        );
+                    });
+
+
+    };
+
+
+
+
     app.get('/user/:user_id', getUser);
     app.get('/user', getUsers);
     app.get('/user/:user_id/avatar', getAvatar);
@@ -185,7 +234,7 @@ module.exports = function (app, passport) {
             }
         }
     );
-    
+
     app.post('/user/modify/:user_id', updateUser);
     app.post('/user/modify_avatar/:user_id',multipartMiddleware, addImages);
 
@@ -223,42 +272,4 @@ module.exports = function (app, passport) {
             });
         }
     ));
-};
-
-
-
-
-addImages = function (req, res, next) {
-
-
-            fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_users/" + req.params.user_id);
-            fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_users/" + req.params.user_id + "/avatar");
-            var tmp_path = req.files.file.path;
-            var ext = req.files.file.type;
-            ext = ext.split('/');
-            var target_path = '/home/nacho/EAProject/whereplace/public/img/avatar_users/' + req.params.user_id + '/avatar/' + req.params.user_id + '.' + ext[1];
-            fs.rename(tmp_path, target_path, function (err) {
-                if (err) throw err;
-                fs.unlink(tmp_path, function () {
-                    if (err) throw err;
-                });
-            });
-
-            console.log(req.body);
-
-            var now = new Date();
-            User.update({_id: req.params.user_id}, req.body,
-                function (err, user) {
-                    if (err)
-                        res.send(err);
-
-                    User.findOne({"_id": req.params.user_id}, {__v: 0, password: 0}, function (err, user) {
-                            if (err)
-                                res.send(err)
-                            res.json(user);
-                        }
-                    );
-                });
-
-
 };

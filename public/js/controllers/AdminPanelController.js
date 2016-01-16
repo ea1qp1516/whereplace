@@ -45,7 +45,7 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $statePar
     };
     $scope.borrarEmpresa = function(newEmpresa) {
         console.log(newEmpresa);
-        $http.delete('/empresas/' + newEmpresa._id)
+        $http.delete('/empresas/delete/' + newEmpresa._id)
             .success(function(data) {
                 $scope.newEmpresa = {};
                 $scope.empresas = data;
