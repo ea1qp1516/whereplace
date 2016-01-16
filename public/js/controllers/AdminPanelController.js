@@ -64,7 +64,15 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $statePar
         .error(function(data) {
             console.log('Error: ' + data);
         });
-
+    $scope.getEmpresa = function(editEmpresa){
+        console.log(editEmpresa);
+        $http.get('/empresa/' + editEmpresa._id).success(function(data){
+            $scope.editEmpresa = data;
+            console.log("DATAAAAA" +data._id);
+        }).error(function(data){
+            console.log("Error: " + data);
+        })
+    }
     // Función para registrar a una empresa
     $scope.registrarEmpresa = function() {
         $http.post('/empresa', $scope.newEmpresa)
@@ -83,5 +91,30 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $statePar
 
     })
 
+    $scope.actualizarEmpresa = function (editEmpresa){
+        $http.put('/empresa/modify/' + $scope.editEmpresa._id, $scope.editEmpresa)
+            .success(function(data) {
+                $scope.editEmpresa = {}; // Borramos los datos del formulario
+                $scope.editEmpresa = {};
+                $scope.selected = false;
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+
+    }
+
+    $scope.borrarUser = function(newUser) {
+        console.log(newEmpresa);
+        $http.delete('/empresas/delete/' + newEmpresa._id)
+            .success(function(data) {
+                $scope.newEmpresa = {};
+                $scope.empresas = data;
+                $scope.selected = false;
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
 
 });

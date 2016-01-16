@@ -96,6 +96,7 @@ module.exports = function (app) {
             });
 
     }
+
     addComment = function (req, res) {
         Empresa.findById(req.params.empresa_id, function (err, empresa) {
             if (err)
@@ -147,6 +148,7 @@ module.exports = function (app) {
 
     updateEmpresa = function (req, res) {
         var now = new Date();
+        console.log("ID A MODIFICIAR " +req.params.empresa_id);
         Empresa.update({_id: req.params.empresa_id}, req.body,
             function (err, user) {
                 if (err)
@@ -241,7 +243,7 @@ module.exports = function (app) {
     app.delete('/empresas/delete/:empresa_id', borrarEmpresa);
 
     app.post('/empresas/busquedas', getBusqueda);
-    app.post('/empresa/modify/:empresa_id', updateEmpresa);
+    app.put('/empresa/modify/:empresa_id', updateEmpresa);
     app.post('/empresa/:empresa_id/comment', addComment);
     app.post('/empresa/:empresa_id/rating', addRate);
     app.post('/empresa', newEmpresa);

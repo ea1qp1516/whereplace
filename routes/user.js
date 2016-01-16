@@ -164,8 +164,22 @@ module.exports = function (app, passport) {
 
     }
 
-    removeUser = function (req, res) {
-
+    borrarUser = function (req, res) {
+        var now = new Date();
+        // console.log("El nombre que le paso " + req.body.nombre)
+        // Creo el objeto Empresa
+        User.remove({"_id": req.params.user_id},
+            function (err, empresa) {
+                if (err) {
+                    res.send(err);
+                }
+                // Obtine y devuelve todas las routes tras crear una de ellas
+                User.find(function (err, empresa) {
+                    if (err)
+                        res.send(err)
+                    res.json(empresa);
+                });
+            });
     }
 
 
@@ -220,6 +234,7 @@ module.exports = function (app, passport) {
     app.get('/user/:user_id', getUser);
     app.get('/user', getUsers);
     app.get('/user/:user_id/avatar', getAvatar);
+    app.delete('/user/delete/:user_id', borrarUser);
 
 
     app.post('/user/favorito',addFavorito);
