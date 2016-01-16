@@ -26,6 +26,7 @@
 			background: $auth-tabs-bg;
 			color: $auth-tabs-color;
 			@include transition(all 0.1s ease);
+
 		}
 
 		.tab-item.active,
@@ -42,6 +43,7 @@
 	.login-container
 	{
 		margin-bottom: 0px;
+		
 
 		.card-heding
 		{
@@ -55,6 +57,7 @@
 				background-position: bottom;
 				border-top-width: 0;
 				border-bottom-width: 1px;
+
 			}
 
 			.tab-item
