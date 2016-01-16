@@ -280,7 +280,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
         .state('registerCompany', {
             url: "/register_company",
             templateUrl: "views/registercompany.html",
-            controller: "RegisterController",
+            controller: "RegisterCompanyController",
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
                     return $ocLazyLoad.load([{
@@ -308,7 +308,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
                             '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.css',
                             '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.js',
                             'js/controllers/UISelectController.js',
-                            'js/controllers/RegisterController.js'
+                            'js/controllers/RegisterCompanyController.js'
 
                         ]
                     }]);

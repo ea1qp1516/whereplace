@@ -45,18 +45,6 @@ MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
     };
 
 
-    $scope.registrarEmpresa = function () {
-
-
-           $http.post('/empresa', $scope.empresa);
-           console.log("###########################################\n" + $scope.empresa.nombre + "##" + $scope.empresa.puntuacion);
-
-
-
-    };
-
-
-
 
     $scope.volver = function () {
         $state.go('index');

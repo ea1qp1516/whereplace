@@ -11,6 +11,14 @@ var comentarioSchema = {
         avatar: String
 };
 
+var detallesSchema = {
+        wifi: String,
+        terraza: String,
+        reservas: String,
+        horario: String,
+        tarjeta: String
+};
+
 var puntuacionSchema = {
     puntuacion: Number,
     userID: String
@@ -28,7 +36,7 @@ var empresaSchema = {
     telefono: String,
     tags:[String],
     comentarios:[comentarioSchema],
-    detalles:[String],
+    detalles:detallesSchema,
     created_at: Date,
     updated_at: Date,
     puntuaciones: [puntuacionSchema]
@@ -39,4 +47,5 @@ var empresaSchema = {
 
 module.exports = mongoose.model("Comentario", comentarioSchema);
 module.exports = mongoose.model("Puntuacion", puntuacionSchema);
+module.exports = mongoose.model("Detalles", detallesSchema);
 module.exports = mongoose.model("Empresa", empresaSchema);
