@@ -1,17 +1,6 @@
 
-<head>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-  <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,700,300italic' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700' rel='stylesheet' type='text/css'>
-
-</head>
 <!-- BEGIN BODY -->
-<body class="login" ng-controller="RegisterController">
+<body class="login" ng-controller="RegisterCompanyController">
 <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
 <div class="menu-toggler sidebar-toggler">
 </div>
@@ -19,7 +8,7 @@
 <!-- BEGIN LOGO -->
 <div class="logo">
 
-    <img src="../../assets/global/img/logo_whereplace_trans2.png" style="height: 120px; display:block; margin : 0 auto;" alt=""/>
+    <img src="../../assets/global/img/logo_where.png" style="height: 120px; display:block; margin : 0 auto;" alt=""/>
 
 </div>
 <br>
@@ -27,8 +16,8 @@
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
 <div class="container">
-    <div class="col-md-6">
-        <div class="portlet box blue-hoki">
+    <div class="col-md-12">
+        <div class="portlet box blue-steel">
             <div class="portlet-title">
                 <div class="caption">
                     Registro Empresa
@@ -36,13 +25,13 @@
             </div>
             <div class="portlet-body form">
                 <!-- BEGIN FORM-->
-                <form action="#"  class="form-horizontal form-bordered ng-pristine ng-valid">
+                <form class="form-horizontal form-bordered ng-pristine ng-valid">
                     <div class="form-body">
                         <div class="form-group">
                             <label class="control-label col-md-3">Nombre</label>
                             <div class="col-md-4">
                                 <div class="input-icon right">
-                                    <input class="form-control" type="text" placeholder="Nombre" ng-model="empresa.nombre">
+                                    <input class="form-control" type="text" placeholder="Nombre" ng-model="newEmpresa.nombre">
 
                                 </div>
                             </div>
@@ -51,7 +40,7 @@
                             <label class="control-label col-md-3">Dirección</label>
                             <div class="col-md-4">
                                 <div class="input-icon right">
-                                    <input class="form-control" type="text" placeholder="Dirección" ng-model="empresa.direccion">
+                                    <input class="form-control" type="text" placeholder="Dirección" ng-model="newEmpresa.direccion">
                                 </div>
                             </div>
                         </div>
@@ -59,7 +48,7 @@
                             <label class="control-label col-md-3">Ciudad</label>
                             <div class="col-md-4">
                                 <div class="input-icon right">
-                                    <input class="form-control" type="text" placeholder="Ciudad" ng-model="empresa.ciudad">
+                                    <input class="form-control" type="text" placeholder="Ciudad" ng-model="newEmpresa.ciudad">
 
                                 </div>
                             </div>
@@ -68,7 +57,7 @@
                             <label class="control-label col-md-3">Descripcion</label>
                             <div class="col-md-4">
                                 <div class="input-icon right">
-                                    <textarea id="maxlength_textarea" class="form-control" maxlength="225" rows="2" placeholder="Descripción. Max: 225 carácteres" ng-model="empresa.descripcion"></textarea>
+                                    <textarea id="maxlength_textarea" class="form-control" maxlength="225" rows="2" placeholder="Descripción. Max: 225 carácteres" ng-model="newEmpresa.descripcion"></textarea>
 
                                     </div>
                                 </div>
@@ -78,7 +67,7 @@
                             <label class="control-label col-md-3">Email</label>
                             <div class="col-md-4">
                                 <div class="input-icon right">
-                                    <input class="form-control" type="email" placeholder="Email" ng-model="empresa.email">
+                                    <input class="form-control" type="email" placeholder="Email" ng-model="newEmpresa.email">
                                 </div>
                             </div>
                         </div>
@@ -86,7 +75,7 @@
                             <label class="control-label col-md-3">Contraseña</label>
                             <div class="col-md-4">
                                 <div class="input-icon right">
-                                    <input class="form-control" type="password" placeholder="Contraseña" ng-model="empresa.password">
+                                    <input class="form-control" type="password" placeholder="Contraseña" ng-model="newEmpresa.password">
                                 </div>
                             </div>
                         </div>
@@ -94,132 +83,158 @@
                             <label class="control-label col-md-3">Teléfono</label>
                             <div class="col-md-4">
                                 <div class="input-icon right">
-                                    <input class="form-control" type="tel" placeholder="Teléfono" ng-model="empresa.telefono">
+                                    <input class="form-control" type="tel" placeholder="Teléfono" ng-model="newEmpresa.telefono">
                                 </div>
                             </div>
                         </div>
                         <!-- OPEN  MODAL-->
                         <div class="form-group">
                             <label class="control-label col-md-3">Negocio</label>
-                            
-                            <!-- OPEN MODAL-1-->
-                                  <!-- Trigger the modal with a button -->
-                                  <button type="button" data-toggle="modal" data-target="#modal_comida">Comida</button>
+                            <div class="col-md-6">
+                                <div class="input-icon right">
+                                  <button type="button" ng-click="detallesComida()" ng-model="newEmpresa.detalles.tipo"class="btn green-meadow"><i class="fa fa-coffee"> Comida</i></button>
+                                  <button type="button" ng-click="detallesDiversion()" class="btn purple-studio"><i class="fa fa-film"> Diversión</i></button>
+                                  <button type="button" ng-click="detallesNocturno()" class="btn grey-gallery"><i class="fa fa-moon-o"> Nocturno</i></button>
+                                  <button type="button" ng-click="detallesCompras()" class="btn yellow-lemon"><i class="fa fa-credit-card"> Compras</i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group"  ng-show="mostrarDetalleComida">
+                            <label class="control-label col-md-3">Detalles</label>
+                            <div class="col-md-3">
+                                <div class="input-icon right">
+                                  <div class="md-checkbox-list">
 
-                                  <!-- Modal -->
-                                  <div class="modal fade" id="modal_comida" role="dialog">
-                                    <div class="modal-dialog">
-                                    
-                                      <!-- Modal content-->
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                          <h4 class="modal-title">Comida</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                        <p>El local tiene Wifi <input type="checkbox" name="wifi"> </p>
-                                        <p>El local tiene Terraza <input type="checkbox" name="terraza"> </p>
-                                        <p>El local hace reservas <input type="checkbox" name="reservas"> </p>
-                                        <p>Que horario está abierto? <input type="time" name="timeopen" /> - <input type="time" name="timeclose" /> </p>
-                                        <p>Acepta tarjeta de crédito <input type="checkbox" name="tarjeta"> </p>
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="button" class="btn btn-default" data-dismiss="modal"
-                                          ng-click="empresa.puntuacion=comida">Aceptar</button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>     
-                            
-                            
-                            <!-- OPEN MODAL-2-->
-                                  <!-- Trigger the modal with a button -->
-                                  <button type="button" data-toggle="modal" data-target="#modal_diversion">Diversión</button>
+                                    <div class="md-checkbox">
 
-                                  <!-- Modal -->
-                                  <div class="modal fade" id="modal_diversion" role="dialog">
-                                    <div class="modal-dialog">
-                                    
-                                      <!-- Modal content-->
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                          <h4 class="modal-title">Diversión</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                         <p>El local tiene Wifi <input type="checkbox" name="wifi"> </p>
-                                        <p>El local hace reservas <input type="checkbox" name="reservas"> </p>
-                                        <p>Que horario está abierto? <input type="time" name="timeopen" /> - <input type="time" name="timeclose" /> </p>
-                                        <p>Acepta tarjeta de crédito <input type="checkbox" name="tarjeta"> </p>
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        </div>
-                                      </div>
-                                      
-                                    </div>
-                                  </div>     
-                            
-                            <!-- OPEN MODAL-3-->
-                                  <!-- Trigger the modal with a button -->
-                                  <button type="button" data-toggle="modal" data-target="#modal_nocturno">Nocturno</button>
+                                      <input id="wifi" class="md-check" ng-model="newEmpresa.detalles.wifi" ng-true-value="'Sí'" ng-false-value="'No'" type="checkbox">
+                                      <label for="wifi">
+                                        <span class="inc"></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span>
+                                        Wifi</label>
 
-                                  <!-- Modal -->
-                                  <div class="modal fade" id="modal_nocturno" role="dialog">
-                                    <div class="modal-dialog">
-                                    
-                                      <!-- Modal content-->
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                          <h4 class="modal-title">Nocturno</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                          <p>El local tiene Terraza <input type="checkbox" name="terraza"> </p>
-                                          <p>El local hace reservas <input type="checkbox" name="reservas"> </p>
-                                          <p>Que horario está abierto? <input type="time" name="timeopen" /> - <input type="time" name="timeclose" /> </p>
-                                        <p>Acepta tarjeta de crédito <input type="checkbox" name="tarjeta"> </p>
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        </div>
                                       </div>
-                                      
-                                    </div>
-                                  </div>     
-                            
-                            <!-- OPEN MODAL-4-->
-                                  <!-- Trigger the modal with a button -->
-                                  <button type="button" data-toggle="modal" data-target="#modal_compras">Compras</button>
+                                      <div class="md-checkbox">
+                                        <input id="terraza" class="md-check" ng-model="newEmpresa.detalles.terraza" ng-true-value="'Sí'" ng-false-value="'No'" type="checkbox">
+                                        <label for="terraza">
+                                          <span class="inc"></span>
+                                          <span class="check"></span>
+                                          <span class="box"></span>
+                                          Terraza </label>
+                                        </div>
+                                        <div class="md-checkbox">
+                                          <input id="reservas" class="md-check" ng-model="newEmpresa.detalles.reservas" ng-true-value="'Sí'" ng-false-value="'No'" type="checkbox">
+                                          <label for="reservas">
+                                            <span class="inc"></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span>
+                                            Reservas </label>
+                                          </div>
+                                          <div class="md-checkbox">
+                                            <input id="tarjeta" class="md-check" ng-model="newEmpresa.detalles.tarjeta" ng-true-value="'Sí'" ng-false-value="'No'" type="checkbox">
+                                            <label for="tarjeta">
+                                              <span class="inc"></span>
+                                              <span class="check"></span>
+                                              <span class="box"></span>
+                                              Tarjeta </label>
+                                            </div>
+                                          </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
 
-                                  <!-- Modal -->
-                                  <div class="modal fade" id="modal_compras" role="dialog">
-                                    <div class="modal-dialog">
-                                    
-                                      <!-- Modal content-->
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                          <h4 class="modal-title">Compras</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                          <p>El local tiene Wifi <input type="checkbox" name="wifi"> </p>
-                                          <p>Que horario está abierto? <input type="time" name="timeopen" /> - <input type="time" name="timeclose" /> </p>
-                                          <p>Acepta tarjeta de crédito <input type="checkbox" name="tarjeta"> </p>
-                                        </div>
-                                        <div class="modal-footer">
-                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        </div>
-                                      </div>
-                                      
+                              <div class="md-checkbox-list">
+
+                                <div class="md-checkbox">
+
+                                  <input id="todos" class="md-check" ng-model="todos" ng-true-value="'Todos los dias'" type="checkbox">
+                                  <label for="todos">
+                                    <span class="inc"></span>
+                                    <span class="check"></span>
+                                    <span class="box"></span>
+                                    Todos los dias</label>
+
+                                  </div>
+                                  <div class="md-checkbox">
+                                    <input id="entre" class="md-check" ng-model="entre" ng-true-value="'De Lunes a Viernes'"  type="checkbox">
+                                    <label for="entre">
+                                      <span class="inc"></span>
+                                      <span class="check"></span>
+                                      <span class="box"></span>
+                                      De Lunes a Viernes </label>
                                     </div>
-                                  </div>     
-                            
+                                    <div class="md-checkbox">
+                                      <input id="fines" class="md-check" ng-model="fines" ng-true-value="'Sólo fines de semana'"  type="checkbox">
+                                      <label for="fines">
+                                        <span class="inc"></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span>
+                                        Sólo fines de semana </label>
+                                      </div>
+                                      </div>
+                            </div>
+                            <div class="col-md-3">
+
+                              <div class="md-checkbox-list">
+
+                                <div class="md-checkbox">
+
+                                  <input id="manyanas" class="md-check" ng-model="manyanas" ng-true-value="' por las mañanas'" type="checkbox">
+                                  <label for="manyanas">
+                                    <span class="inc"></span>
+                                    <span class="check"></span>
+                                    <span class="box"></span>
+                                    Mañanas</label>
+
+                                  </div>
+                                  <div class="md-checkbox">
+                                    <input id="tardes" class="md-check" ng-model="tardes" ng-true-value="' por las tardes'"  type="checkbox">
+                                    <label for="tardes">
+                                      <span class="inc"></span>
+                                      <span class="check"></span>
+                                      <span class="box"></span>
+                                      Tardes </label>
+                                    </div>
+                                    <div class="md-checkbox">
+                                      <input id="ambos" class="md-check" ng-model="ambos" ng-true-value="' por la mañana y por la tarde'"  type="checkbox">
+                                      <label for="ambos">
+                                        <span class="inc"></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span>
+                                        Mañanas y tardes </label>
+                                      </div>
+                                      </div>
+                            </div>
+                        </div>
+                        <div class="form-group"  ng-show="mostrarDetalleDiversion">
+                            <label class="control-label col-md-3">Detalles</label>
+                            <div class="col-md-6">
+                                <div class="input-icon right">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group"  ng-show="mostrarDetalleNocturno">
+                            <label class="control-label col-md-3">Detalles</label>
+                            <div class="col-md-6">
+                                <div class="input-icon right">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group"  ng-show="mostrarDetalleCompras">
+                            <label class="control-label col-md-3">Detalles</label>
+                            <div class="col-md-6">
+                                <div class="input-icon right">
+                                  Hoooola
+                                </div>
+                            </div>
                         </div>
                     <div class="form-actions">
                         <div class="row">
                             <div class="col-md-offset-3 col-md-9">
-                                <button type="submit" class="btn purple" style="background-color: #780707"   ng-click="registrarEmpresa()"><i class="fa fa-check"></i> Registrar</button>
+                                <button type="submit" class="btn blue-steel" ng-click="registrarEmpresa()"><i class="fa fa-check"></i> Registrar</button>
                                 <button type="button" class="btn default" ng-click="volver()">Cancelar</button>
                             </div>
                         </div>
