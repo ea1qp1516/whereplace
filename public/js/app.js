@@ -124,6 +124,9 @@ MetronicApp.controller('HeaderController', ['$scope','$cookieStore', '$state','$
     $scope.register = function () {
       $state.go('register');
     }
+    $scope.config = function () {
+      $state.go('account',{user: $scope.user});
+    }
     $scope.logout = function () {
       $cookieStore.remove('Name');
       $cookieStore.remove('Apellidos');
@@ -131,8 +134,7 @@ MetronicApp.controller('HeaderController', ['$scope','$cookieStore', '$state','$
       $cookieStore.remove('Avatar');
 
       window.location.href = "/";
-      $scope.mostrarHeaderLogin = false;
-      $scope.mostrarBotonesHeader = true;
+      //$state.go('index');
     }
 }]);
 
@@ -314,7 +316,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
             }
         })
 
-        
+
 
 .state('loginCompany', {
             url: "/login_company",
@@ -519,10 +521,11 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
         })
 
 
-        .state('profile.account', {
+        .state('account', {
             url: "/account",
             templateUrl: "views/profile/account.html",
             controller: "FileController",
+            params :{'user':{}},
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
                     return $ocLazyLoad.load([{
@@ -533,6 +536,35 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
                     }, {
                         name: 'MetronicApp',
                         files: [
+                          '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
+                          '../../../assets/admin/pages/css/profile.css',
+                          '../../../assets/admin/pages/css/tasks.css',
+
+                          '../../../assets/global/plugins/jquery.sparkline.min.js',
+                          '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
+
+                          '../../../assets/admin/pages/scripts/profile.js',
+
+                          '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
+                          '../../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css',
+                          '../../../assets/global/plugins/jquery-tags-input/jquery.tagsinput.css',
+                          '../../../assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css',
+                          '../../../assets/global/plugins/typeahead/typeahead.css',
+
+                          '../../../assets/global/plugins/fuelux/js/spinner.min.js',
+                          '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
+                          '../../../assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js',
+                          '../../../assets/global/plugins/jquery.input-ip-address-control-1.0.min.js',
+                          '../../../assets/global/plugins/bootstrap-pwstrength/pwstrength-bootstrap.min.js',
+                          '../../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js',
+                          '../../../assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js',
+                          '../../../assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js',
+                          '../../../assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js',
+                          '../../../assets/global/plugins/typeahead/handlebars.min.js',
+                          '../../../assets/global/plugins/typeahead/typeahead.bundle.min.js',
+                          '../../../assets/admin/pages/scripts/components-form-tools.js',
+
+                          'js/controllers/UserProfileController.js',
                             'js/controllers/FileController.js'
                         ]
                     }]);

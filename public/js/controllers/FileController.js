@@ -1,20 +1,21 @@
 'use strict';
 
-MetronicApp.controller('FileController',['$scope', '$http', '$cookieStore', 'upload', '$state', function ($scope, $http, $cookieStore, upload, $state) {
+MetronicApp.controller('FileController',['$scope', '$http','$stateParams', '$cookieStore', 'upload', '$state', function ($scope, $http,$stateParams, $cookieStore, upload, $state) {
     $scope.$on('$viewContentLoaded', function () {
         Metronic.initAjax(); // initialize core components
     });
 
 
-    $scope.user = {};
-    $http.get('/user/' + $cookieStore.get('IdUser')).success(function (data) {
+    $scope.user = $stateParams.user;
+    
+  /*  $http.get('/user/' + $cookieStore.get('IdUser')).success(function (data) {
 
             $scope.user = data;
 
         })
         .error(function (data) {
             console.log('Error: ' + data);
-        });
+        });*/
 
 
     $scope.actAvatar = function(){

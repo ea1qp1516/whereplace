@@ -21,9 +21,9 @@ MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
 
 
     $scope.registrarUser = function () {
-      numeroAv = Math.floor(Math.random() * 11) ;
+      numeroAv = Math.floor(Math.random() * 12) ;
       console.log(numeroAv);
-      $scope.newUser.avatar = "/assets/avatar/"+numeroAv+".jpg";
+      $scope.newUser.avatar = "/assets/avatar/"+numeroAv+".png";
         if ($scope.newUser.password == $scope.valPassword.password2) {
 
             $http.post('/user', $scope.newUser)
