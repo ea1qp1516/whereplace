@@ -80,12 +80,9 @@ module.exports = function (app) {
     // Guarda un objeto Empresa en base de datos
     borrarEmpresa = function (req, res) {
         var now = new Date();
+       // console.log("El nombre que le paso " + req.body.nombre)
         // Creo el objeto Empresa
-        Empresa.remove(
-            {
-                nombre: req.body.nombre,
-                _id: req.body._id
-            },
+        Empresa.remove({"_id": req.params.empresa_id},
             function (err, empresa) {
                 if (err) {
                     res.send(err);
