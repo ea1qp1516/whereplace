@@ -17,8 +17,17 @@ module.exports = function(app, passport){
         scope: ['public_profile', 'email'] }));
 
 
-
     app.get('/auth/facebook/callback',passport.authenticate ('facebook', {
+        successRedirect: 'http://localhost:3000/#/profile',
+        failureRedirect: '/'
+    }));
+
+    //twitter authentication
+
+    app.get('/auth/twitter',passport.authenticate('twitter', {
+        scope: ['public_profile', 'email'] }));
+
+    app.get('/auth/twitter/callback',passport.authenticate ('twitter', {
         successRedirect: 'http://localhost:3000/#/profile',
         failureRedirect: '/'
     }));

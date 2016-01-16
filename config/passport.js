@@ -3,6 +3,7 @@
  */
 
 var FacebookStrategy = require('passport-facebook').Strategy;
+
 var configAuth = require('./auth');
 var User = require('../modelos/empresa');
 
