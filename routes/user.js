@@ -252,6 +252,7 @@ module.exports = function (app, passport) {
 
     app.post('/user/modify/:user_id', updateUser);
     app.post('/user/modify_avatar/:user_id',multipartMiddleware, addImages);
+    app.put('/user/modify/:user_id', updateUser);
 
     passport.serializeUser(function (user, done) {
         done(null, user);

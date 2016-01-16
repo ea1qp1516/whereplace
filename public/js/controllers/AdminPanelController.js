@@ -43,6 +43,11 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $statePar
         $scope.selected = true;
         console.log($scope.newEmpresa, $scope.selected);
     };
+    $scope.selectUser = function(user) {
+        $scope.newUser = user;
+        $scope.selected = true;
+        console.log($scope.newEmpresa, $scope.selected);
+    };
     $scope.borrarEmpresa = function(newEmpresa) {
         console.log(newEmpresa);
         $http.delete('/empresas/delete/' + newEmpresa._id)
@@ -69,6 +74,16 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $statePar
         $http.get('/empresa/' + editEmpresa._id).success(function(data){
             $scope.editEmpresa = data;
             console.log("DATAAAAA" +data._id);
+        }).error(function(data){
+            console.log("Error: " + data);
+        })
+    }
+    $scope.getUser = function(editUser){
+        console.log(editUser._id);
+        $http.get('/user/' + editUser._id).success(function(data){
+            $scope.editUser = data;
+            console.log("----------" + data);
+            console.log("DATAAAAA" +editUser._id);
         }).error(function(data){
             console.log("Error: " + data);
         })
@@ -103,13 +118,24 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $statePar
             });
 
     }
+    $scope.actualizarUser = function (editUser){
+        $http.put('/user/modify/' + $scope.editUser._id, $scope.editUser)
+            .success(function(data) {
+                $scope.editUser = {}; // Borramos los datos del formulario
+                $scope.selected = false;
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+
+    }
 
     $scope.borrarUser = function(newUser) {
-        console.log(newEmpresa);
-        $http.delete('/empresas/delete/' + newEmpresa._id)
+        console.log("El usuario recibido es " +newUser.nombre +" de id " +newUser._id);
+        $http.delete('/empresas/delete/' +newUser._id)
             .success(function(data) {
-                $scope.newEmpresa = {};
-                $scope.empresas = data;
+                $scope.newUser = {};
+                $scope.users = data;
                 $scope.selected = false;
             })
             .error(function(data) {
