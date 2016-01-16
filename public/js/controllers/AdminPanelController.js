@@ -43,9 +43,14 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $statePar
         $scope.selected = true;
         console.log($scope.newEmpresa, $scope.selected);
     };
+    $scope.selectUser = function(user) {
+        $scope.newUser = user;
+        $scope.selected = true;
+        console.log($scope.newEmpresa, $scope.selected);
+    };
     $scope.borrarEmpresa = function(newEmpresa) {
         console.log(newEmpresa);
-        $http.delete('/empresas/' + newEmpresa._id)
+        $http.delete('/empresas/delete/' + newEmpresa._id)
             .success(function(data) {
                 $scope.newEmpresa = {};
                 $scope.empresas = data;
@@ -64,7 +69,25 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $statePar
         .error(function(data) {
             console.log('Error: ' + data);
         });
-
+    $scope.getEmpresa = function(editEmpresa){
+        console.log(editEmpresa);
+        $http.get('/empresa/' + editEmpresa._id).success(function(data){
+            $scope.editEmpresa = data;
+            console.log("DATAAAAA" +data._id);
+        }).error(function(data){
+            console.log("Error: " + data);
+        })
+    }
+    $scope.getUser = function(editUser){
+        console.log(editUser._id);
+        $http.get('/user/' + editUser._id).success(function(data){
+            $scope.editUser = data;
+            console.log("----------" + data);
+            console.log("DATAAAAA" +editUser._id);
+        }).error(function(data){
+            console.log("Error: " + data);
+        })
+    }
     // Función para registrar a una empresa
     $scope.registrarEmpresa = function() {
         $http.post('/empresa', $scope.newEmpresa)
@@ -83,5 +106,41 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $statePar
 
     })
 
+    $scope.actualizarEmpresa = function (editEmpresa){
+        $http.put('/empresa/modify/' + $scope.editEmpresa._id, $scope.editEmpresa)
+            .success(function(data) {
+                $scope.editEmpresa = {}; // Borramos los datos del formulario
+                $scope.editEmpresa = {};
+                $scope.selected = false;
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+
+    }
+    $scope.actualizarUser = function (editUser){
+        $http.put('/user/modify/' + $scope.editUser._id, $scope.editUser)
+            .success(function(data) {
+                $scope.editUser = {}; // Borramos los datos del formulario
+                $scope.selected = false;
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+
+    }
+
+    $scope.borrarUser = function(newUser) {
+        console.log("El usuario recibido es " +newUser.nombre +" de id " +newUser._id);
+        $http.delete('/empresas/delete/' +newUser._id)
+            .success(function(data) {
+                $scope.newUser = {};
+                $scope.users = data;
+                $scope.selected = false;
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
 
 });

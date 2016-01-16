@@ -34,7 +34,7 @@
 								<i class="fa fa-bell-o"></i> Gestión de Empresas
 							</div>
 						</div>
-						<button class="btn  btn-xs green" data-toggle="modal" href="#modalanadir">
+						<button class="btn  btn-xs green">
 							<i class="fa fa-plus"></i> Añadir </button>
 						<div class="portlet-body">
 							<div class="table-scrollable">
@@ -44,11 +44,17 @@
 									<th>
 										<i class="fa fa-briefcase"></i> Nombre
 									</th>
-									<th class="hidden-xs">
-										<i class="fa fa-user"></i> Ciudad
+									<th>
+										<i class="fa fa-building"></i> Dirección
 									</th>
 									<th>
-										<i class="fa fa-shopping-cart"></i> Email
+										<i class="fa fa-university"></i> Ciudad
+									</th>
+									<th>
+										<i class="fa fa-folder-o"></i> Email
+									</th>
+									<th>
+										<i class="fa fa-phone-square"></i> Teléfono
 									</th>
 									<th>
 									</th>
@@ -65,8 +71,14 @@
 									<td>
 										{{empresa.email}}
 									</td>
+									<td>
+										{{empresa.email}}
+									</td>
+									<td>
+										{{empresa.telefono}}
+									</td>
 									<td width="200">	
-										<button class="btn default btn-xs blue">
+										<button class="btn default btn-xs blue" data-toggle="modal" href="#modalanadir" ng-click="getEmpresa(empresa)">
 										<i class="fa fa-edit"></i> Editar </button>
 
 										<button class="btn default btn-xs red" ng-click="borrarEmpresa(empresa)">
@@ -108,21 +120,21 @@
 								</tr>
 								</thead>
 								<tbody>
-								<tr ng-repeat="user in users">
+								<tr ng-repeat="User in users">
 									<td class="highlight">
-										{{user.nombre}}
+										{{User.nombre}}
 									</td>
 									<td class="hidden-xs">
-										{{user.ciudad}}
+										{{User.ciudad}}
 									</td>
 									<td>
-										{{user.email}}
+										{{User.email}}
 									</td>
 									<td width="200">
-										<button class="btn default btn-xs blue">
+										<button class="btn default btn-xs blue" data-toggle="modal" href="#modaluser" ng-click="getUser(User)">
 										<i class="fa fa-edit"></i> Editar </button>
 
-										<button class="btn default btn-xs red" ng-click="borrarEmpresa(empresa)">
+										<button class="btn default btn-xs red" ng-click="borrarUser(User)">
 										<i class="fa fa-trash-o"></i> Borrar </button>
 									</td>
 								</tr>
@@ -185,17 +197,17 @@ Demo.init(); // init demo features
 											Nombre
 											<i class="fa fa-edit"></i>
 											</span>
-											<span class="twitter-typeahead" style="position: relative; display: inline-block; direction: ltr;"><input type="text" class="form-control tt-hint" readonly="" autocomplete="off" spellcheck="false" tabindex="-1" style=" position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; opacity: 1; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255);"><input type="text" id="typeahead_example_2" name="typeahead_example_2" class="form-control tt-input" autocomplete="off" spellcheck="false" dir="auto" ng-model="newEmpresa.nombre" style="width:400px; position: relative; vertical-align: top; background-color: transparent;"><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: 'Open Sans', sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;"><div class="tt-dataset-typeahead_example_2"></div></span></span>
+											<span class="twitter-typeahead" style="position: relative; display: inline-block; direction: ltr;"><input type="text" class="form-control tt-hint" readonly="" autocomplete="off" spellcheck="false" tabindex="-1" style=" position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; opacity: 1; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255);"><input type="text" id="typeahead_example_2" name="typeahead_example_2" class="form-control tt-input" autocomplete="off" spellcheck="false" dir="auto" ng-model="editEmpresa.nombre" style="width:400px; position: relative; vertical-align: top; background-color: transparent;" placeholder="{{editEmpresa.nombre}}"></input><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: 'Open Sans', sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;"><div class="tt-dataset-typeahead_example_2"></div></span></span>
 										</div>
 
 						</div>	<br>	<br><br>	
 					<div class="col-sm-4">
 										<div class="input-group">
 											<span class="input-group-addon">
-											Ciudad
+											Direccion
 											<i class="fa fa-home"></i>
 											</span>
-											<span class="twitter-typeahead" style="position: relative; display: inline-block; direction: ltr;"><input type="text" class="form-control tt-hint" readonly="" autocomplete="off" spellcheck="false" tabindex="-1" style="position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; opacity: 1; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255);"><input type="text" id="typeahead_example_2" name="typeahead_example_2" class="form-control tt-input" autocomplete="off" spellcheck="false" dir="auto" ng-model="newEmpresa.ciudad" style="width:400px; position: relative; vertical-align: top; background-color: transparent;"><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: 'Open Sans', sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;"><div class="tt-dataset-typeahead_example_2"></div></span></span>
+											<span class="twitter-typeahead" style="position: relative; display: inline-block; direction: ltr;"><input type="text" class="form-control tt-hint" readonly="" autocomplete="off" spellcheck="false" tabindex="-1" style="position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; opacity: 1; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255);"><input type="text" id="typeahead_example_2" name="typeahead_example_2" class="form-control tt-input" autocomplete="off" spellcheck="false" dir="auto" ng-model="editEmpresa.ciudad" style="width:400px; position: relative; vertical-align: top; background-color: transparent;" placeholder="{{editEmpresa.direccion}}"></input><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: 'Open Sans', sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;"><div class="tt-dataset-typeahead_example_2"></div></span></span>
 										</div>
 
 						</div>	<br><br><br>
@@ -205,14 +217,84 @@ Demo.init(); // init demo features
 											Email
 											<i class="fa fa-envelope"></i>
 											</span>
-											<span class="twitter-typeahead" style="position: relative; display: inline-block; direction: ltr;"><input type="email" class="form-control tt-hint" readonly="" autocomplete="off" spellcheck="false" tabindex="-1" style="position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; opacity: 1; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255);"><input type="text" id="typeahead_example_2" name="typeahead_example_2" class="form-control tt-input" autocomplete="off" spellcheck="false" dir="auto" ng-model="newEmpresa.email" style="width:400px; position: relative; vertical-align: top; background-color: transparent;"><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: 'Open Sans', sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;"><div class="tt-dataset-typeahead_example_2"></div></span></span>
+											<span class="twitter-typeahead" style="position: relative; display: inline-block; direction: ltr;"><input type="email" class="form-control tt-hint" readonly="" autocomplete="off" spellcheck="false" tabindex="-1" style="position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; opacity: 1; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255);"><input type="text" id="typeahead_example_2" name="typeahead_example_2" class="form-control tt-input" autocomplete="off" spellcheck="false" dir="auto" ng-model="editEmpresa.email" style="width:400px; position: relative; vertical-align: top; background-color: transparent;" placeholder="{{editEmpresa.email}}"></input><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: 'Open Sans', sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;"><div class="tt-dataset-typeahead_example_2"></div></span></span>
 										</div>
 
-						</div>		<br><br><br>					
+						</div>		<br><br><br>
+					<div class="col-sm-4">
+										<div class="input-group">
+											<span class="input-group-addon">
+											Ciudad
+											<i class="fa fa-edit"></i>
+											</span>
+											<span class="twitter-typeahead" style="position: relative; display: inline-block; direction: ltr;"><input type="text" class="form-control tt-hint" readonly="" autocomplete="off" spellcheck="false" tabindex="-1" style=" position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; opacity: 1; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255);"><input type="text" id="typeahead_example_2" name="typeahead_example_2" class="form-control tt-input" autocomplete="off" spellcheck="false" dir="auto" ng-model="editEmpresa.nombre" style="width:400px; position: relative; vertical-align: top; background-color: transparent;" placeholder="{{editEmpresa.ciudad}}"></input><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: 'Open Sans', sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;"><div class="tt-dataset-typeahead_example_2"></div></span></span>
+										</div>
+
+						</div>	<br>	<br><br>							
+											<div class="col-sm-4">
+										<div class="input-group">
+											<span class="input-group-addon">
+											Tlf
+											<i class="fa fa-edit"></i>
+											</span>
+											<span class="twitter-typeahead" style="position: relative; display: inline-block; direction: ltr;"><input type="text" class="form-control tt-hint" readonly="" autocomplete="off" spellcheck="false" tabindex="-1" style=" position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; opacity: 1; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255);"><input type="text" id="typeahead_example_2" name="typeahead_example_2" class="form-control tt-input" autocomplete="off" spellcheck="false" dir="auto" ng-model="editEmpresa.telefono" style="width:400px; position: relative; vertical-align: top; background-color: transparent;" placeholder="{{editEmpresa.ciudad}}"></input><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: 'Open Sans', sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;"><div class="tt-dataset-typeahead_example_2"></div></span></span>
+										</div>
+
+						</div>	<br>	<br><br>
 			</div>
 			<div class="modal-footer">
-				<button type="button" id="closemodal" class="btn default" data-dismiss="modal" style="position:absolute; top:85%; left:84%;"><span class="md-click-circle md-click-animate" style="height: 65px; width: 65px; top: -24.5px; left: -14.4844px;"></span>Cancelar</button>
-				<button type="submit" class="btn blue" style="position:absolute; top:85%; left:70%;" ng-click="registrarEmpresa(newEmpresa)" id="closemodal2">Añadir</button>
+				<button type="button" id="closemodal" class="btn default" data-dismiss="modal" style="position:absolute; top:85%; left:84%;"><span class="md-click-circle md-click-animate" style="height: 65px; width: 65px; top: -24.5px; left: -14.4844px;"></span>Cancelar</button>&nbsp
+				<button type="submit" class="btn blue" style="position:absolute; top:85%; left:70%;" ng-click="actualizarEmpresa(editEmpresa)" id="closemodal2">Modificar</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="modaluser" tabindex="-1" role="basic" aria-hidden="true" style="display: none; width:800px; position:fixed; left:25%;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h4 class="modal-title">Modificar un usuario</h4>
+			</div>
+			<div class="modal-body">
+					<div class="col-sm-4">
+										<div class="input-group">
+											<span class="input-group-addon">
+											Nombre
+											<i class="fa fa-edit"></i>
+											</span>
+											<span class="twitter-typeahead" style="position: relative; display: inline-block; direction: ltr;"><input type="text" class="form-control tt-hint" readonly="" autocomplete="off" spellcheck="false" tabindex="-1" style=" position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; opacity: 1; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255);"><input type="text" id="typeahead_example_2" name="typeahead_example_2" class="form-control tt-input" autocomplete="off" spellcheck="false" dir="auto" ng-model="editUser.nombre" style="width:400px; position: relative; vertical-align: top; background-color: transparent;" placeholder="{{User.nombre}}"></input><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: 'Open Sans', sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;"><div class="tt-dataset-typeahead_example_2"></div></span></span>
+										</div>
+
+						</div>	<br>	<br><br>	
+					<div class="col-sm-4">
+										<div class="input-group">
+											<span class="input-group-addon">
+											Apellidos
+											<i class="fa fa-home"></i>
+											</span>
+											<span class="twitter-typeahead" style="position: relative; display: inline-block; direction: ltr;"><input type="text" class="form-control tt-hint" readonly="" autocomplete="off" spellcheck="false" tabindex="-1" style="position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; opacity: 1; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255);"><input type="text" id="typeahead_example_2" name="typeahead_example_2" class="form-control tt-input" autocomplete="off" spellcheck="false" dir="auto" ng-model="editUser.ciudad" style="width:400px; position: relative; vertical-align: top; background-color: transparent;" placeholder="{{User.direccion}}"></input><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: 'Open Sans', sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;"><div class="tt-dataset-typeahead_example_2"></div></span></span>
+										</div>
+
+						</div>	<br><br><br>
+					<div class="col-sm-4">
+										<div class="input-group">
+											<span class="input-group-addon">
+											Email
+											<i class="fa fa-envelope"></i>
+											</span>
+											<span class="twitter-typeahead" style="position: relative; display: inline-block; direction: ltr;"><input type="email" class="form-control tt-hint" readonly="" autocomplete="off" spellcheck="false" tabindex="-1" style="position: absolute; top: 0px; left: 0px; border-color: transparent; box-shadow: none; opacity: 1; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255);"><input type="text" id="typeahead_example_2" name="typeahead_example_2" class="form-control tt-input" autocomplete="off" spellcheck="false" dir="auto" ng-model="editUser.email" style="width:400px; position: relative; vertical-align: top; background-color: transparent;" placeholder="{{User.email}}"></input><pre aria-hidden="true" style="position: absolute; visibility: hidden; white-space: pre; font-family: 'Open Sans', sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: 0px; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre><span class="tt-dropdown-menu" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: none; right: auto;"><div class="tt-dataset-typeahead_example_2"></div></span></span>
+										</div>
+
+						</div>		<br><br><br>
+											
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="closemodal3" class="btn default" data-dismiss="modal" style="position:absolute; top:85%; left:84%;"><span class="md-click-circle md-click-animate" style="height: 65px; width: 65px; top: -24.5px; left: -14.4844px;"></span>Cancelar</button>&nbsp
+				<button type="submit" class="btn blue" style="position:absolute; top:85%; left:70%;" ng-click="actualizarUser(editUser)" id="closemodal4">Modificar</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -226,7 +308,17 @@ $('#modalanadir').modal('hide');
 });
 </script>
 <script type="text/javascript">
-	$('#closemodal2').click(function() {
-		$('#modalanadir').modal('hide');
-	});
+$('#closemodal2').click(function() {
+$('#modalanadir').modal('hide');
+});
+</script>
+<script type="text/javascript">
+$('#closemodal4').click(function() {
+$('#modaluser').modal('hide');
+});
+</script>
+<script type="text/javascript">
+$('#closemodal4').click(function() {
+$('#modaluser').modal('hide');
+});
 </script>
