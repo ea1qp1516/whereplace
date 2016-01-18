@@ -81,10 +81,18 @@ MetronicApp.factory('settings', ['$rootScope', function ($rootScope) {
 }]);
 
 /* Setup App Main Controller */
-MetronicApp.controller('AppController', ['$scope', '$state', '$rootScope', function ($scope,$state, $rootScope) {
+MetronicApp.controller('AppController', ['$scope', '$state', '$rootScope','$location', function ($scope,$state, $rootScope, $location) {
   $scope.about = function () {
     $state.go('about');
   }
+
+  $scope.color="#cc6165";
+  console.log($location.url());
+  if($location.url() == "/register_company"){
+    $scope.color="#B9EAFC";
+  }
+
+
 }]);
 
 MetronicApp.controller('FooterController', ['$scope', function ($scope) {
@@ -135,6 +143,7 @@ MetronicApp.controller('HeaderController', ['$scope','$cookieStore', '$state','$
 
       window.location.href = "/";
       //$state.go('index');
+
     }
 }]);
 

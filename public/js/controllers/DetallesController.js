@@ -26,20 +26,45 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
     var userPuntuador;
     var booleano;
 
+    $scope.formClassFav = 'btn btn-sm red-thunderbird';
+    $scope.formClassIconFav = 'fa fa-star-o';
 
+    $scope.subtags = new Array();
     $scope.empresa = {};
     $scope.newComment = {};
     $scope.newPuntuacion = {};
     $scope.NoPuedes = {};
     $scope.mostrarEstrellas = true;
     $scope.mostrarMensaje = false;
+    $scope.click = false;
+    $scope.user = {};
+
+
     userPuntuador = $cookieStore.get('IdUser');
     console.log(userPuntuador);
+
+    $http.get('/user/' + $cookieStore.get('IdUser')).success(function (data) {
+
+        $scope.user = data;
+
+
+    })
+        .error(function (data) {
+            console.log('Error: ' + data);
+        });
 
 
     $http.get('/empresa/' + $stateParams.empresa_id).success(function (data) {
 
         $scope.empresa = data;
+        var i;
+        for(i=0;i<$scope.empresa.subtags.length;i++){
+          if($scope.empresa.subtags[i] == null){
+          }else{
+            $scope.subtags.push($scope.empresa.subtags[i]);
+
+          }
+        };
         direccion = $scope.empresa.direccion;
         contador = $scope.empresa.puntuacion.contador;
         calificacion = $scope.empresa.puntuacion.puntuacion;
@@ -136,6 +161,48 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
                 console.log('Error: ' + data);
             });
 
+
+    };
+
+  /*  $scope.user.favoritos.forEach(function (empresa) {
+      if (empresa._id == $scope.empresa._id) {
+        $scope.click = true;
+        $scope.formClassFav = 'btn btn-sm yellow-lemon';
+        $scope.formClassIconFav = 'fa fa-star';
+      }
+    });*/
+
+    $scope.clickedFav = function (click) {
+
+      if(click==true){
+        $scope.formClassFav = 'btn btn-sm yellow-lemon';
+        $scope.formClassIconFav = 'fa fa-star';
+        $scope.click= false;
+        var favSend = {
+          user_id: $scope.user._id,
+          function: 'add',
+          empresa: $scope.empresa
+        }
+        console.log(favSend);
+        $http.post('/user/favorito', favSend).success(function (response) {
+
+        });
+
+      }
+      if(click==false){
+        $scope.formClassFav = 'btn btn-sm red-thunderbird';
+        $scope.formClassIconFav = 'fa fa-star-o';
+        $scope.click = true;
+        var favSend = {
+          user_id: $scope.user._id,
+          function: 'drop',
+          empresa: $scope.empresa
+        }
+        $http.post('/user/favorito', favSend).success(function (response) {
+
+        });
+
+      }
 
     };
 

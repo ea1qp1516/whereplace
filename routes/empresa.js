@@ -12,7 +12,8 @@ module.exports = function (app) {
                 email: 1,
                 telefono: 1,
                 puntuaciones: 1,
-                tags: 1,
+                tag: 1,
+                subtags:1,
                 comentarios: 1,
                 detalles: 1
             }, function (err, empresa) {
@@ -33,7 +34,8 @@ module.exports = function (app) {
                 email: 1,
                 telefono: 1,
                 puntuaciones: 1,
-                tags: 1,
+                tag: 1,
+                subtags: 1,
                 comentarios: 1,
                 detalles: 1,
                 created_at: 1,
@@ -59,7 +61,8 @@ module.exports = function (app) {
                 email: req.body.email,
                 password: req.body.password,
                 telefono: req.body.telefono,
-                tags: req.body.tags,
+                tag: req.body.tag,
+                subtags: req.body.subtags,
                 detalles: req.body.detalles,
                 created_at: now,
                 updated_at: now

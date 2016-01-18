@@ -12,6 +12,20 @@ var comentarioSchema = {
     user_id: String
 };
 
+var detallesSchema = {
+        wifi: String,
+        terraza: String,
+        reservas: String,
+        horario: String,
+        tarjeta: String
+};
+
+var puntuacionSchema = {
+    puntuacion: Number,
+    userID: String
+
+};
+
 var empresaSchema = {
     nombre:String,
     direccion:String,
@@ -20,13 +34,13 @@ var empresaSchema = {
     email:String,
     password:String,
     telefono: String,
-    puntuacion: String,
-    tipo : String, //Campo de prueba borrar
-    tags:[String],
+    tag: String,
+    subtags:[String],
     comentarios:[comentarioSchema],
-    detalles:[String],
+    detalles:detallesSchema,
     created_at: Date,
     updated_at: Date,
+    puntuaciones: [puntuacionSchema]
 };
 
 var userSchema = new Schema({

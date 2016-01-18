@@ -107,6 +107,7 @@ module.exports = function (app, passport) {
     addFavorito = function (req, res) {
         if(req.body.function=='add') {
             console.log("adding");
+            console.log(req.body);
 
             User.findById(req.body.user_id, function (err, user) {
                 if (err)

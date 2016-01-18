@@ -36,11 +36,13 @@
                                             <ul class="list-inline blog-tags">
                                                 <li>
                                                     <i class="fa fa-tags"></i>
-                                                    <a href="javascript:;" ng-repeat="tag in empresa.tags">
+                                                    <a href="javascript:;" ng-repeat="tag in subtags">
                                                         {{tag}} </a>
                                                 </li>
                                             </ul>
                                         </div>
+                                        <a ng-model="click" ng-click="clickedFav(click)" class="{{formClassFav}}">
+                                         Favorito <i class="{{formClassIconFav}}"></i></a>
                                         <div class="col-md-6 blog-tag-data-inner">
                                             <ul class="list-inline">
                                               <li>
@@ -74,7 +76,7 @@
                                     <p>
                                         {{empresa.descripcion}}
                                     </p>
-                                    
+
                                     <blockquote class="hero">
                                         <p>
                                             Detalles
