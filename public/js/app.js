@@ -589,11 +589,9 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state, $cook
     $scope.login = function () {
         $http.post('/user/login', $scope.loginUser)
             .success(function (data) {
-                console.log(data);
-                $cookieStore.put('Name', data.nombre);
-                $cookieStore.put('Apellidos', data.apellidos);
+                                
                 $cookieStore.put('IdUser', data._id);
-                $cookieStore.put('Avatar',data.avatar);
+
 
                 $state.go('main');
                 $scope.mostrarBotonesHeader=false;

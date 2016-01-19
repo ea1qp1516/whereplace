@@ -56,6 +56,7 @@ MetronicApp.controller('MainController', function ($scope, $http) {
         console.log('Error: ' + data);
     });
 
+
     $scope.cargarEmpresas = function(busqueda){
         var empresa = {busqueda: busqueda};
         $http.post('/empresas/busquedas',empresa).success(function (data) {
@@ -68,19 +69,6 @@ MetronicApp.controller('MainController', function ($scope, $http) {
             });
 
     }
-
-    $scope.logout = function () {
-      $cookieStore.remove('Name');
-      $cookieStore.remove('Apellidos');
-      $cookieStore.remove('IdUser');
-      $cookieStore.remove('Avatar');
-
-      $state.go('logout');
-      $scope.mostrarHeaderLogin = false;
-      $scope.mostrarBotonesHeader = true;
-    }
-
-
 
 });
 
