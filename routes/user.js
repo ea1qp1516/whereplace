@@ -40,16 +40,7 @@ module.exports = function (app, passport) {
 
     //Obtiene el avatar del usuario que se le pasa el id
 
-    getAvatar = function (req, res) {
-        User.findOne({"_id": req.params.user_id}, {
-                avatar: 1
-            }, function (err, user) {
-                if (err)
-                    res.send(err)
-                res.json(user);
-            }
-        );
-    }
+
 
 // Guarda un objeto Empresa en base de datos
     newUser = function (req, res) {
@@ -94,22 +85,62 @@ module.exports = function (app, passport) {
 
     updateUser = function (req, res) {
         if (req.body.password) {
-            var passmd5 = crypto.createHash('md5').update(req.body.password).digest("hex");
-        }
-        var now = new Date();
-        User.update({_id: req.params.user_id}, req.body,
-            function (err, user) {
-                if (err)
-                    res.send(err);
+            console.log(req.body.last);
+            console.log(req.body.password);
+            User.findOne({"_id": req.params.user_id}, {password: 1}, function (err, user) {
+                    if (err) {
+                        console.log("errorhere");
+                        res.send(err);
 
-                User.findOne({"_id": req.params.user_id}, {__v: 0, password: 0}, function (err, user) {
-                        if (err)
-                            res.send(err)
-                        res.json(user);
                     }
-                );
-            });
+                    else {
+                        var newpassmd5 = crypto.createHash('md5').update(req.body.password).digest("hex");
+                        var lastpass = crypto.createHash('md5').update(req.body.last).digest("hex");
+                        req.body.password = newpassmd5;
+                        if (user.password == lastpass) {
+                            console.log("antigua: " + lastpass);
+                            console.log("nueva: " + newpassmd5);
+                            User.update({_id: req.params.user_id}, req.body,
+                                function (err, user) {
+                                    if (err) {
+                                        res.send(err);
+                                    }
 
+                                    User.findOne({"_id": req.params.user_id}, {
+                                            __v: 0,
+                                            password: 0
+                                        }, function (err, user) {
+                                            if (err) {
+                                                res.send(err)
+                                            }
+                                            res.json(user);
+                                        }
+                                    );
+                                });
+                        }
+                        else{
+                            console.log("401");
+                            res.sendStatus(401);
+                        }
+                    }
+                }
+            );
+        }
+        else {
+            var now = new Date();
+            User.update({_id: req.params.user_id}, req.body,
+                function (err, user) {
+                    if (err)
+                        res.send(err);
+
+                    User.findOne({"_id": req.params.user_id}, {__v: 0, password: 0}, function (err, user) {
+                            if (err)
+                                res.send(err)
+                            res.json(user);
+                        }
+                    );
+                });
+        }
     }
 
     addFavorito = function (req, res) {
@@ -242,7 +273,6 @@ module.exports = function (app, passport) {
 
     app.get('/user/:user_id', getUser);
     app.get('/user', getUsers);
-    app.get('/user/:user_id/avatar', getAvatar);
     app.delete('/user/delete/:user_id', borrarUser);
 
     app.post('/user/find', findUser);
@@ -261,7 +291,6 @@ module.exports = function (app, passport) {
 
     app.post('/user/modify/:user_id', updateUser);
     app.post('/user/modify_avatar/:user_id',multipartMiddleware, addImages);
-    app.put('/user/modify/:user_id', updateUser);
 
     passport.serializeUser(function (user, done) {
         done(null, user);
@@ -285,6 +314,8 @@ module.exports = function (app, passport) {
                 if (!user) {
                     return done(null, false, {message: 'Ese usuario no existe.'});
                 }
+                console.log(user.password);
+                console.log(passmd5);
                 if (!user.validPassword(passmd5)) {
                     return done(null, false, {message: 'Password incorrecta.'});
                 }
