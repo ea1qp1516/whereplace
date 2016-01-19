@@ -1,4 +1,4 @@
-var url = "http://10.183.41.226:3000";
+var url = "http://147.83.7.158:3000";
 
 //10.83.55.226
 //localhost
@@ -24,16 +24,7 @@ angular.module('your_app_name.controllers', [])
     var user = JSON.parse(window.localStorage['user'] || '{}');
     console.log(user);
     $scope.user = user;
-
-      $scope.logout = function() {
-
-        window.localStorage['user'] = "";
-
-        $state.go('auth.walkthrough');
-
-      }
-
-  })
+    })
   .controller('ProfileCtrl', function ($scope, $ionicConfig) {
 
     var user = JSON.parse(window.localStorage['user'] || '{}');
@@ -46,7 +37,13 @@ angular.module('your_app_name.controllers', [])
   .controller('LoginCtrl', function ($scope, $state, $templateCache, $q, $rootScope, $http) {
 
     $scope.doLogIn = function () {
-      $http.post(url + '/user/login', $scope.user)
+      var login ={
+        username : $scope.user.username,
+        password : $scope.user.password
+      };
+
+      var config = ({headers: {'Content-Type' : 'application/json'}});
+      $http.post(url + '/user/login', login, config)
         .success(function (data) {
           console.log(data);
           window.localStorage['user'] = JSON.stringify(data);
@@ -74,8 +71,8 @@ angular.module('your_app_name.controllers', [])
     $scope.user.email = "";
 
     $scope.doSignUp = function (user) {
-
-      $http.post(url + '/user/find',user)
+      var config = {};
+      $http.post(url + '/user/find',user,config)
           .success(function (data) {
             if (data[0]==undefined){
               $scope.formClass = "ion-checkmark";
@@ -433,22 +430,50 @@ angular.module('your_app_name.controllers', [])
   })
 
 // SETTINGS
-  .controller('SettingsCtrl', function ($scope, $ionicActionSheet, $state, $ionicHistory) {
+  .controller('SettingsCtrl', function ($scope, $ionicActionSheet, $state, $ionicHistory, $http, $ionicPopup) {
     $ionicHistory.nextViewOptions({
       disableBack: true
     });
-    $scope.airplaneMode = true;
-    $scope.wifi = false;
-    $scope.bluetooth = true;
-    $scope.personalHotspot = true;
 
-    $scope.checkOpt1 = true;
-    $scope.checkOpt2 = true;
-    $scope.checkOpt3 = false;
+      $scope.CambiarPassword = function(password){
 
-    $scope.radioChoice = 'B';
 
+        if (password.new == password.renew){
+          var user = JSON.parse(window.localStorage['user'] || '{}');
+
+
+          var change_password = {
+              password : password.new,
+              last : password.last
+          }
+          $http.post(url + '/user/modify/' + user._id , change_password)
+              .success(function (response) {
+
+                var alertPopup = $ionicPopup.alert({
+                  title: 'Contraseña cambiada correctamente'
+                });
+
+                alertPopup.then(function(res) {
+
+                });
+              })
+              .error(function(response,status){
+                var alertPopup = $ionicPopup.alert({
+                  title: 'Contraseña antigua incorrecta',
+                  template: 'Introduzca la contraseña correcta, porfavor'
+                });
+
+                alertPopup.then(function(res) {
+
+
+                });
+              });
+
+        }
+
+      }
     // Triggered on a the logOut button click
+
     $scope.showLogOutMenu = function () {
 
       // Show the action sheet
@@ -473,6 +498,8 @@ angular.module('your_app_name.controllers', [])
         destructiveButtonClicked: function () {
           //Called when the destructive button is clicked.
           //Return true to close the action sheet, or false to keep it opened.
+          window.localStorage['user'] = "";
+
           $state.go('auth.walkthrough');
         }
       });
