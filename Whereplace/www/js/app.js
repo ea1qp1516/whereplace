@@ -243,11 +243,6 @@ angular.module('WherePlace', [
       }
     }
   })
-  .state('app.logout', {
-    url: "/logout",
-    controller : "LogoutCtrl"
-  })
-
 
   //WORDPRESS
   .state('app.wordpress', {
