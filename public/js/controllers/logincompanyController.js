@@ -8,8 +8,6 @@ MetronicApp.controller('logincompanyController', function ($scope, $http, $state
             .success(function (data) {
                 console.log($scope.loginempresa);
                 console.log(data);
-                $cookieStore.put('Nombre', data.nombre);
-                $cookieStore.put('Email', data.email);
                 $cookieStore.put('IdCompany', data._id);
                 $scope.empresa = data;
                 $state.go('editcompany');

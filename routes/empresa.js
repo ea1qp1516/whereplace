@@ -15,7 +15,8 @@ module.exports = function (app) {
                 tag: 1,
                 subtags:1,
                 comentarios: 1,
-                coordenadas: 1,
+                lat: 1,
+                lng:1,
                 detalles: 1
             }, function (err, empresa) {
                 if (err)
@@ -38,7 +39,8 @@ module.exports = function (app) {
                 tag: 1,
                 subtags: 1,
                 comentarios: 1,
-                coordenadas: 1,
+                lat: 1,
+                lng: 1,
                 detalles: 1,
                 created_at: 1,
                 updated_at: 1
@@ -53,7 +55,7 @@ module.exports = function (app) {
 // Guarda un objeto Empresa en base de datos
     newEmpresa = function (req, res) {
         var now = new Date();
-        console.log(req.body.coordenadas);
+        console.log(req.body.lat);
         Empresa.create(
             {
                 nombre: req.body.nombre,
@@ -66,7 +68,8 @@ module.exports = function (app) {
                 tag: req.body.tag,
                 subtags: req.body.subtags,
                 detalles: req.body.detalles,
-                coordenadas: req.body.coordenadas,
+                lat: req.body.lat,
+                lng: req.body.lng,
                 created_at: now,
                 updated_at: now
             },
@@ -192,7 +195,7 @@ module.exports = function (app) {
     }
 
     empresalogin = function (req, res) {
-        Empresa.findOne({"nombre": req.body.nombre}, function (err, empresa) {
+        Empresa.findOne({"email": req.body.email}, function (err, empresa) {
                 if (err)
                     res.send(err)
                 if (req.body.password == empresa.password) {
