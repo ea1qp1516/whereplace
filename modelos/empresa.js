@@ -25,6 +25,10 @@ var puntuacionSchema = {
 
 };
 
+var coordenadasSchema = {
+  lat: String,
+  lng: String
+}
 
 var empresaSchema = {
     nombre:String,
@@ -40,7 +44,8 @@ var empresaSchema = {
     detalles:detallesSchema,
     created_at: Date,
     updated_at: Date,
-    puntuaciones: [puntuacionSchema]
+    puntuaciones: [puntuacionSchema],
+    coordenadas: coordenadasSchema
 };
 
 
