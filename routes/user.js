@@ -75,12 +75,20 @@ module.exports = function (app, passport) {
                 if (err)
                     res.send(err);
                 // Obtine y devuelve todas las routes tras crear una de ellas {tags:{$in: user.gustos}
-                Empresa.find({}, function (err, empresas) {
-                    if (err)
-                        res.send(err)
-                    res.json(empresas);
-                });
+                res.json(user);
             });
+
+    }
+
+    findUser = function (req,res){
+        console.log("here");
+
+        User.find({email:req.body.email}, {nombre: 1, apellidos: 1, email: 1, favoritos: 1, gustos: 1, avatar: 1}, function (err, user) {
+                if (err)
+                    res.send(err)
+                res.send(user); // devuelve todos los Users en JSON
+            }
+        );
 
     }
 
@@ -237,7 +245,7 @@ module.exports = function (app, passport) {
     app.get('/user/:user_id/avatar', getAvatar);
     app.delete('/user/delete/:user_id', borrarUser);
 
-
+    app.post('/user/find', findUser);
     app.post('/user/favorito',addFavorito);
     app.post('/user', newUser);
     app.post('/user/login',

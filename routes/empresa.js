@@ -15,6 +15,8 @@ module.exports = function (app) {
                 tag: 1,
                 subtags:1,
                 comentarios: 1,
+                lat: 1,
+                lng:1,
                 detalles: 1
             }, function (err, empresa) {
                 if (err)
@@ -37,6 +39,8 @@ module.exports = function (app) {
                 tag: 1,
                 subtags: 1,
                 comentarios: 1,
+                lat: 1,
+                lng: 1,
                 detalles: 1,
                 created_at: 1,
                 updated_at: 1
@@ -51,7 +55,7 @@ module.exports = function (app) {
 // Guarda un objeto Empresa en base de datos
     newEmpresa = function (req, res) {
         var now = new Date();
-        // Creo el objeto Empresa
+        console.log(req.body.lat);
         Empresa.create(
             {
                 nombre: req.body.nombre,
@@ -64,6 +68,8 @@ module.exports = function (app) {
                 tag: req.body.tag,
                 subtags: req.body.subtags,
                 detalles: req.body.detalles,
+                lat: req.body.lat,
+                lng: req.body.lng,
                 created_at: now,
                 updated_at: now
             },
@@ -167,7 +173,8 @@ module.exports = function (app) {
 
     }
     getEmpresasByGustos = function (req, res) {
-        Empresa.find({"tags": req.params.gusto}, {
+
+        Empresa.find({"tags": {$in:req.body.gusto}}, {
                 nombre: 1,
                 direccion: 1,
                 ciudad: 1,
@@ -189,7 +196,7 @@ module.exports = function (app) {
     }
 
     empresalogin = function (req, res) {
-        Empresa.findOne({"nombre": req.body.nombre}, function (err, empresa) {
+        Empresa.findOne({"email": req.body.email}, function (err, empresa) {
                 if (err)
                     res.send(err)
                 if (req.body.password == empresa.password) {
@@ -218,7 +225,7 @@ module.exports = function (app) {
     empresasbyComments = function (req, res) {
         console.log("Hola");
 
-        Empresa.find({"comentarios.user_id": "569297a16ca8b6782a006ca3"}, function (err, empresas) {
+        Empresa.find({"comentarios.user_id": req.params.user_id}, function (err, empresas) {
             if (err)
                 res.send(err);
             else
@@ -240,11 +247,11 @@ module.exports = function (app) {
     // app.get('/', getEmpresas);
 // Crear una nueva Empresa
     app.get('/empresas', getEmpresas);
-    app.get('/empresas/:gusto', getEmpresasByGustos);
-
+    app.get('/empresas/comentarios/:user_id', empresasbyComments);
     app.get('/empresas/:empresa_id/puntuacion', getPuntuacion);
     app.delete('/empresas/delete/:empresa_id', borrarEmpresa);
 
+    app.post('/empresas', getEmpresasByGustos);
     app.post('/empresas/busquedas', getBusqueda);
     app.put('/empresa/modify/:empresa_id', updateEmpresa);
     app.post('/empresa/:empresa_id/comment', addComment);

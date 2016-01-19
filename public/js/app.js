@@ -146,6 +146,31 @@ MetronicApp.controller('HeaderController', ['$scope','$cookieStore', '$state','$
 
     }
 }]);
+MetronicApp.controller('HeaderEmpController', ['$scope','$cookieStore', '$state','$http', function ($scope, $cookieStore, $state,$http) {
+    $scope.mostrarHeader = true;
+    $scope.empresa={};
+
+
+      $http.get('/empresa/'+$cookieStore.get('IdCompany')).success(function (data) {
+
+        $scope.empresa = data;
+      })
+      .error(function (data) {
+          console.log('Error: ' + data);
+      });
+
+
+
+    $scope.logout = function () {
+
+      $cookieStore.remove('IdCompany');
+
+
+      window.location.href = "/";
+      //$state.go('index');
+
+    }
+}]);
 
 
 /* Setup Layout Part - Footer */
@@ -369,9 +394,9 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
         })
 
         .state('editcompany', {
-            url: "/edit_company",
+            url: "/perfil_empresa",
             templateUrl: "views/editcompany.html",
-            controller: "EditController",
+            controller: "EmpresaProfileController",
             resolve: {
                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
                     return $ocLazyLoad.load([{
@@ -398,8 +423,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
                             '../../../assets/admin/pages/scripts/components-form-tools.js',
                             '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.css',
                             '../../../assets/global/plugins/angularjs/plugins/ui-select/select.min.js',
-                            'js/controllers/UISelectController.js',
-                            'js/controllers/EditController.js'
+                            'js/controllers/EmpresaProfileController.js'
 
                         ]
                     }]);
@@ -475,6 +499,52 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProv
                 }]
             }
         })
+        // User Profile
+        .state("profile_company", {
+            url: "/profile_company/dashboard",
+            templateUrl: "views/profile/maincompany.html",
+            controller: "EmpresaProfileController",
+            resolve: {
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
+                            '../../../assets/admin/pages/css/profile.css',
+                            '../../../assets/admin/pages/css/tasks.css',
+
+                            '../../../assets/global/plugins/jquery.sparkline.min.js',
+                            '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
+
+                            '../../../assets/admin/pages/scripts/profile.js',
+
+                            '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
+                            '../../../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css',
+                            '../../../assets/global/plugins/jquery-tags-input/jquery.tagsinput.css',
+                            '../../../assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css',
+                            '../../../assets/global/plugins/typeahead/typeahead.css',
+
+                            '../../../assets/global/plugins/fuelux/js/spinner.min.js',
+                            '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
+                            '../../../assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js',
+                            '../../../assets/global/plugins/jquery.input-ip-address-control-1.0.min.js',
+                            '../../../assets/global/plugins/bootstrap-pwstrength/pwstrength-bootstrap.min.js',
+                            '../../../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js',
+                            '../../../assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js',
+                            '../../../assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js',
+                            '../../../assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js',
+                            '../../../assets/global/plugins/typeahead/handlebars.min.js',
+                            '../../../assets/global/plugins/typeahead/typeahead.bundle.min.js',
+                            '../../../assets/admin/pages/scripts/components-form-tools.js',
+
+                            'js/controllers/EmpresaProfileController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
 
         // User Profile
         .state("profile", {
@@ -589,11 +659,9 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state, $cook
     $scope.login = function () {
         $http.post('/user/login', $scope.loginUser)
             .success(function (data) {
-                console.log(data);
-                $cookieStore.put('Name', data.nombre);
-                $cookieStore.put('Apellidos', data.apellidos);
+
                 $cookieStore.put('IdUser', data._id);
-                $cookieStore.put('Avatar',data.avatar);
+
 
                 $state.go('main');
                 $scope.mostrarBotonesHeader=false;

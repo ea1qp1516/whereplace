@@ -40,7 +40,10 @@ var empresaSchema = {
     detalles:detallesSchema,
     created_at: Date,
     updated_at: Date,
-    puntuaciones: [puntuacionSchema]
+    puntuaciones: [puntuacionSchema],
+    lat: String,
+    lng: String
+
 };
 
 

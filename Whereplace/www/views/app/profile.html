@@ -7,14 +7,16 @@
       <div class="profile-container">
         <div class="user-image-container">
           <pre-img ratio="_1_1" helper-class="rounded-image">
-            <img class="user-image" ng-src="/../../img/56783131e21b00f6422c0456/avatar.jpg" spinner-on-load>
+            <img class="user-image" ng-src="{{url +'/' +user.avatar}}" spinner-on-load>
           </pre-img>
         </div>
+        <br>
+        <br>
         <div class="user-name">{{user.nombre}}</div>
         <div class="user-twitter">{{user.apellidos}}</div>
       </div>
       <div class="user-background-image-outer">
-        <div multi-bg="['/../../img/56783131e21b00f6422c0456/avatar.jpg']"></div>
+        <div multi-bg="['{{url +'/' +user.avatar}}']"></div>
       </div>
     </div>
     <div class="bottom-content">

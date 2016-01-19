@@ -1,4 +1,4 @@
-var url = "http://10.83.21.191:3000";
+var url = "http://10.83.55.226:3000";
 
 //10.83.55.226
 //localhost
@@ -6,16 +6,32 @@ var url = "http://10.83.21.191:3000";
 
 angular.module('your_app_name.controllers', [])
 
-  .controller('AuthCtrl', function ($scope, $ionicConfig) {
+  .controller('AuthCtrl', function ($scope, $ionicConfig, $state) {
 
-  })
+      var user = JSON.parse(window.localStorage['user'] || '{}');
+      console.log(user.nombre);
+
+      if (user.nombre != undefined){
+
+        $state.go('app.feeds-categories', {user: user});
+      }
+
+    })
 
 // APP
-  .controller('AppCtrl', function ($scope, $ionicConfig) {
-
+  .controller('AppCtrl', function ($scope, $ionicConfig, $state) {
+    $scope.url = url;
     var user = JSON.parse(window.localStorage['user'] || '{}');
     console.log(user);
     $scope.user = user;
+
+      $scope.logout = function() {
+
+        window.localStorage['user'] = "";
+
+        $state.go('auth.walkthrough');
+
+      }
 
   })
   .controller('ProfileCtrl', function ($scope, $ionicConfig) {
@@ -52,14 +68,58 @@ angular.module('your_app_name.controllers', [])
 
   })
 
-  .controller('SignupCtrl', function ($scope, $state) {
+  .controller('SignupCtrl', function ($scope, $state, $http) {
     $scope.user = {};
 
     $scope.user.email = "";
 
-    $scope.doSignUp = function () {
-      $state.go('app.feeds-categories');
+    $scope.doSignUp = function (user) {
+
+      $http.post(url + '/user/find',user)
+          .success(function (data) {
+            if (data[0]==undefined){
+              $scope.formClass = "ion-checkmark";
+              $state.go('auth.registrar', {user:user});
+
+            }else{
+              $scope.formClass = "ion-close";
+            }
+
+          })
+
     };
+  })
+  .controller('RegistrarCtrl', function ($scope, $state, $http, $stateParams) {
+      $scope.user = $stateParams.user;
+      $scope.user.password = "";
+      $scope.doSignUp = function (user) {
+        if (user.password != user.repassword) {
+          $scope.formClass1 = "ion-close";
+          $scope.formClass2 = "ion-close";
+          console.log(user);
+
+        } else {
+          var numeroAv = Math.floor(Math.random() * 12) ;
+
+          var newuser = {
+            email : user.email,
+            nombre : user.nombre,
+            apellidos: user.apellidos,
+            password: user.password,
+            fecha_nacimiento: user.fecha_nacimiento,
+            avatar : "/assets/avatar/"+numeroAv+".png"
+          }
+          console.log(newuser);
+          $http.post(url + '/user', newuser)
+              .success(function (data) {
+                window.localStorage['user'] = JSON.stringify(data);
+                $state.go('app.feeds-categories', {user: data});
+
+              })
+
+        }
+        ;
+      }
   })
 
   .controller('ForgotPasswordCtrl', function ($scope, $state) {
@@ -133,91 +193,72 @@ angular.module('your_app_name.controllers', [])
 
   })
 
-  .controller('AdsCtrl', function ($scope, $ionicActionSheet, AdMob, iAd) {
-
-    $scope.manageAdMob = function () {
-
-      // Show the action sheet
-      var hideSheet = $ionicActionSheet.show({
-        //Here you can add some more buttons
-        buttons: [
-          {text: 'Show Banner'},
-          {text: 'Show Interstitial'}
-        ],
-        destructiveText: 'Remove Ads',
-        titleText: 'Choose the ad to show',
-        cancelText: 'Cancel',
-        cancel: function () {
-          // add cancel code..
-        },
-        destructiveButtonClicked: function () {
-          console.log("removing ads");
-          AdMob.removeAds();
-          return true;
-        },
-        buttonClicked: function (index, button) {
-          if (button.text == 'Show Banner') {
-            console.log("show banner");
-            AdMob.showBanner();
-          }
-
-          if (button.text == 'Show Interstitial') {
-            console.log("show interstitial");
-            AdMob.showInterstitial();
-          }
-
-          return true;
-        }
-      });
-    };
-
-    $scope.manageiAd = function () {
-
-      // Show the action sheet
-      var hideSheet = $ionicActionSheet.show({
-        //Here you can add some more buttons
-        buttons: [
-          {text: 'Show iAd Banner'},
-          {text: 'Show iAd Interstitial'}
-        ],
-        destructiveText: 'Remove Ads',
-        titleText: 'Choose the ad to show - Interstitial only works in iPad',
-        cancelText: 'Cancel',
-        cancel: function () {
-          // add cancel code..
-        },
-        destructiveButtonClicked: function () {
-          console.log("removing ads");
-          iAd.removeAds();
-          return true;
-        },
-        buttonClicked: function (index, button) {
-          if (button.text == 'Show iAd Banner') {
-            console.log("show iAd banner");
-            iAd.showBanner();
-          }
-          if (button.text == 'Show iAd Interstitial') {
-            console.log("show iAd interstitial");
-            iAd.showInterstitial();
-          }
-          return true;
-        }
-      });
-    };
-  })
 
 // FEED
 //brings all feed categories
-  .controller('FeedsCategoriesCtrl', function ($scope, $http) {
+  .controller('FeedsCategoriesCtrl', function ($scope, $http, $state) {
     $scope.feeds_categories = [];
 
     $http.get('feeds-categories.json').success(function (response) {
       $scope.feeds_categories = response;
     });
+
+    $scope.getEmpresas = function(gusto){
+      var user = JSON.parse(window.localStorage['user'] || '{}');
+      if (gusto =="Mis Gustos"){
+        console.log("misgustos");
+        var mis_gustos = user.gustos;
+        var jsgusto = {
+          gusto : mis_gustos
+        }
+        console.log(jsgusto);
+        $http.post(url + '/empresas', jsgusto).success(function (empresas) {
+
+          $state.go('app.category-feeds',{empresas:empresas});
+
+        });
+      }
+      else if(gusto =="Busqueda Personalizada"){
+
+        console.log("personaizada");
+
+        $http.get(url + '/empresas').success(function (empresas) {
+
+          $state.go('app.category-feeds',{empresas:empresas});
+
+        });
+
+      }
+      else{
+        console.log("otra");
+
+        gusto = gusto.toLowerCase();
+        var arrgusto = [];
+        arrgusto.push(gusto)
+        var jsgusto ={
+          gusto: arrgusto
+        }
+        $http.post(url + '/empresas',jsgusto).success(function (empresas) {
+
+          $state.go('app.category-feeds', {empresas: empresas});
+
+        });
+      }
+
+    }
   })
 
 //bring specific category providers
-  .controller('CategoryFeedsCtrl', function ($scope, $http, $stateParams, $state) {
+  .controller('CategoryFeedsCtrl', function ($scope, $http, $stateParams, $state, $ionicHistory) {
+
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
+
+    $scope.empresas = $stateParams.empresas;
+    window.localStorage['empresas'] = JSON.stringify($scope.empresas);
+
+
     $scope.category_sources = [];
 
     $scope.categoryId = $stateParams.categoryId;
@@ -226,25 +267,39 @@ angular.module('your_app_name.controllers', [])
       var category = _.find(response, {id: $scope.categoryId});
     });
 
-    $http.get(url + '/empresas/' + $stateParams.categoryId).success(function (empresas) {
 
-      $scope.empresas = empresas;
 
-    });
+    $scope.buscar = function(busqueda){
+
+      var empresas = JSON.parse(window.localStorage['empresas'] || '{}');
+
+      var matches = [];
+
+
+      empresas.forEach(function(empresa){
+        if(empresa.nombre.search(busqueda)!=-1){
+          matches.push(empresa);
+        }
+      })
+      $scope.empresas = matches;
+
+
+
+    }
+
     $scope.detailEmpresa = function (idempresa) {
 
       $http.get(url + '/empresa/' + idempresa).success(function (empresa) {
-
         $state.go("app.feed-entries", {empresa: empresa});
 
 
       });
     };
+
   })
 
 //this method brings posts for a source provider
-  .controller('FeedEntriesCtrl', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService) {
-
+  .controller('FeedEntriesCtrl', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService, $ionicHistory) {
     var user = JSON.parse(window.localStorage['user'] || '{}');
     $scope.id = user._id;
 
@@ -342,7 +397,10 @@ angular.module('your_app_name.controllers', [])
 
   })
 
-  .controller('NewCommentCtrl', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService) {
+  .controller('NewCommentCtrl', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService, $ionicHistory) {
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
     console.log($stateParams.empresa);
     var empresa = $stateParams.empresa;
     $scope.id = empresa._id;
@@ -375,7 +433,10 @@ angular.module('your_app_name.controllers', [])
   })
 
 // SETTINGS
-  .controller('SettingsCtrl', function ($scope, $ionicActionSheet, $state) {
+  .controller('SettingsCtrl', function ($scope, $ionicActionSheet, $state, $ionicHistory) {
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
     $scope.airplaneMode = true;
     $scope.wifi = false;
     $scope.bluetooth = true;
@@ -420,7 +481,11 @@ angular.module('your_app_name.controllers', [])
   })
 
 // TINDER CARDS
-  .controller('CommentsCtrl', function ($scope, $http, $state) {
+  .controller('CommentsCtrl', function ($scope, $http, $state, $ionicHistory) {
+
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
 
     var user = JSON.parse(window.localStorage['user'] || '{}');
 
@@ -441,7 +506,10 @@ angular.module('your_app_name.controllers', [])
 
 
   })
-  .controller('FavoritosCtrl', function ($scope, $http, $state) {
+  .controller('FavoritosCtrl', function ($scope, $http, $state, $ionicHistory) {
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
 
     var user = JSON.parse(window.localStorage['user'] || '{}');
 
@@ -468,7 +536,10 @@ angular.module('your_app_name.controllers', [])
 
 
 // BOOKMARKS
-  .controller('GustosCtrl', function ($scope, $rootScope, BookMarkService, $state, $http) {
+  .controller('GustosCtrl', function ($scope, $rootScope, BookMarkService, $state, $http, $ionicHistory) {
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
 
     var user = JSON.parse(window.localStorage['user'] || '{}');
 
@@ -527,6 +598,9 @@ angular.module('your_app_name.controllers', [])
       }
       $http.post(url + '/user/modify/' + user._id, gustoTag).success(function (response) {
         console.log(response);
+        window.localStorage['user'] = JSON.stringify(response);
+        var user = JSON.parse(window.localStorage['user'] || '{}');
+        console.log(user);
         $state.go("app.feeds-categories");
       });
     }
@@ -646,39 +720,57 @@ angular.module('your_app_name.controllers', [])
   })
 
 
-  .controller('ImagePickerCtrl', function ($scope, $rootScope, $cordovaCamera) {
+  .controller('ImagePickerCtrl', function ($rootScope, $scope, $cordovaCamera, $ionicActionSheet, $cordovaFileTransfer) {
+      ionic.Platform.ready(function(){
+        // will execute when device is ready, or immediately if the device is already ready.
+      });
 
 
-    $scope.selImages = function () {
-      var options = {
-        quality: 50,
-        destinationType: Camera.DestinationType.FILE_URI,
-        sourceType: 1,      // 0:Photo Library, 1=Camera, 2=Saved Photo Album
-        encodingType: 0     // 0=JPG 1=PNG
+      $scope.selImages = function() {
+        var options = {
+          quality: 100,
+          destinationType: Camera.DestinationType.FILE_URI,
+          sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+          allowEdit: true,
+          encodingType: Camera.EncodingType.JPEG,
+          popoverOptions: CameraPopoverOptions,
+          saveToPhotoAlbum: false
+        };
+
+        $cordovaCamera.getPicture(options).then(function(imageData) {
+
+          //console.log(imageData);
+          //console.log(options);
+
+          var url = "http://mydomein.com/upload.php";
+          //target path may be local or url
+          var targetPath = imageData;
+          var filename = targetPath.split("/").pop();
+          var options = {
+            fileKey: "file",
+            fileName: filename,
+            chunkedMode: false,
+            mimeType: "image/jpg"
+          };
+          $cordovaFileTransfer.upload(url, targetPath, options).then(function(result) {
+            console.log("SUCCESS: " + JSON.stringify(result.response));
+            alert("success");
+            alert(JSON.stringify(result.response));
+          }, function(err) {
+            console.log("ERROR: " + JSON.stringify(err));
+            alert(JSON.stringify(err));
+          }, function (progress) {
+            // constant progress updates
+            $timeout(function () {
+              $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+            })
+          });
+
+        }, function(err) {
+          // error
+          console.log(err);
+        });
       }
-      navigator.camera.getPicture(onSuccess, onFail, options);
-    }
-    var onSuccess = function (FILE_URI) {
-      console.log(FILE_URI);
-      $scope.picData = FILE_URI;
-      $scope.$apply();
-    };
-    var onFail = function (e) {
-      console.log("On fail " + e);
-    }
-    $scope.send = function () {
-      var myImg = $scope.picData;
-      var options = new FileUploadOptions();
-      options.fileKey = "post";
-      options.chunkedMode = false;
-      var params = {};
-      params.user_token = localStorage.getItem('auth_token');
-      params.user_email = localStorage.getItem('email');
-      options.params = params;
-      var ft = new FileTransfer();
-      ft.upload(myImg, encodeURI("https://example.com/posts/"), onUploadSuccess, onUploadFail, options);
-    }
 
   })
-
 ;

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <head>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -6,6 +7,9 @@
   <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700' rel='stylesheet' type='text/css'>
 
 </head>
+=======
+
+>>>>>>> origin/dev
 <!-- BEGIN BODY -->
 <body class="login" ng-controller="logincompanyController">
 <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
@@ -15,7 +19,7 @@
 <!-- BEGIN LOGO -->
 <div class="logo">
 
-    <img src="../../assets/global/img/logo_whereplace_trans2.png" style="height: 120px; display:block; margin : 0 auto;" alt=""/>
+    <img src="../../assets/global/img/logo_where.png" style="height: 120px; display:block; margin : 0 auto;" alt=""/>
 
 </div>
 <br>
@@ -23,55 +27,53 @@
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
 <div class="container">
-    <div class="col-md-6">
-        <div class="portlet box blue-hoki">
-            <div class="portlet-title" style="background-color: #50A5C7">
-                <div class="caption">
-                    Haz Login para ver tu Empresa
-                </div>
-            </div>
-                  <div class="portlet-body form">
-                        <!-- BEGIN FORM-->
-                        <form  class="form-horizontal form-bordered ng-pristine ng-valid">
-                            <div class="form-body">
-                            <div class="form-group">
-                                <label class="control-label col-md-3">Email</label>
-                                <div class="col-md-4">
-                                    <div class="input-icon right">
-                                        <input class="form-control" type="text" placeholder="Nombre" ng-model="loginempresa.nombre">
+<div class="col-md-12">
+	<div class="portlet box blue-steel" >
+		<div class="portlet-title">
+			<div class="caption">
+				Login Empresas
+			</div>
+		</div>
+		<div class="portlet-body form">
+			<!-- BEGIN FORM-->
+			<form id="form-username"  class="form-horizontal form-bordered ng-pristine ng-valid">
+				<div class="form-body">
+					<div class="form-group">
+						<label class="control-label col-md-3">Email</label>
+						<div class="col-md-4">
+							<div class="input-icon right">
+								<input class="form-control" type="email" placeholder="Email" ng-model="loginempresa.email">
 
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3">Password</label>
-                                <div class="col-md-4">
-                                    <div class="input-icon right">
-                                        <input class="form-control" type="text" placeholder="Password" ng-model="loginempresa.password">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                    <label class="control-label col-md-3"></label>
-                                    <div class="col-md-4">
+							</div>
+						</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3">Contraseña</label>
+							<div class="col-md-4">
+								<div class="input-icon right">
+									<input class="form-control" type="password" placeholder="Contraseña" ng-model="loginempresa.password">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-actions">
+						<div class="row">
+							<div class="col-md-offset-3 col-md-9">
+								<button type="submit" class="btn blue-steel" ng-click="login()"><i class="fa fa-check"></i> Login</button>
+								<button type="button" class="btn default">Cancelar</button>
+							</div>
+						</div>
+					</div>
+				</form>
+				<!-- END FORM-->
+			</div>
+		</div>
 
-                                    <a type="submit" class="btn purple" style="background-color: #50A5C7" ng-click="login()" ><i class="fa fa-sign-in" ></i>Haz LogIn</a>
-                                    </div>
-                            </div>
-                            </div>
-                        </form>
-                        <!-- END FORM-->
-                  </div>
-        </div>
-
-    </div>
-</div>
-<div class="copyright hide">
-    2015 © WherePlace.
-</div>
-<script>
-    ComponentsFormTools.init(); // init todo page
-</script>
+	</div>
+	</div>
+<!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
 <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

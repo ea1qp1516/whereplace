@@ -2,12 +2,20 @@
 'use strict';
 
 MetronicApp.controller('RegisterCompanyController', function ($scope, $http, $state) {
+
+    $scope.mostrarMapa = false;
+
     $scope.mostrarDetalleComida = false;
     $scope.mostrarDetalleDiversion = false;
     $scope.mostrarDetalleNocturno = false;
     $scope.mostrarDetalleCompras = false;
     $scope.mostrarSubtagsComida = false;
     $scope.newEmpresa = {};
+    $scope.newEmpresa.lat;
+    $scope.newEmpresa.lng;
+
+
+
     //FormsTagsComida
     $scope.formClassCh = 'btn btn-sm blue-steel';
     $scope.formClassIconCh = 'fa fa-plus';
@@ -17,7 +25,8 @@ MetronicApp.controller('RegisterCompanyController', function ($scope, $http, $st
     $scope.formClassIconEsp = 'fa fa-plus';
     $scope.formClassInd = 'btn btn-sm blue-steel';
     $scope.formClassIconInd = 'fa fa-plus';
-
+    var lat;
+    var lng;
 
     var contch;
     var contita;
@@ -415,29 +424,41 @@ console.log(contotr);
 
     };
 
+  //  function codeAddress(address) {
+
+
+    //}
+
 
     $scope.registrarEmpresa = function () {
 
-          console.log($scope.newEmpresa.subtags.length);
+  //        codeAddress($scope.newEmpresa.direccion);
+          geocoder = new google.maps.Geocoder();
+            geocoder.geocode({address: $scope.newEmpresa.direccion}, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+
+                  $scope.newEmpresa.lat = results[0].geometry.location.lat();
+                  $scope.newEmpresa.lng = results[0].geometry.location.lng();
+                  $scope.newEmpresa.detalles.horario = $scope.todos + $scope.entre + $scope.fines + $scope.manyanas + $scope.tardes + $scope.ambos;
+                  console.log($scope.newEmpresa);
+                  $http.post('/empresa', $scope.newEmpresa)
+                      .success(function () {
+
+                          $scope.newEmpresa = {};
+                          $state.go('index');
+
+                      })
+                      .error(function (data) {
+                          console.log('Error: ' + data);
+                          $scope.error = "Las contraseñas no coinciden";
+
+                      });
 
 
-
-          $scope.newEmpresa.detalles.horario = $scope.todos + $scope.entre + $scope.fines + $scope.manyanas + $scope.tardes + $scope.ambos;
-
-           $http.post('/empresa', $scope.newEmpresa)
-               .success(function () {
-
-                   $scope.newEmpresa = {};
-                   $state.go('index');
-
-               })
-               .error(function (data) {
-                   console.log('Error: ' + data);
-                   $scope.error = "Las contraseñas no coinciden";
-
-               });
-
-
+                } else {
+                    alert('EL Geocoder no funciona por la siguiente razón:  ' + status);
+                }
+            });
 
     };
 
@@ -448,3 +469,13 @@ console.log(contotr);
     };
 
 });
+
+var geocoder;
+
+
+
+function initMap() {
+    geocoder = new google.maps.Geocoder();
+
+
+}

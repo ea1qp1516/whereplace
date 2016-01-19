@@ -10,7 +10,7 @@ var calificacion;
 var users = new Array();
 var userPuntuador;
 var booleano;
-
+var empresa;
 MetronicApp.controller('DetallesController', function ($scope, $http, $stateParams, $cookieStore) {
     $scope.$on('$viewContentLoaded', function () {
         Metronic.initAjax(); // initialize core components
@@ -30,39 +30,51 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
     $scope.formClassIconFav = 'fa fa-star-o';
 
     $scope.subtags = new Array();
-    $scope.empresa = {};
+    $scope.empresa ={};
     $scope.newComment = {};
     $scope.newPuntuacion = {};
     $scope.NoPuedes = {};
     $scope.mostrarEstrellas = true;
     $scope.mostrarMensaje = false;
-    $scope.click = false;
+
+    $scope.favorito = false;
     $scope.user = {};
+    $scope.user.favoritos = new Array();
 
 
     userPuntuador = $cookieStore.get('IdUser');
-    console.log(userPuntuador);
-
     $http.get('/user/' + $cookieStore.get('IdUser')).success(function (data) {
 
         $scope.user = data;
-
+        $scope.user.favoritos = data.favoritos;
 
     })
         .error(function (data) {
             console.log('Error: ' + data);
         });
 
-
     $http.get('/empresa/' + $stateParams.empresa_id).success(function (data) {
 
         $scope.empresa = data;
+        empresa = data;
+
+        $scope.user.favoritos.forEach(function (data) {
+
+          if (data._id == $scope.empresa._id) {
+            console.log($scope.favorito);
+            $scope.favorito = true;
+
+            $scope.formClassFav = 'btn btn-sm yellow-lemon';
+            $scope.formClassIconFav = 'fa fa-star';
+
+          }
+        });
+
         var i;
         for(i=0;i<$scope.empresa.subtags.length;i++){
           if($scope.empresa.subtags[i] == null){
           }else{
             $scope.subtags.push($scope.empresa.subtags[i]);
-
           }
         };
         direccion = $scope.empresa.direccion;
@@ -82,8 +94,8 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
 
     $scope.nuevoComentario = function () {
 
-        $scope.newComment.user = $cookieStore.get('Name') + " " + $cookieStore.get('Apellidos');
-        $scope.newComment.avatar = $cookieStore.get('Avatar');
+        $scope.newComment.user = $scope.user.nombre + " " + $scope.user.apellidos;
+        $scope.newComment.avatar = $scope.user.avatar;
         console.log($scope.newComment);
         $http.post('/empresa/' + $stateParams.empresa_id + '/comment', $scope.newComment)
             .success(function (data) {
@@ -98,108 +110,42 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
     };
 
     $scope.puntuar = function (puntuacion) {
-        if (users.length == 0) {
-            booleano = 1;
-            if (booleano == 1) {
-
-                users.push($cookieStore.get('IdUser'));
-                $scope.newPuntuacion.users = users;
-
-                ++contador;
-                console.log("Contador: " + contador);
-                var puntuacion_final = (calificacion + puntuacion);
-                console.log("Puntuacion Final: " + puntuacion_final);
-
-                $scope.newPuntuacion.puntuacion = puntuacion_final;
-                $scope.newPuntuacion.contador = contador;
-
-            } else {
-                $scope.mostrarEstrellas = false;
-                $scope.mostrarMensaje = true;
-                $scope.NoPuedes = "Ya has puntuado, grácias!";
-            }
-
-        } else {
-            var i;
-            for (i in users) {
-                console.log("Users: " + users[i]);
-                if (users[i] == userPuntuador) {
-                    booleano = 0;
-                } else {
-                    booleano = 1;
-                }
-            }
-
-            if (booleano == 1) {
-
-                users.push($cookieStore.get('IdUser'));
-                $scope.newPuntuacion.users = users;
-
-                ++contador;
-                console.log("Contador: " + contador);
-                var puntuacion_final = (calificacion + puntuacion);
-                console.log("Puntuacion Final: " + puntuacion_final);
-
-                $scope.newPuntuacion.puntuacion = puntuacion_final;
-                $scope.newPuntuacion.contador = contador;
-
-            } else {
-                $scope.mostrarEstrellas = false;
-                $scope.mostrarMensaje = true;
-                $scope.NoPuedes = "Ya has puntuado, gracias por tu colaboración!";
-            }
-
-        }
-
-        $http.post('/empresa/' + $stateParams.empresa_id + '/rating', $scope.newPuntuacion)
-            .success(function (data) {
-
-                $scope.newPuntuacion = {};
-
-            })
-            .error(function (data) {
-                console.log('Error: ' + data);
-            });
-
+          
 
     };
 
-  /*  $scope.user.favoritos.forEach(function (empresa) {
-      if (empresa._id == $scope.empresa._id) {
-        $scope.click = true;
+
+
+
+    $scope.clickedFav = function (favorito) {
+
+      if(favorito==false){
         $scope.formClassFav = 'btn btn-sm yellow-lemon';
         $scope.formClassIconFav = 'fa fa-star';
-      }
-    });*/
-
-    $scope.clickedFav = function (click) {
-
-      if(click==true){
-        $scope.formClassFav = 'btn btn-sm yellow-lemon';
-        $scope.formClassIconFav = 'fa fa-star';
-        $scope.click= false;
+        $scope.favorito= true;
         var favSend = {
           user_id: $scope.user._id,
           function: 'add',
           empresa: $scope.empresa
         }
-        console.log(favSend);
-        $http.post('/user/favorito', favSend).success(function (response) {
 
+        $http.post('/user/favorito', favSend).success(function (response) {
+            console.log(response);
         });
 
       }
-      if(click==false){
+      if(favorito==true){
         $scope.formClassFav = 'btn btn-sm red-thunderbird';
         $scope.formClassIconFav = 'fa fa-star-o';
-        $scope.click = true;
+        $scope.favorito = false;
         var favSend = {
           user_id: $scope.user._id,
           function: 'drop',
           empresa: $scope.empresa
         }
-        $http.post('/user/favorito', favSend).success(function (response) {
 
+        $http.post('/user/favorito', favSend).success(function (response) {
+              console.log(response);
         });
 
       }
@@ -211,28 +157,18 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
 
 
 function initMap2() {
-    geocoder = new google.maps.Geocoder();
+
+    var myLatLng = new google.maps.LatLng(empresa.lat, empresa.lng);
     map = new google.maps.Map(document.getElementById('map2'), {
         center: myLatLng,
         zoom: 17
     });
-    codeAddress(direccion);//call the function
 
-}
+    var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        title: empresa.nombre
+      });
+      marker.setMap(map);
 
-
-function codeAddress(address) {
-    geocoder.geocode({address: address}, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            map.setCenter(results[0].geometry.location);//center the map over the result
-            //place a marker at the location
-            var marker = new google.maps.Marker(
-                {
-                    map: map,
-                    position: results[0].geometry.location
-                });
-        } else {
-            alert('Geocode was not successful for the following reason: ' + status);
-        }
-    });
 }

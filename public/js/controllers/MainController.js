@@ -1,36 +1,6 @@
 'use strict';
-var direcciones = new Array();
+var empresas = new Array();
 
-MetronicApp.filter('propsFilter', function () {
-    return function (items, props) {
-        var out = [];
-
-        if (angular.isArray(items)) {
-            items.forEach(function (item) {
-                var itemMatches = false;
-
-                var keys = Object.keys(props);
-                for (var i = 0; i < keys.length; i++) {
-                    var prop = keys[i];
-                    var text = props[prop].toLowerCase();
-                    if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
-                        itemMatches = true;
-                        break;
-                    }
-                }
-
-                if (itemMatches) {
-                    out.push(item);
-                }
-            });
-        } else {
-            // Let the output be the input untouched
-            out = items;
-        }
-
-        return out;
-    };
-});
 MetronicApp.controller('MainController', function ($scope, $http) {
     $scope.$on('$viewContentLoaded', function () {
         Metronic.initAjax(); // initialize core components
@@ -43,18 +13,14 @@ MetronicApp.controller('MainController', function ($scope, $http) {
     $http.get('/empresas').success(function (data) {
 
             $scope.empresas = data;
-
-
-            var index;
-            for (index = 0; index < $scope.empresas.length; index++) {
-                direcciones.push($scope.empresas[index].direccion);
-            }
+            empresas = data;
 
 
     })
     .error(function (data) {
         console.log('Error: ' + data);
     });
+
 
     $scope.cargarEmpresas = function(busqueda){
         var empresa = {busqueda: busqueda};
@@ -69,60 +35,37 @@ MetronicApp.controller('MainController', function ($scope, $http) {
 
     }
 
-    $scope.logout = function () {
-      $cookieStore.remove('Name');
-      $cookieStore.remove('Apellidos');
-      $cookieStore.remove('IdUser');
-      $cookieStore.remove('Avatar');
-
-      $state.go('logout');
-      $scope.mostrarHeaderLogin = false;
-      $scope.mostrarBotonesHeader = true;
-    }
-
-
-
 });
 
 
 var map;
-var geocoder;
 var geolocation;
-
+var pos;
 
 function initMap() {
-    geocoder = new google.maps.Geocoder();
-
+    var myLatLng = new google.maps.LatLng(41.32930232, 12.94898);
 
     my_position();
     map = new google.maps.Map(document.getElementById('map'), {
-        center: geolocation,
+        center: myLatLng,
         zoom: 8
     });
 
     var index;
-    for (index = 0; index < direcciones.length; index++) {
-
-        codeAddress(direcciones[index]);
+    for (index = 0; index <empresas.length; index++) {
+      pos = new google.maps.LatLng(empresas[index].lat, empresas[index].lng);
+      console.log(empresas[index]);
+      var marker = new google.maps.Marker({
+          position: pos,
+          map: map,
+          title: empresas[index].nombre
+        });
+        marker.setMap(map);
 
     }
 
 }
 
-function codeAddress(address, next) {
-    geocoder.geocode({address: address}, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            map.setCenter(geolocation);
-            var marker = new google.maps.Marker(
-                {
-                    map: map,
-                    position: results[0].geometry.location
-                });
-        } else {
-            alert('EL Geocodes no funciona por la siguiente razón:  ' + status);
-        }
-    });
-}
 
 function my_position() {
     // Try HTML5 geolocation

@@ -102,6 +102,12 @@ angular.module('WherePlace', [
     templateUrl: "views/auth/signup.html",
     controller: 'SignupCtrl'
   })
+  .state('auth.registrar', {
+    url: '/signup',
+    templateUrl: "views/auth/register.html",
+    controller: 'RegistrarCtrl',
+    params: {user:{}}
+  })
 
   .state('auth.forgot-password', {
     url: "/forgot-password",
@@ -138,10 +144,10 @@ angular.module('WherePlace', [
   })
 
   .state('app.image-picker', {
-    url: "/miscellaneous/image-picker",
+    url: "/image-picker",
     views: {
       'menuContent': {
-        templateUrl: "views/app/miscellaneous/image-picker.html",
+        templateUrl: "views/app/image-picker.html",
         controller: 'ImagePickerCtrl'
       }
     }
@@ -236,8 +242,7 @@ angular.module('WherePlace', [
         controller: 'FavoritosCtrl'
       }
     }
-      })
-
+  })
 
   //WORDPRESS
   .state('app.wordpress', {
