@@ -40,6 +40,8 @@ var empresaSchema = {
     detalles:detallesSchema,
     created_at: Date,
     updated_at: Date,
+    avatar: String,
+    galeria: [String],
     puntuaciones: [puntuacionSchema],
     lat: String,
     lng: String
