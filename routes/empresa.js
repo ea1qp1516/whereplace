@@ -173,7 +173,8 @@ module.exports = function (app) {
 
     }
     getEmpresasByGustos = function (req, res) {
-        Empresa.find({"tags": req.params.gusto}, {
+
+        Empresa.find({"tags": {$in:req.body.gusto}}, {
                 nombre: 1,
                 direccion: 1,
                 ciudad: 1,
@@ -246,11 +247,11 @@ module.exports = function (app) {
     // app.get('/', getEmpresas);
 // Crear una nueva Empresa
     app.get('/empresas', getEmpresas);
-    app.get('/empresas/:gusto', getEmpresasByGustos);
     app.get('/empresas/comentarios/:user_id', empresasbyComments);
     app.get('/empresas/:empresa_id/puntuacion', getPuntuacion);
     app.delete('/empresas/delete/:empresa_id', borrarEmpresa);
 
+    app.post('/empresas', getEmpresasByGustos);
     app.post('/empresas/busquedas', getBusqueda);
     app.put('/empresa/modify/:empresa_id', updateEmpresa);
     app.post('/empresa/:empresa_id/comment', addComment);

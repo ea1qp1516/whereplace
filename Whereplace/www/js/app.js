@@ -144,10 +144,10 @@ angular.module('WherePlace', [
   })
 
   .state('app.image-picker', {
-    url: "/miscellaneous/image-picker",
+    url: "/image-picker",
     views: {
       'menuContent': {
-        templateUrl: "views/app/miscellaneous/image-picker.html",
+        templateUrl: "views/app/image-picker.html",
         controller: 'ImagePickerCtrl'
       }
     }

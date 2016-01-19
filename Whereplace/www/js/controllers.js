@@ -205,20 +205,40 @@ angular.module('your_app_name.controllers', [])
 
     $scope.getEmpresas = function(gusto){
       var user = JSON.parse(window.localStorage['user'] || '{}');
-
       if (gusto =="Mis Gustos"){
+        console.log("misgustos");
         var mis_gustos = user.gustos;
-        console.log(mis_gustos);
-        $http.get(url + '/empresas/' + mis_gustos).success(function (empresas) {
+        var jsgusto = {
+          gusto : mis_gustos
+        }
+        console.log(jsgusto);
+        $http.post(url + '/empresas', jsgusto).success(function (empresas) {
 
           $state.go('app.category-feeds',{empresas:empresas});
 
         });
-      }else {
-        gusto = gusto.toLowerCase();
-        console.log(gusto);
+      }
+      else if(gusto =="Busqueda Personalizada"){
 
-        $http.get(url + '/empresas/' + gusto).success(function (empresas) {
+        console.log("personaizada");
+
+        $http.get(url + '/empresas').success(function (empresas) {
+
+          $state.go('app.category-feeds',{empresas:empresas});
+
+        });
+
+      }
+      else{
+        console.log("otra");
+
+        gusto = gusto.toLowerCase();
+        var arrgusto = [];
+        arrgusto.push(gusto)
+        var jsgusto ={
+          gusto: arrgusto
+        }
+        $http.post(url + '/empresas',jsgusto).success(function (empresas) {
 
           $state.go('app.category-feeds', {empresas: empresas});
 
@@ -235,6 +255,10 @@ angular.module('your_app_name.controllers', [])
       disableBack: true
     });
 
+    $scope.empresas = $stateParams.empresas;
+    window.localStorage['empresas'] = JSON.stringify($scope.empresas);
+
+
     $scope.category_sources = [];
 
     $scope.categoryId = $stateParams.categoryId;
@@ -244,18 +268,34 @@ angular.module('your_app_name.controllers', [])
     });
 
 
-    $scope.empresas = $stateParams.empresas;
 
+    $scope.buscar = function(busqueda){
+
+      var empresas = JSON.parse(window.localStorage['empresas'] || '{}');
+
+      var matches = [];
+
+
+      empresas.forEach(function(empresa){
+        if(empresa.nombre.search(busqueda)!=-1){
+          matches.push(empresa);
+        }
+      })
+      $scope.empresas = matches;
+
+
+
+    }
 
     $scope.detailEmpresa = function (idempresa) {
 
       $http.get(url + '/empresa/' + idempresa).success(function (empresa) {
-
         $state.go("app.feed-entries", {empresa: empresa});
 
 
       });
     };
+
   })
 
 //this method brings posts for a source provider
@@ -680,38 +720,57 @@ angular.module('your_app_name.controllers', [])
   })
 
 
-  .controller('ImagePickerCtrl', function ($scope, $rootScope, $cordovaCamera) {
+  .controller('ImagePickerCtrl', function ($rootScope, $scope, $cordovaCamera, $ionicActionSheet, $cordovaFileTransfer) {
+      ionic.Platform.ready(function(){
+        // will execute when device is ready, or immediately if the device is already ready.
+      });
 
 
-    $scope.selImages = function () {
-      var options = {
-        quality: 50,
-        destinationType: Camera.DestinationType.FILE_URI,
-        sourceType: 1,      // 0:Photo Library, 1=Camera, 2=Saved Photo Album
-        encodingType: 0     // 0=JPG 1=PNG
+      $scope.selImages = function() {
+        var options = {
+          quality: 100,
+          destinationType: Camera.DestinationType.FILE_URI,
+          sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+          allowEdit: true,
+          encodingType: Camera.EncodingType.JPEG,
+          popoverOptions: CameraPopoverOptions,
+          saveToPhotoAlbum: false
+        };
+
+        $cordovaCamera.getPicture(options).then(function(imageData) {
+
+          //console.log(imageData);
+          //console.log(options);
+
+          var url = "http://mydomein.com/upload.php";
+          //target path may be local or url
+          var targetPath = imageData;
+          var filename = targetPath.split("/").pop();
+          var options = {
+            fileKey: "file",
+            fileName: filename,
+            chunkedMode: false,
+            mimeType: "image/jpg"
+          };
+          $cordovaFileTransfer.upload(url, targetPath, options).then(function(result) {
+            console.log("SUCCESS: " + JSON.stringify(result.response));
+            alert("success");
+            alert(JSON.stringify(result.response));
+          }, function(err) {
+            console.log("ERROR: " + JSON.stringify(err));
+            alert(JSON.stringify(err));
+          }, function (progress) {
+            // constant progress updates
+            $timeout(function () {
+              $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+            })
+          });
+
+        }, function(err) {
+          // error
+          console.log(err);
+        });
       }
-      navigator.camera.getPicture(onSuccess, onFail, options);
-    }
-    var onSuccess = function (FILE_URI) {
-      console.log(FILE_URI);
-      $scope.picData = FILE_URI;
-      $scope.$apply();
-    };
-    var onFail = function (e) {
-      console.log("On fail " + e);
-    }
-    $scope.send = function () {
-      var myImg = $scope.picData;
-      var options = new FileUploadOptions();
-      options.fileKey = "post";
-      options.chunkedMode = false;
-      var params = {};
-      params.user_token = localStorage.getItem('auth_token');
-      params.user_email = localStorage.getItem('email');
-      options.params = params;
-      var ft = new FileTransfer();
-      ft.upload(myImg, encodeURI("https://example.com/posts/"), onUploadSuccess, onUploadFail, options);
-    }
 
   })
 ;
