@@ -10,7 +10,7 @@ var calificacion;
 var users = new Array();
 var userPuntuador;
 var booleano;
-
+var empresa;
 MetronicApp.controller('DetallesController', function ($scope, $http, $stateParams, $cookieStore) {
     $scope.$on('$viewContentLoaded', function () {
         Metronic.initAjax(); // initialize core components
@@ -56,6 +56,7 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
     $http.get('/empresa/' + $stateParams.empresa_id).success(function (data) {
 
         $scope.empresa = data;
+        empresa = data;
 
         $scope.user.favoritos.forEach(function (data) {
 
@@ -109,7 +110,7 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
     };
 
     $scope.puntuar = function (puntuacion) {
-
+          
 
     };
 
@@ -156,28 +157,18 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
 
 
 function initMap2() {
-    geocoder = new google.maps.Geocoder();
+
+    var myLatLng = new google.maps.LatLng(empresa.lat, empresa.lng);
     map = new google.maps.Map(document.getElementById('map2'), {
         center: myLatLng,
         zoom: 17
     });
-    codeAddress(direccion);//call the function
 
-}
+    var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        title: empresa.nombre
+      });
+      marker.setMap(map);
 
-
-function codeAddress(address) {
-    geocoder.geocode({address: address}, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            map.setCenter(results[0].geometry.location);//center the map over the result
-            //place a marker at the location
-            var marker = new google.maps.Marker(
-                {
-                    map: map,
-                    position: results[0].geometry.location
-                });
-        } else {
-            alert('Geocode was not successful for the following reason: ' + status);
-        }
-    });
 }
