@@ -1,4 +1,4 @@
-var url = "http://10.83.55.226:3000";
+var url = "http://10.183.41.226:3000";
 
 //10.83.55.226
 //localhost
@@ -722,55 +722,60 @@ angular.module('your_app_name.controllers', [])
 
   .controller('ImagePickerCtrl', function ($rootScope, $scope, $cordovaCamera, $ionicActionSheet, $cordovaFileTransfer) {
       ionic.Platform.ready(function(){
-        // will execute when device is ready, or immediately if the device is already ready.
       });
 
 
-      $scope.selImages = function() {
+      $scope.selImages = function () {
         var options = {
           quality: 100,
           destinationType: Camera.DestinationType.FILE_URI,
           sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-          allowEdit: true,
+          allowEdit: false,
           encodingType: Camera.EncodingType.JPEG,
           popoverOptions: CameraPopoverOptions,
-          saveToPhotoAlbum: false
+          saveToPhotoAlbum: true
         };
 
-        $cordovaCamera.getPicture(options).then(function(imageData) {
+        $cordovaCamera.getPicture(options).then(function (imageData) {
 
-          //console.log(imageData);
-          //console.log(options);
-
-          var url = "http://mydomein.com/upload.php";
-          //target path may be local or url
-          var targetPath = imageData;
-          var filename = targetPath.split("/").pop();
-          var options = {
-            fileKey: "file",
-            fileName: filename,
-            chunkedMode: false,
-            mimeType: "image/jpg"
-          };
-          $cordovaFileTransfer.upload(url, targetPath, options).then(function(result) {
-            console.log("SUCCESS: " + JSON.stringify(result.response));
-            alert("success");
-            alert(JSON.stringify(result.response));
-          }, function(err) {
-            console.log("ERROR: " + JSON.stringify(err));
-            alert(JSON.stringify(err));
-          }, function (progress) {
-            // constant progress updates
-            $timeout(function () {
-              $scope.downloadProgress = (progress.loaded / progress.total) * 100;
-            })
+          $timeout(function () {
+            $scope.$apply(function () {
+              $scope.fotoperfil = imageData;
+            });
           });
 
-        }, function(err) {
+          $scope.EnviarFoto = function () {
+            $rootScope.showLoading("Subiendo foto...");
+            var url = "http://bareando.tk/datos_usuarios/photo.php";
+            var targetPath = imageData;
+            var filename = $rootScope.usernameRegistro;
+            var options = {
+              fileKey: "file",
+              fileName: filename,
+              chunkedMode: false,
+              mimeType: "image/jpg"
+            };
+
+            $cordovaFileTransfer.upload(url, targetPath, options).then(function (result) {
+              $rootScope.hideLoading();
+              alert("Foto subida correctamente");
+              $state.go('paginaPrincipal');
+            }, function (err) {
+              $rootScope.hideLoading();
+              alert(JSON.stringify(err));
+            }, function (progress) {
+              // constant progress updates
+              /*$timeout(function () {
+               $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+               })*/
+            });
+          }
+
+        }, function (err) {
           // error
           console.log(err);
         });
-      }
+      };
 
   })
 ;
