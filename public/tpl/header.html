@@ -15,7 +15,7 @@
 	<!-- BEGIN USER LOGIN DROPDOWN -->
 
 	<!-- BEGIN PAGE TOP -->
-	<div class="page-top" ng-show="mostrarBotonesHeader">
+	<div class="page-top">
 
 		<!-- BEGIN TOP NAVIGATION MENU -->
 		<div class="top-menu">
@@ -34,62 +34,6 @@
 			</ul>
 		</div>
 		<!-- END TOP NAVIGATION MENU -->
-	</div>
-	<div class="page-top" ng-show="mostrarHeaderLogin">
-
-			<!-- END HEADER SEARCH BOX -->
-			<!-- BEGIN TOP NAVIGATION MENU -->
-			<div class="top-menu">
-					<ul class="nav navbar-nav pull-right">
-							<li class="separator hide"></li>
-
-
-							<li class="separator hide"></li>
-
-							<!-- BEGIN TODO DROPDOWN -->
-
-							<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-							<li class="dropdown dropdown-user dropdown-dark">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-						<span class="username username-hide-on-mobile font-red-thunderbird">
-						{{user.nombre}} {{user.apellidos}}
-						</span>
-						<!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
-						<img alt="" class="img-circle" src="{{user.avatar}}"/>
-					</a>
-					<ul class="dropdown-menu dropdown-menu-default">
-						<li>
-							<a href="#/profile/dashboard">
-							<i class="icon-user"></i> Mi Perfil </a>
-						</li>
-						<li>
-							<a ng-click = "config()">
-							<i class="icon-calendar"></i> Configuración </a>
-						</li>
-						<li>
-							<a href="#">
-							<i class="icon-envelope-open"></i> Mis Bonos <span class="badge badge-danger">
-							3 </span>
-							</a>
-						</li>
-						<li>
-							<a href="#/todo">
-							<i class="icon-rocket"></i> My Tasks <span class="badge badge-success">
-							7 </span>
-							</a>
-						</li>
-						<li class="divider">
-						</li>
-						<li>
-							<a ng-click="logout()">
-							<i class="icon-key"></i> Log Out </a>
-						</li>
-					</ul>
-				</li>
-							<!-- END USER LOGIN DROPDOWN -->
-					</ul>
-			</div>
-			<!-- END TOP NAVIGATION MENU -->
 	</div>
 	<!-- END PAGE TOP -->
 </div>

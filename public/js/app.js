@@ -81,19 +81,60 @@ MetronicApp.factory('settings', ['$rootScope', function ($rootScope) {
 }]);
 
 /* Setup App Main Controller */
-MetronicApp.controller('AppController', ['$scope', '$state', '$rootScope','$location', function ($scope,$state, $rootScope, $location) {
-  $scope.about = function () {
-    $state.go('about');
-  }
+MetronicApp.controller('AppController', ['$scope', '$state', '$stateParams','$location', '$http' ,'$cookieStore', function ($scope,$state, $stateParams, $location, $http,  $cookieStore) {
+    $scope.about = function () {
+        $state.go('about');
+    }
+    $scope.user = $stateParams.user;
+    $scope.header = "";
+    //console.log($stateParams);
 
-  $scope.color="#cc6165";
-  console.log($location.url());
-  if($location.url() == "/register_company"){
-    $scope.color="#B9EAFC";
-  }
+    //console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAa" + $stateParams._id);
+
+    if ($scope.user == undefined) {
+        
+        $http.get('/userfb')
+            .success(function (data) {
+                if (data != null) {
+                  //  $scope.user_id = data._id;
+                   // $scope.nombre = data.username;
+                   // $scope.user.email = data.email;
+
+                    $scope.user = data;
+
+                    $cookieStore.put('IdUser',$scope.user._id);
+                    console.log(data);
+                }
+            })
+            .error(function (data) {
+                console.log("Error " + data);
+            })
+
+    } else {
+
+        $http.get('/user/' + id)
+            .success(function (data) {
+                $scope.user._id = data._id;
+                $scope.user.nombre = data.nombre;
+                $scope.user.email = data.email;
+                $scope.user.favoritos = data.favoritos;
+                $scope.user.gustos = data.gustos;
+                $scope.user.avatar = data.avatar;
+            })
+            .error(function (data) {
+                console.log("Error " + data);
+            });
+    }
+
+    $scope.color="#cc6165";
+    console.log($location.url());
+    if($location.url() == "/register_company"){
+        $scope.color="#B9EAFC";
+    }
 
 
 }]);
+
 
 MetronicApp.controller('FooterController', ['$scope', function ($scope) {
 
@@ -106,15 +147,20 @@ MetronicApp.controller('FooterController', ['$scope', function ($scope) {
 
 /* Setup Layout Part - Header */
 MetronicApp.controller('HeaderController', ['$scope','$cookieStore', '$state','$http', function ($scope, $cookieStore, $state,$http) {
-    $scope.mostrarHeader = true;
+
+    $scope.login = function () {
+      $state.go('login');
+    }
+    $scope.register = function () {
+      $state.go('register');
+    }
+
+}]);
+MetronicApp.controller('HeaderLoginController', ['$scope','$cookieStore', '$state','$http', function ($scope, $cookieStore, $state,$http) {
+
     $scope.user={};
 
-    if($cookieStore.get('IdUser')==null){
 
-      $scope.mostrarHeaderLogin = false;
-      $scope.mostrarBotonesHeader = true;
-
-    }else{
       $http.get('/user/'+$cookieStore.get('IdUser')).success(function (data) {
 
         $scope.user = data;
@@ -122,24 +168,16 @@ MetronicApp.controller('HeaderController', ['$scope','$cookieStore', '$state','$
       .error(function (data) {
           console.log('Error: ' + data);
       });
-      $scope.mostrarBotonesHeader = false;
-      $scope.mostrarHeaderLogin = true;
 
-    }
-    $scope.login = function () {
-      $state.go('login');
-    }
-    $scope.register = function () {
-      $state.go('register');
-    }
+
     $scope.config = function () {
       $state.go('account',{user: $scope.user});
     }
     $scope.logout = function () {
-      $cookieStore.remove('Name');
-      $cookieStore.remove('Apellidos');
+
       $cookieStore.remove('IdUser');
-      $cookieStore.remove('Avatar');
+        $cookieStore.put('Header',1);
+
 
       window.location.href = "/";
       //$state.go('index');
@@ -661,6 +699,7 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state, $cook
             .success(function (data) {
 
                 $cookieStore.put('IdUser', data._id);
+                $cookieStore.put('Header',0);
 
 
                 $state.go('main');

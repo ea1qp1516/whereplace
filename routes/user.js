@@ -16,6 +16,7 @@ module.exports = function (app, passport) {
                 nombre: 1,
                 apellidos: 1,
                 email: 1,
+                socialID: 1,
                 favoritos: 1,
                 gustos: 1,
                 avatar: 1
@@ -30,7 +31,7 @@ module.exports = function (app, passport) {
 
 // Obtiene todos los objetos Usuarios de la base de datos
     getUsers = function (req, res) {
-        User.find({}, {nombre: 1, apellidos: 1, email: 1, favoritos: 1, gustos: 1, avatar: 1}, function (err, users) {
+        User.find({}, {nombre: 1, apellidos: 1, email: 1, favoritos: 1, gustos: 1, socialID : 1, avatar: 1}, function (err, users) {
                 if (err)
                     res.send(err)
                 res.json(users); // devuelve todos los Users en JSON
@@ -41,6 +42,24 @@ module.exports = function (app, passport) {
     //Obtiene el avatar del usuario que se le pasa el id
 
 
+
+//SOCIAL MEDIA USER?
+    findFacebook = function (req, res) {
+        User.findOne({"socialID": "1"}, {
+                nombre: 1,
+                apellidos: 1,
+                email: 1,
+                socialID: 1,
+                favoritos: 1,
+                gustos: 1,
+                avatar: 1
+            }, function (err, user) {
+                if (err)
+                    res.send(err)
+                res.json(user); // devuelve el user seleccionado/home/urtasun/WebstormProjects/whereplace/modelos/empresa.js
+            }
+        );
+    }
 
 // Guarda un objeto Empresa en base de datos
     newUser = function (req, res) {
@@ -274,7 +293,7 @@ module.exports = function (app, passport) {
     app.get('/user/:user_id', getUser);
     app.get('/user', getUsers);
     app.delete('/user/delete/:user_id', borrarUser);
-
+    app.get('/userfb', findFacebook);
     app.post('/user/find', findUser);
     app.post('/user/favorito',addFavorito);
     app.post('/user', newUser);
