@@ -4,21 +4,7 @@ module.exports = function (app) {
 
     // Obtiene una Empresa de la base de datos
     getEmpresa = function (req, res) {
-        Empresa.findOne({"_id": req.params.empresa_id}, {
-                nombre: 1,
-                direccion: 1,
-                ciudad: 1,
-                descripcion: 1,
-                email: 1,
-                telefono: 1,
-                puntuaciones: 1,
-                tag: 1,
-                subtags:1,
-                comentarios: 1,
-                lat: 1,
-                lng:1,
-                detalles: 1
-            }, function (err, empresa) {
+        Empresa.findOne({"_id": req.params.empresa_id}, { _id:0, password:0  }, function (err, empresa) {
                 if (err)
                     res.send(err)
                 res.json(empresa); // devuelve todas las Empresas en JSON
@@ -27,24 +13,22 @@ module.exports = function (app) {
     }
 // Obtiene todos los objetos Empresa de la base de datos
     getEmpresas = function (req, res) {
-        console.log(req.isAuthenticated());
-        Empresa.find({}, {
-                nombre: 1,
-                direccion: 1,
-                ciudad: 1,
-                descripcion: 1,
-                email: 1,
-                telefono: 1,
-                puntuaciones: 1,
-                tag: 1,
-                subtags: 1,
-                comentarios: 1,
-                lat: 1,
-                lng: 1,
-                detalles: 1,
-                created_at: 1,
-                updated_at: 1
-            }, function (err, empresa) {
+        var count = req.query.count || 5;
+        var page = req.query.page || 1;
+
+        var pagination = {
+            start: (page - 1) * count,
+            count: count
+        };
+
+        var sort = {
+            sort: {
+                desc: '_id'
+            }
+        };
+        Empresa
+            .find({},{password:0})
+            .page(pagination, function (err, empresa) {
                 if (err)
                     res.send(err)
                 res.json(empresa); // devuelve todas las Empresas en JSON
@@ -174,20 +158,22 @@ module.exports = function (app) {
     }
     getEmpresasByGustos = function (req, res) {
 
-        Empresa.find({"tags": {$in:req.body.gusto}}, {
-                nombre: 1,
-                direccion: 1,
-                ciudad: 1,
-                descripcion: 1,
-                email: 1,
-                telefono: 1,
-                puntuacion: 1,
-                tags: 1,
-                comentarios: 1,
-                detalles: 1,
-                created_at: 1,
-                updated_at: 1
-            }, function (err, empresa) {
+        var count = req.query.count || 5;
+        var page = req.query.page || 1;
+
+        var pagination = {
+            start: (page - 1) * count,
+            count: count
+        };
+
+        var sort = {
+            sort: {
+                desc: '_id'
+            }
+        };
+        Empresa.find({"tags": {$in:req.body.gusto}},
+            {  password:0 })
+            .page(pagination, function (err, empresa) {
                 if (err)
                     res.send(err)
                 res.json(empresa); // devuelve todas las Empresas en JSON
@@ -223,9 +209,21 @@ module.exports = function (app) {
 
     }
     empresasbyComments = function (req, res) {
-        console.log("Hola");
+        var count = req.query.count || 5;
+        var page = req.query.page || 1;
 
-        Empresa.find({"comentarios.user_id": req.params.user_id}, function (err, empresas) {
+        var pagination = {
+            start: (page - 1) * count,
+            count: count
+        };
+
+        var sort = {
+            sort: {
+                desc: '_id'
+            }
+        };
+        Empresa.find({"comentarios.user_id": req.params.user_id})
+            .page(pagination, function (err, empresas) {
             if (err)
                 res.send(err);
             else

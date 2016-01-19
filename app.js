@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+require('mongoose-middleware').initialize(mongoose);
 var http = require("http");
 var cookies = require("cookies");
 var requests = require("requests");

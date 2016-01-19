@@ -1,4 +1,4 @@
-var url = "http://10.83.55.226:3000";
+var url = "http://10.83.32.114:3000";
 
 //10.83.55.226
 //localhost
@@ -24,16 +24,7 @@ angular.module('your_app_name.controllers', [])
     var user = JSON.parse(window.localStorage['user'] || '{}');
     console.log(user);
     $scope.user = user;
-
-      $scope.logout = function() {
-
-        window.localStorage['user'] = "";
-
-        $state.go('auth.walkthrough');
-
-      }
-
-  })
+    })
   .controller('ProfileCtrl', function ($scope, $ionicConfig) {
 
     var user = JSON.parse(window.localStorage['user'] || '{}');
@@ -46,7 +37,13 @@ angular.module('your_app_name.controllers', [])
   .controller('LoginCtrl', function ($scope, $state, $templateCache, $q, $rootScope, $http) {
 
     $scope.doLogIn = function () {
-      $http.post(url + '/user/login', $scope.user)
+      var login ={
+        username : $scope.user.username,
+        password : $scope.user.password
+      };
+
+      var config = ({headers: {'Content-Type' : 'application/json'}});
+      $http.post(url + '/user/login', login, config)
         .success(function (data) {
           console.log(data);
           window.localStorage['user'] = JSON.stringify(data);
@@ -74,8 +71,8 @@ angular.module('your_app_name.controllers', [])
     $scope.user.email = "";
 
     $scope.doSignUp = function (user) {
-
-      $http.post(url + '/user/find',user)
+      var config = {};
+      $http.post(url + '/user/find',user,config)
           .success(function (data) {
             if (data[0]==undefined){
               $scope.formClass = "ion-checkmark";
@@ -214,7 +211,7 @@ angular.module('your_app_name.controllers', [])
         console.log(jsgusto);
         $http.post(url + '/empresas', jsgusto).success(function (empresas) {
 
-          $state.go('app.category-feeds',{empresas:empresas});
+          $state.go('app.category-feeds',{empresas:empresas.results});
 
         });
       }
@@ -224,7 +221,7 @@ angular.module('your_app_name.controllers', [])
 
         $http.get(url + '/empresas').success(function (empresas) {
 
-          $state.go('app.category-feeds',{empresas:empresas});
+          $state.go('app.category-feeds',{empresas:empresas.results});
 
         });
 
@@ -240,7 +237,7 @@ angular.module('your_app_name.controllers', [])
         }
         $http.post(url + '/empresas',jsgusto).success(function (empresas) {
 
-          $state.go('app.category-feeds', {empresas: empresas});
+          $state.go('app.category-feeds', {empresas: empresas.results});
 
         });
       }
@@ -315,7 +312,7 @@ angular.module('your_app_name.controllers', [])
     var puntuacion_total = 0;
 
     $http.get(url + '/empresa/' + $stateParams.empresa._id).success(function (data) {
-
+      console.log(data);
       $scope.puntuaciones_iniciales = data.puntuaciones;
       var i;
       for(i=0; i<$scope.puntuaciones_iniciales.length;i++){
@@ -433,22 +430,50 @@ angular.module('your_app_name.controllers', [])
   })
 
 // SETTINGS
-  .controller('SettingsCtrl', function ($scope, $ionicActionSheet, $state, $ionicHistory) {
+  .controller('SettingsCtrl', function ($scope, $ionicActionSheet, $state, $ionicHistory, $http, $ionicPopup) {
     $ionicHistory.nextViewOptions({
       disableBack: true
     });
-    $scope.airplaneMode = true;
-    $scope.wifi = false;
-    $scope.bluetooth = true;
-    $scope.personalHotspot = true;
 
-    $scope.checkOpt1 = true;
-    $scope.checkOpt2 = true;
-    $scope.checkOpt3 = false;
+      $scope.CambiarPassword = function(password){
 
-    $scope.radioChoice = 'B';
 
+        if (password.new == password.renew){
+          var user = JSON.parse(window.localStorage['user'] || '{}');
+
+
+          var change_password = {
+              password : password.new,
+              last : password.last
+          }
+          $http.post(url + '/user/modify/' + user._id , change_password)
+              .success(function (response) {
+
+                var alertPopup = $ionicPopup.alert({
+                  title: 'Contraseña cambiada correctamente'
+                });
+
+                alertPopup.then(function(res) {
+
+                });
+              })
+              .error(function(response,status){
+                var alertPopup = $ionicPopup.alert({
+                  title: 'Contraseña antigua incorrecta',
+                  template: 'Introduzca la contraseña correcta, porfavor'
+                });
+
+                alertPopup.then(function(res) {
+
+
+                });
+              });
+
+        }
+
+      }
     // Triggered on a the logOut button click
+
     $scope.showLogOutMenu = function () {
 
       // Show the action sheet
@@ -473,6 +498,8 @@ angular.module('your_app_name.controllers', [])
         destructiveButtonClicked: function () {
           //Called when the destructive button is clicked.
           //Return true to close the action sheet, or false to keep it opened.
+          window.localStorage['user'] = "";
+
           $state.go('auth.walkthrough');
         }
       });
@@ -722,55 +749,60 @@ angular.module('your_app_name.controllers', [])
 
   .controller('ImagePickerCtrl', function ($rootScope, $scope, $cordovaCamera, $ionicActionSheet, $cordovaFileTransfer) {
       ionic.Platform.ready(function(){
-        // will execute when device is ready, or immediately if the device is already ready.
       });
 
 
-      $scope.selImages = function() {
+      $scope.selImages = function () {
         var options = {
           quality: 100,
           destinationType: Camera.DestinationType.FILE_URI,
           sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-          allowEdit: true,
+          allowEdit: false,
           encodingType: Camera.EncodingType.JPEG,
           popoverOptions: CameraPopoverOptions,
-          saveToPhotoAlbum: false
+          saveToPhotoAlbum: true
         };
 
-        $cordovaCamera.getPicture(options).then(function(imageData) {
+        $cordovaCamera.getPicture(options).then(function (imageData) {
 
-          //console.log(imageData);
-          //console.log(options);
-
-          var url = "http://mydomein.com/upload.php";
-          //target path may be local or url
-          var targetPath = imageData;
-          var filename = targetPath.split("/").pop();
-          var options = {
-            fileKey: "file",
-            fileName: filename,
-            chunkedMode: false,
-            mimeType: "image/jpg"
-          };
-          $cordovaFileTransfer.upload(url, targetPath, options).then(function(result) {
-            console.log("SUCCESS: " + JSON.stringify(result.response));
-            alert("success");
-            alert(JSON.stringify(result.response));
-          }, function(err) {
-            console.log("ERROR: " + JSON.stringify(err));
-            alert(JSON.stringify(err));
-          }, function (progress) {
-            // constant progress updates
-            $timeout(function () {
-              $scope.downloadProgress = (progress.loaded / progress.total) * 100;
-            })
+          $timeout(function () {
+            $scope.$apply(function () {
+              $scope.fotoperfil = imageData;
+            });
           });
 
-        }, function(err) {
+          $scope.EnviarFoto = function () {
+            $rootScope.showLoading("Subiendo foto...");
+            var url = "http://bareando.tk/datos_usuarios/photo.php";
+            var targetPath = imageData;
+            var filename = $rootScope.usernameRegistro;
+            var options = {
+              fileKey: "file",
+              fileName: filename,
+              chunkedMode: false,
+              mimeType: "image/jpg"
+            };
+
+            $cordovaFileTransfer.upload(url, targetPath, options).then(function (result) {
+              $rootScope.hideLoading();
+              alert("Foto subida correctamente");
+              $state.go('paginaPrincipal');
+            }, function (err) {
+              $rootScope.hideLoading();
+              alert(JSON.stringify(err));
+            }, function (progress) {
+              // constant progress updates
+              /*$timeout(function () {
+               $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+               })*/
+            });
+          }
+
+        }, function (err) {
           // error
           console.log(err);
         });
-      }
+      };
 
   })
 ;
