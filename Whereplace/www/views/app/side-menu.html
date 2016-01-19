@@ -17,7 +17,7 @@
         <ion-item class="heading-item item item-avatar" nav-clear menu-close ui-sref="app.profile">
           <div class="user-image-container">
             <pre-img ratio="_1_1" helper-class="rounded-image">
-              <img class="user-image" ng-src="{{user.avatar}}" spinner-on-load>
+              <img class="user-image" ng-src="{{url +'/' +user.avatar}}" spinner-on-load>
           	</pre-img>
           </div>
           <h2 class="greeting">{{user.nombre}}</h2>
@@ -31,7 +31,7 @@
           <i class="icon ion-happy-outline"></i>
           <h2 class="menu-text">Cambiar Gustos</h2>
         </ion-item>
-        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.miscellaneous">
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.favoritos">
           <i class="icon ion-ios-star-outline"></i>
           <h2 class="menu-text">Favoritos</h2>
         </ion-item>
@@ -41,7 +41,11 @@
         </ion-item>
         <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.settings">
           <i class="icon ion-gear-a"></i>
-          <h2 class="menu-text">Settings</h2>
+          <h2 class="menu-text">About</h2>
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.logout">
+          <i class="icon ion-power"></i>
+          <h2 class="menu-text">Sign Out</h2>
         </ion-item>
 
     </ion-list>

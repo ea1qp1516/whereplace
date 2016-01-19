@@ -221,7 +221,7 @@ module.exports = function (app) {
     empresasbyComments = function (req, res) {
         console.log("Hola");
 
-        Empresa.find({"comentarios.user_id": "569297a16ca8b6782a006ca3"}, function (err, empresas) {
+        Empresa.find({"comentarios.user_id": req.params.user_id}, function (err, empresas) {
             if (err)
                 res.send(err);
             else
@@ -244,7 +244,7 @@ module.exports = function (app) {
 // Crear una nueva Empresa
     app.get('/empresas', getEmpresas);
     app.get('/empresas/:gusto', getEmpresasByGustos);
-
+    app.get('/empresas/comentarios/:user_id', empresasbyComments);
     app.get('/empresas/:empresa_id/puntuacion', getPuntuacion);
     app.delete('/empresas/delete/:empresa_id', borrarEmpresa);
 

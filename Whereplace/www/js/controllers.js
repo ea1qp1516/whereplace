@@ -6,13 +6,21 @@ var url = "http://10.83.55.226:3000";
 
 angular.module('your_app_name.controllers', [])
 
-  .controller('AuthCtrl', function ($scope, $ionicConfig) {
+  .controller('AuthCtrl', function ($scope, $ionicConfig, $state) {
 
-  })
+      var user = JSON.parse(window.localStorage['user'] || '{}');
+      console.log(user.nombre);
+
+      if (user.nombre != undefined){
+
+        $state.go('app.feeds-categories', {user: user});
+      }
+
+    })
 
 // APP
   .controller('AppCtrl', function ($scope, $ionicConfig) {
-
+    $scope.url = url;
     var user = JSON.parse(window.localStorage['user'] || '{}');
     console.log(user);
     $scope.user = user;
@@ -52,24 +60,58 @@ angular.module('your_app_name.controllers', [])
 
   })
 
-  .controller('SignupCtrl', function ($scope, $state) {
+  .controller('SignupCtrl', function ($scope, $state, $http) {
     $scope.user = {};
 
     $scope.user.email = "";
 
     $scope.doSignUp = function (user) {
-      $http.post(url + '/user/login', $scope.user)
-          .success(function (data) {
-            console.log(data);
-            window.localStorage['user'] = JSON.stringify(data);
 
-            $state.go('app.feeds-categories', {user: data});
+      $http.post(url + '/user/find',user)
+          .success(function (data) {
+            if (data[0]==undefined){
+              $scope.formClass = "ion-checkmark";
+              $state.go('auth.registrar', {user:user});
+
+            }else{
+              $scope.formClass = "ion-close";
+            }
+
           })
-      $state.go('auth.registrar');
+
     };
   })
-  .controller('RegistrarCtrl', function ($scope, $state) {
+  .controller('RegistrarCtrl', function ($scope, $state, $http, $stateParams) {
+      $scope.user = $stateParams.user;
+      $scope.user.password = "";
+      $scope.doSignUp = function (user) {
+        if (user.password != user.repassword) {
+          $scope.formClass1 = "ion-close";
+          $scope.formClass2 = "ion-close";
+          console.log(user);
 
+        } else {
+          var numeroAv = Math.floor(Math.random() * 12) ;
+
+          var newuser = {
+            email : user.email,
+            nombre : user.nombre,
+            apellidos: user.apellidos,
+            password: user.password,
+            fecha_nacimiento: user.fecha_nacimiento,
+            avatar : "/assets/avatar/"+numeroAv+".png"
+          }
+          console.log(newuser);
+          $http.post(url + '/user', newuser)
+              .success(function (data) {
+                window.localStorage['user'] = JSON.stringify(data);
+                $state.go('app.feeds-categories', {user: data});
+
+              })
+
+        }
+        ;
+      }
   })
 
   .controller('ForgotPasswordCtrl', function ($scope, $state) {
@@ -143,78 +185,6 @@ angular.module('your_app_name.controllers', [])
 
   })
 
-  .controller('AdsCtrl', function ($scope, $ionicActionSheet, AdMob, iAd) {
-
-    $scope.manageAdMob = function () {
-
-      // Show the action sheet
-      var hideSheet = $ionicActionSheet.show({
-        //Here you can add some more buttons
-        buttons: [
-          {text: 'Show Banner'},
-          {text: 'Show Interstitial'}
-        ],
-        destructiveText: 'Remove Ads',
-        titleText: 'Choose the ad to show',
-        cancelText: 'Cancel',
-        cancel: function () {
-          // add cancel code..
-        },
-        destructiveButtonClicked: function () {
-          console.log("removing ads");
-          AdMob.removeAds();
-          return true;
-        },
-        buttonClicked: function (index, button) {
-          if (button.text == 'Show Banner') {
-            console.log("show banner");
-            AdMob.showBanner();
-          }
-
-          if (button.text == 'Show Interstitial') {
-            console.log("show interstitial");
-            AdMob.showInterstitial();
-          }
-
-          return true;
-        }
-      });
-    };
-
-    $scope.manageiAd = function () {
-
-      // Show the action sheet
-      var hideSheet = $ionicActionSheet.show({
-        //Here you can add some more buttons
-        buttons: [
-          {text: 'Show iAd Banner'},
-          {text: 'Show iAd Interstitial'}
-        ],
-        destructiveText: 'Remove Ads',
-        titleText: 'Choose the ad to show - Interstitial only works in iPad',
-        cancelText: 'Cancel',
-        cancel: function () {
-          // add cancel code..
-        },
-        destructiveButtonClicked: function () {
-          console.log("removing ads");
-          iAd.removeAds();
-          return true;
-        },
-        buttonClicked: function (index, button) {
-          if (button.text == 'Show iAd Banner') {
-            console.log("show iAd banner");
-            iAd.showBanner();
-          }
-          if (button.text == 'Show iAd Interstitial') {
-            console.log("show iAd interstitial");
-            iAd.showInterstitial();
-          }
-          return true;
-        }
-      });
-    };
-  })
 
 // FEED
 //brings all feed categories
@@ -227,8 +197,13 @@ angular.module('your_app_name.controllers', [])
   })
 
 //bring specific category providers
-  .controller('CategoryFeedsCtrl', function ($scope, $http, $stateParams, $state) {
-    $scope.category_sources = [];
+  .controller('CategoryFeedsCtrl', function ($scope, $http, $stateParams, $state, $ionicHistory) {
+
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
+
+      $scope.category_sources = [];
 
     $scope.categoryId = $stateParams.categoryId;
 
@@ -253,8 +228,7 @@ angular.module('your_app_name.controllers', [])
   })
 
 //this method brings posts for a source provider
-  .controller('FeedEntriesCtrl', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService) {
-
+  .controller('FeedEntriesCtrl', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService, $ionicHistory) {
     var user = JSON.parse(window.localStorage['user'] || '{}');
     $scope.id = user._id;
 
@@ -352,7 +326,10 @@ angular.module('your_app_name.controllers', [])
 
   })
 
-  .controller('NewCommentCtrl', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService) {
+  .controller('NewCommentCtrl', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService, $ionicHistory) {
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
     console.log($stateParams.empresa);
     var empresa = $stateParams.empresa;
     $scope.id = empresa._id;
@@ -385,7 +362,10 @@ angular.module('your_app_name.controllers', [])
   })
 
 // SETTINGS
-  .controller('SettingsCtrl', function ($scope, $ionicActionSheet, $state) {
+  .controller('SettingsCtrl', function ($scope, $ionicActionSheet, $state, $ionicHistory) {
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
     $scope.airplaneMode = true;
     $scope.wifi = false;
     $scope.bluetooth = true;
@@ -430,7 +410,11 @@ angular.module('your_app_name.controllers', [])
   })
 
 // TINDER CARDS
-  .controller('CommentsCtrl', function ($scope, $http, $state) {
+  .controller('CommentsCtrl', function ($scope, $http, $state, $ionicHistory) {
+
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
 
     var user = JSON.parse(window.localStorage['user'] || '{}');
 
@@ -451,7 +435,10 @@ angular.module('your_app_name.controllers', [])
 
 
   })
-  .controller('FavoritosCtrl', function ($scope, $http, $state) {
+  .controller('FavoritosCtrl', function ($scope, $http, $state, $ionicHistory) {
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
 
     var user = JSON.parse(window.localStorage['user'] || '{}');
 
@@ -478,7 +465,10 @@ angular.module('your_app_name.controllers', [])
 
 
 // BOOKMARKS
-  .controller('GustosCtrl', function ($scope, $rootScope, BookMarkService, $state, $http) {
+  .controller('GustosCtrl', function ($scope, $rootScope, BookMarkService, $state, $http, $ionicHistory) {
+    $ionicHistory.nextViewOptions({
+      disableBack: true
+    });
 
     var user = JSON.parse(window.localStorage['user'] || '{}');
 
@@ -690,5 +680,13 @@ angular.module('your_app_name.controllers', [])
     }
 
   })
+  .controller('LogoutCtrl', function ($scope, $rootScope, $cordovaCamera, $state){
+
+      console.log("hola");
+      window.localStorage['user'] = "";
+
+      $state.go('auth.walkthrough');
+
+    })
 
 ;
