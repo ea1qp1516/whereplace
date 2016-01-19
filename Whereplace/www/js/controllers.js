@@ -19,11 +19,19 @@ angular.module('your_app_name.controllers', [])
     })
 
 // APP
-  .controller('AppCtrl', function ($scope, $ionicConfig) {
+  .controller('AppCtrl', function ($scope, $ionicConfig, $state) {
     $scope.url = url;
     var user = JSON.parse(window.localStorage['user'] || '{}');
     console.log(user);
     $scope.user = user;
+
+      $scope.logout = function() {
+
+        window.localStorage['user'] = "";
+
+        $state.go('auth.walkthrough');
+
+      }
 
   })
   .controller('ProfileCtrl', function ($scope, $ionicConfig) {
@@ -188,12 +196,36 @@ angular.module('your_app_name.controllers', [])
 
 // FEED
 //brings all feed categories
-  .controller('FeedsCategoriesCtrl', function ($scope, $http) {
+  .controller('FeedsCategoriesCtrl', function ($scope, $http, $state) {
     $scope.feeds_categories = [];
 
     $http.get('feeds-categories.json').success(function (response) {
       $scope.feeds_categories = response;
     });
+
+    $scope.getEmpresas = function(gusto){
+      var user = JSON.parse(window.localStorage['user'] || '{}');
+
+      if (gusto =="Mis Gustos"){
+        var mis_gustos = user.gustos;
+        console.log(mis_gustos);
+        $http.get(url + '/empresas/' + mis_gustos).success(function (empresas) {
+
+          $state.go('app.category-feeds',{empresas:empresas});
+
+        });
+      }else {
+        gusto = gusto.toLowerCase();
+        console.log(gusto);
+
+        $http.get(url + '/empresas/' + gusto).success(function (empresas) {
+
+          $state.go('app.category-feeds', {empresas: empresas});
+
+        });
+      }
+
+    }
   })
 
 //bring specific category providers
@@ -203,7 +235,7 @@ angular.module('your_app_name.controllers', [])
       disableBack: true
     });
 
-      $scope.category_sources = [];
+    $scope.category_sources = [];
 
     $scope.categoryId = $stateParams.categoryId;
 
@@ -211,11 +243,10 @@ angular.module('your_app_name.controllers', [])
       var category = _.find(response, {id: $scope.categoryId});
     });
 
-    $http.get(url + '/empresas/' + $stateParams.categoryId).success(function (empresas) {
 
-      $scope.empresas = empresas;
+    $scope.empresas = $stateParams.empresas;
 
-    });
+
     $scope.detailEmpresa = function (idempresa) {
 
       $http.get(url + '/empresa/' + idempresa).success(function (empresa) {
@@ -527,6 +558,9 @@ angular.module('your_app_name.controllers', [])
       }
       $http.post(url + '/user/modify/' + user._id, gustoTag).success(function (response) {
         console.log(response);
+        window.localStorage['user'] = JSON.stringify(response);
+        var user = JSON.parse(window.localStorage['user'] || '{}');
+        console.log(user);
         $state.go("app.feeds-categories");
       });
     }
@@ -680,13 +714,4 @@ angular.module('your_app_name.controllers', [])
     }
 
   })
-  .controller('LogoutCtrl', function ($scope, $rootScope, $cordovaCamera, $state){
-
-      console.log("hola");
-      window.localStorage['user'] = "";
-
-      $state.go('auth.walkthrough');
-
-    })
-
 ;
