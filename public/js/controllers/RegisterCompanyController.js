@@ -11,10 +11,8 @@ MetronicApp.controller('RegisterCompanyController', function ($scope, $http, $st
     $scope.mostrarDetalleCompras = false;
     $scope.mostrarSubtagsComida = false;
     $scope.newEmpresa = {};
-    $scope.newEmpresa.coordenadas = {
-      lat: Number,
-      lng: Number
-    };
+
+
 
     //FormsTagsComida
     $scope.formClassCh = 'btn btn-sm blue-steel';
@@ -428,11 +426,11 @@ console.log(contotr);
       geocoder = new google.maps.Geocoder();
         geocoder.geocode({address: address}, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
-              $scope.newEmpresa.coordenadas.lat = results[0].geometry.location.lat();
-              $scope.newEmpresa.coordenadas.lng = results[0].geometry.location.lng();
+              $scope.newEmpresa.lat = results[0].geometry.location.lat();
+              $scope.newEmpresa.lng = results[0].geometry.location.lng();
 
             } else {
-                alert('EL Geocodes no funciona por la siguiente razón:  ' + status);
+                alert('EL Geocoder no funciona por la siguiente razón:  ' + status);
             }
         });
     }
@@ -441,12 +439,10 @@ console.log(contotr);
     $scope.registrarEmpresa = function () {
 
           codeAddress($scope.newEmpresa.direccion);
-          console.log($scope.newEmpresa.coordenadas);
 
-          console.log($scope.newEmpresa.coordenadas.lat);
-          console.log($scope.newEmpresa.coordenadas.lng);
 
           $scope.newEmpresa.detalles.horario = $scope.todos + $scope.entre + $scope.fines + $scope.manyanas + $scope.tardes + $scope.ambos;
+          console.log($scope.newEmpresa);
 
            $http.post('/empresa', $scope.newEmpresa)
                .success(function () {
