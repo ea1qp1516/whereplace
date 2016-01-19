@@ -61,6 +61,7 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $statePar
             });
     };
 
+
     $http.get('/empresas').success(function(data){
             $scope.empresas = data;
             console.log(data);
@@ -132,7 +133,7 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $statePar
 
     $scope.borrarUser = function(newUser) {
         console.log("El usuario recibido es " +newUser.nombre +" de id " +newUser._id);
-        $http.delete('/empresas/delete/' +newUser._id)
+        $http.delete('/user/delete/' +newUser._id)
             .success(function(data) {
                 $scope.newUser = {};
                 $scope.users = data;

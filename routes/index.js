@@ -25,13 +25,19 @@ module.exports = function(app, passport){
 
     //twitter authentication
 
+    app.get('/auth/twitter/profile', isAuth,  function(req, res, next) {
+        //console.log("B\nB\nB\nB\nBBBB\nB\nB\nBBBBBBBBBBBB" + req.user.name);
+        res.redirect("http://localhost:3000/#/main");
+    });
     app.get('/auth/twitter',passport.authenticate('twitter', {
         scope: ['public_profile', 'email'] }));
 
     app.get('/auth/twitter/callback',passport.authenticate ('twitter', {
-        successRedirect: 'http://localhost:3000/#/profile',
+        successRedirect: 'profile ',
         failureRedirect: '/'
     }));
+
+
 
     function isAuth (req, res, next) {
         if (req.isAuthenticated())

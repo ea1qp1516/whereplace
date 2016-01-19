@@ -70,6 +70,23 @@ module.exports = function (app, passport) {
         );
     }
 
+    findTwitter = function (req, res) {
+        User.findOne({"socialID": "2"}, {
+                nombre: 1,
+                apellidos: 1,
+                email: 1,
+                socialID: 1,
+                favoritos: 1,
+                gustos: 1,
+                avatar: 1
+            }, function (err, user) {
+                if (err)
+                    res.send(err)
+                res.json(user); // devuelve el user seleccionado/home/urtasun/WebstormProjects/whereplace/modelos/empresa.js
+            }
+        );
+    }
+
 // Guarda un objeto Empresa en base de datos
     newUser = function (req, res) {
 
@@ -264,6 +281,7 @@ module.exports = function (app, passport) {
     app.get('/user/:user_id/avatar', getAvatar);
     app.delete('/user/delete/:user_id', borrarUser);
     app.get('/userfb', findFacebook);
+    app.get('/usertwitter', findTwitter);
     app.post('/user/find', findUser);
     app.post('/user/favorito',addFavorito);
     app.post('/user', newUser);
