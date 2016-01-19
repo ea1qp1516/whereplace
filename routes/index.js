@@ -4,8 +4,9 @@ var passport = require('passport');
 
 module.exports = function(app, passport){
 //route for showing the profile page
-    app.get('/profile', isAuth,  function(req, res, next) {
-        res.redirect('profile', { title: 'Your profile page', user: req.user });
+    app.get('/auth/facebook/profile', isAuth,  function(req, res, next) {
+        //console.log("B\nB\nB\nB\nBBBB\nB\nB\nBBBBBBBBBBBB" + req.user.name);
+        res.redirect("http://localhost:3000/#/main");
     });
 //route for logging out
     app.get('/logout', function(req, res, next) {
@@ -18,7 +19,7 @@ module.exports = function(app, passport){
 
 
     app.get('/auth/facebook/callback',passport.authenticate ('facebook', {
-        successRedirect: 'http://localhost:3000/#/profile',
+        successRedirect: 'profile',
         failureRedirect: '/'
     }));
 

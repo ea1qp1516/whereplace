@@ -40,7 +40,7 @@ MetronicApp.filter('propsFilter', function() {
 
 MetronicApp.controller('UISelectController', function($scope, $http, $timeout, $cookieStore, $state) {
 
-      if($cookieStore.get('IdUser') == null){
+    /*  if($cookieStore.get('IdUser') == null){
 
         $state.go('index');
 
@@ -48,7 +48,7 @@ MetronicApp.controller('UISelectController', function($scope, $http, $timeout, $
 
         $state.go('main');
       }
-
+*/
 
     $scope.$on('$viewContentLoaded', function() {
         Metronic.initAjax(); // initialize core components

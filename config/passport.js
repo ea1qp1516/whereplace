@@ -29,10 +29,11 @@ module.exports = function(passport){
 
             process.nextTick(function(){
                 console.log(util.inspect(profile, false, null));
-                console.log("EL PERfiL QUE SE le PASa A STRATEGY " +profile.emails[0].value);
+                //console.log("EL PERfiL QUE SE le PASa A STRATEGY " +profile.emails[0].value);
                 var newUser = Object();
                 newUser.id = profile.id;
                 newUser.name = profile.displayName;
+                newUser.apellidos = "";
                 newUser.email = profile.emails[0].value;
                 newUser.pic = profile.photos[0].value;
                 newUser.provider = profile.provider;
@@ -42,7 +43,7 @@ module.exports = function(passport){
                         return done(err);
 
                     if (user){
-                        console.log("********* USUARIO YA CREADO, NO GUARDAR");
+                        //console.log("********* USUARIO YA CREADO, NO GUARDAR");
                         return done(null, user);
                     }else{
                         User.create(
@@ -50,6 +51,7 @@ module.exports = function(passport){
                                 nombre: profile.displayName,
                                 apellidos: profile.id,
                                 email: profile.emails[0].value,
+                                socialID : 1,
                                 password: "facebook",
                                 fecha_nacimiento: profile.provider
 
@@ -58,7 +60,7 @@ module.exports = function(passport){
 
 
                 });
-                console.log("USUSARIO FB +++++++++++++ ");
+                //console.log("USUSARIO FB +++++++++++++ ");
                 return done(null, newUser);
             });
         }
