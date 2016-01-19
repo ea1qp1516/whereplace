@@ -1,4 +1,4 @@
-var url = "http://10.83.21.191:3000";
+var url = "http://10.83.55.226:3000";
 
 //10.83.55.226
 //localhost
@@ -57,9 +57,19 @@ angular.module('your_app_name.controllers', [])
 
     $scope.user.email = "";
 
-    $scope.doSignUp = function () {
-      $state.go('app.feeds-categories');
+    $scope.doSignUp = function (user) {
+      $http.post(url + '/user/login', $scope.user)
+          .success(function (data) {
+            console.log(data);
+            window.localStorage['user'] = JSON.stringify(data);
+
+            $state.go('app.feeds-categories', {user: data});
+          })
+      $state.go('auth.registrar');
     };
+  })
+  .controller('RegistrarCtrl', function ($scope, $state) {
+
   })
 
   .controller('ForgotPasswordCtrl', function ($scope, $state) {

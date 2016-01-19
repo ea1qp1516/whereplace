@@ -102,6 +102,11 @@ angular.module('WherePlace', [
     templateUrl: "views/auth/signup.html",
     controller: 'SignupCtrl'
   })
+  .state('auth.registrar', {
+    url: '/signup',
+    templateUrl: "views/auth/register.html",
+    controller: 'RegistrarCtrl'
+  })
 
   .state('auth.forgot-password', {
     url: "/forgot-password",
