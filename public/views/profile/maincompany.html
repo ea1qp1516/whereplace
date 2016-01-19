@@ -10,7 +10,7 @@
 <!-- END PAGE BREADCRUMB -->
 
 <!-- BEGIN PAGE CONTENT-->
-<div class="row" ng-controller="CompanyProfileController">
+<div class="row" ng-controller="EmpresaProfileController">
 	<div class="col-md-12">
 		<!-- BEGIN PROFILE SIDEBAR -->
 		<div class="profile-sidebar">
@@ -18,49 +18,202 @@
 			<div class="portlet light profile-sidebar-portlet" style="background-color: white;">
 				<!-- SIDEBAR USERPIC -->
 				<div class="profile-userpic">
-					<img src={{user.avatar}} class="img-responsive" alt="">
+					<img src="{{empresa.avatar}}" class="img-responsive" alt="">
 				</div>
 				<!-- END SIDEBAR USERPIC -->
 				<!-- SIDEBAR USER TITLE -->
 				<div class="profile-usertitle">
 					<div class="profile-usertitle-name">
-						{{user.nombre}} {{user.apellidos}}
+						{{empresa.nombre}}
 					</div>
-					<div class="profile-usertitle-job">
-						User
+					<div class="profile-usertitle-job font-blue-steel">
+						Empresa
 					</div>
 				</div>
 				<!-- END SIDEBAR USER TITLE -->
 				<!-- SIDEBAR BUTTONS -->
 				<div class="profile-userbuttons">
-					<button type="button" class="btn btn-circle green-haze btn-sm">Follow</button>
-					<button type="button" class="btn btn-circle btn-danger btn-sm">Message</button>
+					<button type="button" class="btn btn-circle blue-steel btn-sm">Follow</button>
+					<button type="button" class="btn btn-circle red-thunderbird btn-sm">Message</button>
 				</div>
 				<!-- END SIDEBAR BUTTONS -->
-				<!-- SIDEBAR MENU -->
-				<div class="profile-usermenu">
-					<ul class="nav">
-						<li ng-class="{active: $state.includes('profile.dashboard')}">
-							<a ui-sref="profile.dashboard">
-								<i class="icon-home"></i>
-								Principal </a>
-						</li>
-						<li ng-class="{active: $state.includes('profile.account')}">
-							<a ui-sref="profile.account">
-								<i class="icon-settings"></i>
-								Configuración </a>
-
-
-					</ul>
-				</div>
-				<!-- END MENU -->
+				<br>
 			</div>
 			<!-- END PORTLET MAIN -->
 			<!-- END PORTLET MAIN -->
 		</div>
 		<!-- END BEGIN PROFILE SIDEBAR -->
 		<!-- BEGIN PROFILE CONTENT -->
-		<div ui-view class="profile-content fade-in-up">
+		<div class="row">
+			<div class="col-md-6"  >
+				<!-- BEGIN PORTLET -->
+				<div class="portlet light " style = "height:  100%; background-color: white;">
+					<div class="portlet-title">
+						<div class="caption caption-md">
+							<i class="icon-bar-chart theme-font hide"></i>
+							<span class="caption-subject font-blue-madison bold uppercase">Actividad</span>
+							<span class="caption-helper hide"></span>
+						</div>
+					</div>
+					<div class="portlet-body">
+						<div class="row number-stats margin-bottom-30">
+							<div class="col-md-6 col-sm-6 col-xs-6">
+								<div class="stat-left">
+									<div class="stat-chart">
+										<!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+										<div id="sparkline_bar"></div>
+									</div>
+									<div class="stat-number">
+										<div class="title">
+											Total
+										</div>
+										<div class="number">
+											2460
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-6">
+								<div class="stat-right">
+									<div class="stat-chart">
+										<!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+										<div id="sparkline_bar2"></div>
+									</div>
+									<div class="stat-number">
+										<div class="title">
+											New
+										</div>
+										<div class="number">
+											719
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="table-scrollable table-scrollable-borderless">
+							<table class="table table-hover table-light">
+								<thead>
+								<tr class="uppercase">
+									<th colspan="2">
+										Miembro
+									</th>
+									<th>
+										Ganado
+									</th>
+									<th>
+										Casos
+									</th>
+									<th>
+										Cerrado
+									</th>
+									<th>
+										Tasa
+									</th>
+								</tr>
+								</thead>
+								<tr>
+									<td class="fit">
+										<img class="user-pic" src="../../../assets/admin/layout3/img/avatar4.jpg">
+									</td>
+									<td>
+										<a href="#" class="primary-link">Brain</a>
+									</td>
+									<td>
+										$
+									</td>
+									<td>
+										45
+									</td>
+									<td>
+										124
+									</td>
+									<td>
+										<span class="bold theme-font">80%</span>
+									</td>
+								</tr>
+								<tr>
+									<td class="fit">
+										<img class="user-pic" src="../../../assets/admin/layout3/img/avatar5.jpg">
+									</td>
+									<td>
+										<a href="#" class="primary-link">Nick</a>
+									</td>
+									<td>
+										$560
+									</td>
+									<td>
+										12
+									</td>
+									<td>
+										24
+									</td>
+									<td>
+										<span class="bold theme-font">67%</span>
+									</td>
+								</tr>
+								<tr>
+									<td class="fit">
+										<img class="user-pic" src="../../../assets/admin/layout3/img/avatar6.jpg">
+									</td>
+									<td>
+										<a href="#" class="primary-link">Tim</a>
+									</td>
+									<td>
+										$1,345
+									</td>
+									<td>
+										450
+									</td>
+									<td>
+										46
+									</td>
+									<td>
+										<span class="bold theme-font">98%</span>
+									</td>
+								</tr>
+								<tr>
+									<td class="fit">
+										<img class="user-pic" src="../../../assets/admin/layout3/img/avatar7.jpg">
+									</td>
+									<td>
+										<a href="#" class="primary-link">Tom</a>
+									</td>
+									<td>
+										$645
+									</td>
+									<td>
+										50
+									</td>
+									<td>
+										89
+									</td>
+									<td>
+										<span class="bold theme-font">58%</span>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- END PORTLET -->
+			</div>
+			<div class="col-md-6">
+
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+
+			</div>
+			<div class="col-md-6">
+
+			</div>
+		</div>
+		<!-- BEGIN MAIN JS-->
+		<script>
+			Profile.init(); // init page demo
+		</script>
+		<!-- BEGIN MAIN JS -->
 		</div>
 		<!-- END PROFILE CONTENT -->
 	</div>
