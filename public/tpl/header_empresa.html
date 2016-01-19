@@ -3,7 +3,7 @@
 	<!-- BEGIN LOGO -->
 	<div class="page-logo">
 
-				<img src="../../../../assets/global/img/logo_whereplace_trans3.png" alt="logo" class="logo-default"/>
+				<img src="../../../../assets/global/img/logo_where.png" alt="logo" class="logo-default"/>
 
 		</div>
 	</div>
@@ -14,28 +14,7 @@
 	<!-- END RESPONSIVE MENU TOGGLER -->
 	<!-- BEGIN USER LOGIN DROPDOWN -->
 
-	<!-- BEGIN PAGE TOP -->
-	<div class="page-top" ng-show="mostrarBotonesHeader">
-
-		<!-- BEGIN TOP NAVIGATION MENU -->
-		<div class="top-menu">
-			<ul class="nav navbar-nav pull-right">
-				<li class="separator hide"></li>
-
-
-				<li class="separator hide"></li>
-
-				<!-- AQui botones -->
-				<br>
-				<button ng-click="login()"  type="button" class="btn red-thunderbird">Login</button>
-				<button ng-click=register()  type="button" class="btn red-flamingo">Registrar</button>
-				</br>
-
-			</ul>
-		</div>
-		<!-- END TOP NAVIGATION MENU -->
-	</div>
-	<div class="page-top" ng-show="mostrarHeaderLogin">
+	<div class="page-top">
 
 			<!-- END HEADER SEARCH BOX -->
 			<!-- BEGIN TOP NAVIGATION MENU -->
@@ -51,11 +30,11 @@
 							<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 							<li class="dropdown dropdown-user dropdown-dark">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-						<span class="username username-hide-on-mobile">
-						{{user.nombre}} {{user.apellidos}}
+						<span class="username username-hide-on-mobile font-blue-steel">
+						{{empresa.nombre}}
 						</span>
 						<!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
-						<img alt="" class="img-circle" src="{{user.avatar}}"/>
+						<img alt="" class="img-circle" src="{{empresa.avatar}}"/>
 					</a>
 					<ul class="dropdown-menu dropdown-menu-default">
 						<li>

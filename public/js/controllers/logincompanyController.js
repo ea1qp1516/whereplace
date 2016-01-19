@@ -10,7 +10,7 @@ MetronicApp.controller('logincompanyController', function ($scope, $http, $state
                 console.log(data);
                 $cookieStore.put('IdCompany', data._id);
                 $scope.empresa = data;
-                $state.go('editcompany');
+                $state.go('profile_company');
             })
             .error(function (data) {
                 console.log('Error: ' + data);
