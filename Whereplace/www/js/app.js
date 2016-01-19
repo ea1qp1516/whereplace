@@ -102,6 +102,12 @@ angular.module('WherePlace', [
     templateUrl: "views/auth/signup.html",
     controller: 'SignupCtrl'
   })
+  .state('auth.registrar', {
+    url: '/signup',
+    templateUrl: "views/auth/register.html",
+    controller: 'RegistrarCtrl',
+    params: {user:{}}
+  })
 
   .state('auth.forgot-password', {
     url: "/forgot-password",
@@ -236,7 +242,11 @@ angular.module('WherePlace', [
         controller: 'FavoritosCtrl'
       }
     }
-      })
+  })
+  .state('app.logout', {
+    url: "/logout",
+    controller : "LogoutCtrl"
+  })
 
 
   //WORDPRESS
