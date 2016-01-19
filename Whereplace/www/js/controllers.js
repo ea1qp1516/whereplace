@@ -1,4 +1,4 @@
-var url = "http://10.183.41.226:3000";
+var url = "http://10.83.32.114:3000";
 
 //10.83.55.226
 //localhost
@@ -211,7 +211,7 @@ angular.module('your_app_name.controllers', [])
         console.log(jsgusto);
         $http.post(url + '/empresas', jsgusto).success(function (empresas) {
 
-          $state.go('app.category-feeds',{empresas:empresas});
+          $state.go('app.category-feeds',{empresas:empresas.results});
 
         });
       }
@@ -221,7 +221,7 @@ angular.module('your_app_name.controllers', [])
 
         $http.get(url + '/empresas').success(function (empresas) {
 
-          $state.go('app.category-feeds',{empresas:empresas});
+          $state.go('app.category-feeds',{empresas:empresas.results});
 
         });
 
@@ -237,7 +237,7 @@ angular.module('your_app_name.controllers', [])
         }
         $http.post(url + '/empresas',jsgusto).success(function (empresas) {
 
-          $state.go('app.category-feeds', {empresas: empresas});
+          $state.go('app.category-feeds', {empresas: empresas.results});
 
         });
       }
@@ -312,7 +312,7 @@ angular.module('your_app_name.controllers', [])
     var puntuacion_total = 0;
 
     $http.get(url + '/empresa/' + $stateParams.empresa._id).success(function (data) {
-
+      console.log(data);
       $scope.puntuaciones_iniciales = data.puntuaciones;
       var i;
       for(i=0; i<$scope.puntuaciones_iniciales.length;i++){

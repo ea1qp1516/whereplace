@@ -27,7 +27,7 @@ module.exports = function (app) {
             }
         };
         Empresa
-            .find({},{password:0,_id:0})
+            .find({},{password:0})
             .page(pagination, function (err, empresa) {
                 if (err)
                     res.send(err)
@@ -172,7 +172,7 @@ module.exports = function (app) {
             }
         };
         Empresa.find({"tags": {$in:req.body.gusto}},
-            { _id:0, password:0 })
+            {  password:0 })
             .page(pagination, function (err, empresa) {
                 if (err)
                     res.send(err)
