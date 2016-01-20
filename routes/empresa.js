@@ -96,27 +96,30 @@ module.exports = function (app) {
 
     addComment = function (req, res) {
         Empresa.findById(req.params.empresa_id, function (err, empresa) {
-            if (err)
+            if (err) {
                 res.send(err)
-            console.log(empresa);
-            empresa.comentarios.push(req.body);
-            empresa.save(function (error, data) {
-                if (error) {
-                    res.json(error);
-                }
-                else {
-                    res.json(data);
-                    Empresa.findById(req.params.empresa_id, function (err, empresa) {
-                        if (err) {
-                            res.json(err);
-                        }
-                        else {
-                            res.json(empresa);
-                        }
-                    });
+            }else {
+                console.log(empresa);
+                empresa.comentarios.push(req.body);
+                console.log(empresa);
+                empresa.save(function (error, data) {
+                    console.log("save");
+                    if (error) {
+                        res.json(error);
+                    }
+                    else {
+                        Empresa.findById(req.params.empresa_id, function (err, empresa) {
+                            if (err) {
+                                res.json(err);
+                            }
+                            else {
+                                res.json(empresa);
+                            }
+                        });
 
-                }
-            });
+                    }
+                });
+            }
 
         });
 

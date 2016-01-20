@@ -1,4 +1,4 @@
-var url = "http://147.83.7.158:3000";
+var url = "http://10.183.44.133:3000";
 
 //10.83.55.226
 //localhost
@@ -25,11 +25,58 @@ angular.module('your_app_name.controllers', [])
     console.log(user);
     $scope.user = user;
     })
-  .controller('ProfileCtrl', function ($scope, $ionicConfig) {
+  .controller('ProfileCtrl', function ($scope, $ionicConfig,  $cordovaCamera, $ionicActionSheet, $cordovaFileTransfer, $rootScope, $timeout) {
 
     var user = JSON.parse(window.localStorage['user'] || '{}');
     console.log(user);
     $scope.user = user;
+
+      $scope.cambiarPhoto = function(){
+
+
+        var options = {
+          quality: 100,
+          destinationType: Camera.DestinationType.FILE_URI,
+          sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+          allowEdit: false,
+          encodingType: Camera.EncodingType.JPEG,
+          popoverOptions: CameraPopoverOptions,
+          saveToPhotoAlbum: true
+        };
+
+        $cordovaCamera.getPicture(options).then(function (imageData) {
+
+          $timeout(function () {
+            $scope.$apply(function () {
+              $scope.fotoperfil = imageData;
+            });
+          });
+
+          var url = "http://10.183.44.133:3000/user/modify_avatar/"+user._id;
+          var targetPath = imageData;
+          var filename = user._id;
+          var options = {
+            fileKey: "avatar",
+            fileName: filename,
+            chunkedMode: false,
+            mimeType: "image/jpg"
+          };
+
+          $cordovaFileTransfer.upload(url, targetPath, options).then(function (result) {
+            alert("Foto subida correctamente");
+          }, function (err) {
+            alert(JSON.stringify(err));
+          }, function (progress) {
+
+          });
+
+
+        }, function (err) {
+          // error
+          console.log(err);
+        });
+
+      }
 
   })
 
@@ -392,6 +439,258 @@ angular.module('your_app_name.controllers', [])
       }
       console.log($scope.favorito);
     }
+    $scope.goPhotos = function(empresa){
+
+      $state.go("app.feed-entries.photos",{empresa:$scope.empresa});
+
+    }
+    $scope.goComments = function(empresa){
+
+      $state.go("app.feed-entries.comments",{empresa:$scope.empresa});
+
+    }
+    $scope.goHome = function(empresa){
+      $state.go("app.feed-entries",{empresa:$scope.empresa});
+    }
+
+    $scope.puntuar = function (puntuacion) {
+
+
+      $scope.puntuaciones.puntuacion = puntuacion;
+      $scope.puntuaciones.userID = user._id;
+
+
+
+      $http.post(url + '/empresa/' + $scope.empresa._id + '/rating', $scope.puntuaciones).success(function (response) {
+        console.log(response);
+        console.log(response.puntuaciones[response.puntuaciones.length-1].puntuacion);
+        puntuacion_total = response.puntuaciones[response.puntuaciones.length-1].puntuacion + puntuacion_total;
+
+        $scope.media = ((puntuacion_total/response.puntuaciones.length).toFixed(2))*2;
+      });
+
+    };
+
+
+  })
+  .controller('FeedEntriesCtrlComments', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService, $ionicHistory) {
+    var user = JSON.parse(window.localStorage['user'] || '{}');
+    $scope.id = user._id;
+
+    console.log(user);
+
+    var empresaEntrada = $stateParams.empresa;
+    console.log(empresaEntrada);
+
+    $scope.empresa = empresaEntrada;
+    $scope.formClass = 'icon ion-ios-star-outline';
+    $scope.favorito = false;
+
+
+    $scope.puntuaciones={};
+    $scope.puntuaciones_iniciales = {};
+    $scope.media={};
+    var puntuacion_total = 0;
+
+    $http.get(url + '/empresa/' + $stateParams.empresa._id).success(function (data) {
+      console.log(data);
+      $scope.puntuaciones_iniciales = data.puntuaciones;
+      var i;
+      for(i=0; i<$scope.puntuaciones_iniciales.length;i++){
+        puntuacion_total = puntuacion_total + $scope.puntuaciones_iniciales[i].puntuacion;
+      }
+
+      $scope.media = ((puntuacion_total/$scope.puntuaciones_iniciales.length).toFixed(2))*2;
+
+    })
+        .error(function (data) {
+          console.log('Error: ' + data);
+        });
+
+
+    user.favoritos.forEach(function (empresa) {
+      if (empresa._id == empresaEntrada._id) {
+        $scope.favorito = true;
+        $scope.formClass = 'icon ion-ios-star';
+      }
+    })
+
+
+    $scope.NewComment = function () {
+      console.log($scope.empresa);
+      $state.go("app.newComment", {empresa: $scope.empresa});
+    }
+    $scope.cargarMapa = function () {
+      $state.go("app.maps", {empresa: $scope.empresa});
+
+    }
+
+
+    $scope.changing = function (favorito) {
+      if (favorito == true) {
+        $scope.formClass = 'icon ion-ios-star-outline';
+        $scope.favorito = false;
+        var favSend = {
+          user_id: user._id,
+          function: 'drop',
+          empresa: empresaEntrada
+        }
+        $http.post(url + '/user/favorito', favSend).success(function (response) {
+          window.localStorage['user'] = JSON.stringify(response);
+
+        });
+      }
+      if (favorito == false) {
+        $scope.formClass = 'icon ion-ios-star';
+        $scope.favorito = true;
+        var favSend = {
+          user_id: user._id,
+          function: 'add',
+          empresa: empresaEntrada
+        }
+        $http.post(url + '/user/favorito', favSend).success(function (response) {
+
+          window.localStorage['user'] = JSON.stringify(response);
+
+        });
+      }
+      console.log($scope.favorito);
+    }
+    $scope.goPhotos = function(empresa){
+
+      $state.go("app.feed-entries.photos",{empresa:$scope.empresa});
+
+    }
+    $scope.goComments = function(empresa){
+
+      $state.go("app.feed-entries.comments",{empresa:$scope.empresa});
+
+    }
+    $scope.goHome = function(empresa){
+
+      $state.go("app.feed-entries",{empresa:$scope.empresa});
+    }
+
+    $scope.puntuar = function (puntuacion) {
+
+
+      $scope.puntuaciones.puntuacion = puntuacion;
+      $scope.puntuaciones.userID = user._id;
+
+
+
+      $http.post(url + '/empresa/' + $scope.empresa._id + '/rating', $scope.puntuaciones).success(function (response) {
+        console.log(response);
+        console.log(response.puntuaciones[response.puntuaciones.length-1].puntuacion);
+        puntuacion_total = response.puntuaciones[response.puntuaciones.length-1].puntuacion + puntuacion_total;
+
+        $scope.media = ((puntuacion_total/response.puntuaciones.length).toFixed(2))*2;
+      });
+
+    };
+
+
+  })
+  .controller('FeedEntriesCtrlPhotos', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService, $ionicHistory) {
+    var user = JSON.parse(window.localStorage['user'] || '{}');
+    $scope.id = user._id;
+
+    console.log(user);
+
+    var empresaEntrada = $stateParams.empresa;
+    console.log(empresaEntrada);
+
+    $scope.empresa = empresaEntrada;
+    $scope.formClass = 'icon ion-ios-star-outline';
+    $scope.favorito = false;
+
+
+    $scope.puntuaciones={};
+    $scope.puntuaciones_iniciales = {};
+    $scope.media={};
+    var puntuacion_total = 0;
+
+    $http.get(url + '/empresa/' + $stateParams.empresa._id).success(function (data) {
+      console.log(data);
+      $scope.puntuaciones_iniciales = data.puntuaciones;
+      var i;
+      for(i=0; i<$scope.puntuaciones_iniciales.length;i++){
+        puntuacion_total = puntuacion_total + $scope.puntuaciones_iniciales[i].puntuacion;
+      }
+
+      $scope.media = ((puntuacion_total/$scope.puntuaciones_iniciales.length).toFixed(2))*2;
+
+    })
+        .error(function (data) {
+          console.log('Error: ' + data);
+        });
+
+
+    user.favoritos.forEach(function (empresa) {
+      if (empresa._id == empresaEntrada._id) {
+        $scope.favorito = true;
+        $scope.formClass = 'icon ion-ios-star';
+      }
+    })
+
+
+    $scope.NewComment = function () {
+      console.log($scope.empresa);
+      $state.go("app.newComment", {empresa: $scope.empresa});
+    }
+    $scope.cargarMapa = function () {
+      $state.go("app.maps", {empresa: $scope.empresa});
+
+    }
+
+
+    $scope.changing = function (favorito) {
+      if (favorito == true) {
+        $scope.formClass = 'icon ion-ios-star-outline';
+        $scope.favorito = false;
+        var favSend = {
+          user_id: user._id,
+          function: 'drop',
+          empresa: empresaEntrada
+        }
+        $http.post(url + '/user/favorito', favSend).success(function (response) {
+          window.localStorage['user'] = JSON.stringify(response);
+
+        });
+      }
+      if (favorito == false) {
+        $scope.formClass = 'icon ion-ios-star';
+        $scope.favorito = true;
+        var favSend = {
+          user_id: user._id,
+          function: 'add',
+          empresa: empresaEntrada
+        }
+        $http.post(url + '/user/favorito', favSend).success(function (response) {
+
+          window.localStorage['user'] = JSON.stringify(response);
+
+        });
+      }
+      console.log($scope.favorito);
+    }
+    $scope.goPhotos = function(empresa){
+      console.log(empresa);
+
+      $state.go("app.feed-entries.photos",{empresa:$scope.empresa});
+
+    }
+    $scope.goComments = function(empresa){
+      console.log(empresa);
+
+      $state.go("app.feed-entries.comments",{empresa:$scope.empresa});
+
+    }
+    $scope.goHome = function(empresa){
+      console.log(empresa);
+
+      $state.go("app.feed-entries",{empresa:$scope.empresa});
+    }
 
     $scope.puntuar = function (puntuacion) {
 
@@ -414,7 +713,8 @@ angular.module('your_app_name.controllers', [])
 
   })
 
-  .controller('NewCommentCtrl', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService, $ionicHistory) {
+
+    .controller('NewCommentCtrl', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService, $ionicHistory) {
     $ionicHistory.nextViewOptions({
       disableBack: true
     });

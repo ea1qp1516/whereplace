@@ -225,6 +225,26 @@ angular.module('WherePlace', [
     },
     params: {empresa:{}}
   })
+  .state('app.feed-entries.photos', {
+    url: "/photos",
+    views: {
+      'menuContent': {
+        templateUrl: "views/app/feeds/detalles_empresa/Photos.html",
+        controller: 'FeedEntriesCtrlPhotos'
+      }
+    },
+    params: {empresa:{}}
+  })
+  .state('app.feed-entries.comments', {
+    url: "/comments",
+    views: {
+      'menuContent': {
+        templateUrl: "views/app/feeds/detalles_empresa/Comments.html",
+        controller: 'FeedEntriesCtrlComments'
+      }
+    },
+    params: {empresa:{}}
+  })
   .state('app.comentarios', {
     url: "/mycomments",
     views: {
