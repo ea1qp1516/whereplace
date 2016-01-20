@@ -109,6 +109,23 @@ MetronicApp.controller('AppController', ['$scope', '$state', '$stateParams','$lo
             .error(function (data) {
                 console.log("Error " + data);
             })
+        $http.get('/usertwitter')
+            .success(function (data) {
+                if (data != null) {
+                    //  $scope.user_id = data._id;
+                    // $scope.nombre = data.username;
+                    // $scope.user.email = data.email;
+
+                    $scope.user = data;
+
+                    $cookieStore.put('IdUser',$scope.user._id);
+                    console.log(data);
+                }
+            })
+            .error(function (data) {
+                console.log("Error " + data);
+            })
+
 
     } else {
 
@@ -176,7 +193,6 @@ MetronicApp.controller('HeaderLoginController', ['$scope','$cookieStore', '$stat
     $scope.logout = function () {
 
       $cookieStore.remove('IdUser');
-        $cookieStore.put('Header',1);
 
 
       window.location.href = "/";

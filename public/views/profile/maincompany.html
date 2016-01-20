@@ -1,12 +1,65 @@
-<!-- BEGIN PAGE BREADCRUMB -->
-<ul class="page-breadcrumb breadcrumb">
-	<li>
-		<a href="#">Home</a><i class="fa fa-circle"></i>
-	</li>
-	<li class="active">
-		Perfil de empresa
-	</li>
-</ul>
+<div class="portlet light blue-steel">
+			<div class="portlet-title">
+				<div class="caption font-green-sharp">
+					<i class="icon-settings font-green-sharp"></i>
+					<span class="caption-subject bold uppercase">Carousel</span>
+					<span class="caption-helper">ui.bootstrap.carousel</span>
+				</div>
+				<div class="tools">
+					<a href="" class="collapse">
+					</a>
+					<a href="#portlet-config" data-toggle="modal" class="config" >
+					</a>
+					<a href="" class="reload">
+					</a>
+					<a href="" class="fullscreen">
+					</a>
+					<a href="" class="remove">
+					</a>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div class="row">
+					<div class="col-md-6">
+						<div ng-controller="CarouselDemoCtrl">
+						  	<div style="height: 305px">
+						    	<carousel interval="myInterval">
+						      		<slide ng-repeat="slide in slides" active="slide.active">
+						        		<img ng-src="{{slide.image}}" style="margin:auto;">
+						        		<div class="carousel-caption">
+						          			<h4>Slide {{$index}}</h4>
+						          			<p>{{slide.text}}</p>
+						        		</div>
+						      		</slide>
+						    	</carousel>
+						  	</div>
+						  	<div class="row">
+						    	<div class="col-md-6">
+						      		<button type="button" class="btn btn-info" ng-click="addSlide()">Add Slide</button>
+						    	</div>
+						    	<div class="col-md-6">
+						      		Interval, in milliseconds: <input type="number" class="form-control" ng-model="myInterval">
+						      		<br />Enter a negative number to stop the interval.
+						    	</div>
+						  	</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+                    	<p>Carousel creates a carousel similar to bootstrap's image carousel.</p>
+
+						<p>The carousel also offers support for touchscreen devices in the form of swiping. To enable swiping, load the <code>ngTouch</code> module as a dependency.</p>
+
+						<p>Use a <code>&lt;carousel&gt;</code> element with <code>&lt;slide&gt;</code> elements inside it.  It will automatically cycle through the slides at a given rate, and a current-index variable will be kept in sync with the currently visible slide.</p>
+                    </div>
+				</div>
+			</div>
+		</div>
+
+<!-- Thumbnail Navigator -->
+
+<!-- Arrow Navigator -->
+
+
 <!-- END PAGE BREADCRUMB -->
 
 <!-- BEGIN PAGE CONTENT-->
@@ -45,7 +98,7 @@
 		<!-- END BEGIN PROFILE SIDEBAR -->
 		<!-- BEGIN PROFILE CONTENT -->
 		<div class="row">
-			<div class="col-md-6"  >
+			<div class="col-md-6">
 				<!-- BEGIN PORTLET -->
 				<div class="portlet light " style = "height:  100%; background-color: white;">
 					<div class="portlet-title">
@@ -195,15 +248,66 @@
 						</div>
 					</div>
 				</div>
+
 				<!-- END PORTLET -->
 			</div>
 			<div class="col-md-6">
+				<button type="submit" class="btn blue-steel" ng-click="anadirAvatar()"><i class="fa fa-check"></i> Cambiar Avatar</button>
+				<form name="upload" ng-show="mostrarImagen" ng-submit="actAvatar()">
+				<div class="fileinput fileinput-new" data-provides="fileinput">
+						<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+							<img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="">
+						</div>
+						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;">
+						</div>
+						<div>
+							<br>
+							<span class="btn blue-steel btn-file">
+							<span class="fileinput-new">
+								Select image </span>
+							<span class="fileinput-exists">
+								Change </span>
+							<input name="file" type="file" uploader-model="file">
+							</span>
+							<a class="btn red-thunderbird fileinput-exists" data-dismiss="fileinput">
+							Remove </a>
 
+							<input type="submit" class="btn green-meadow" value="Enviar">
+						</div>
+
+
+				</div>
+		</form>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
+				<button type="submit" class="btn blue-steel" ng-click="anadirGaleria()"><i class="fa fa-check"></i> Añadir imagen a la galeria</button>
+				<form name="upload" ng-show="mostrarGallery" ng-submit="actGaleria()">
+				<div class="fileinput fileinput-new" data-provides="fileinput">
+						<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+							<img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="">
+						</div>
+						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;">
+						</div>
+						<div>
+							<br>
+							<span class="btn blue-steel btn-file">
+							<span class="fileinput-new">
+								Select image </span>
+							<span class="fileinput-exists">
+								Change </span>
+							<input name="file" type="file" uploader-model="file">
+							</span>
+							<a class="btn red-thunderbird fileinput-exists" data-dismiss="fileinput">
+							Remove </a>
 
+							<input type="submit" class="btn green-meadow" value="Enviar">
+						</div>
+
+
+				</div>
+		</form>
 			</div>
 			<div class="col-md-6">
 
@@ -216,6 +320,7 @@
 		<!-- BEGIN MAIN JS -->
 		</div>
 		<!-- END PROFILE CONTENT -->
+
 	</div>
 </div>
 <!-- END PAGE CONTENT-->
