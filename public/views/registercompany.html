@@ -103,42 +103,14 @@
                             <label class="control-label col-md-3">Tags</label>
                             <div class="col-md-8">
                                 <div class="input-icon right">
-                                  <a ng-click="clickedChino(click)" class="{{formClassCh}}">
+                                  <a ng-click="clickedChino(click1)" class="{{formClassCh}}">
 															     Chino <i class="{{formClassIconCh}}"></i></a>
-                                   <a ng-click="clickedItaliano(click)" class="{{formClassIta}}">
+                                   <a ng-click="clickedItaliano(click2)" class="{{formClassIta}}">
  															     Italiano <i class="{{formClassIconIta}}"></i></a>
-                                   <a ng-click="clickedEspanol(click)" class="{{formClassEsp}}">
+                                   <a ng-click="clickedEspanol(click3)" class="{{formClassEsp}}">
  															     Español <i class="{{formClassIconEsp}}"></i></a>
-                                   <a ng-click="clickedIndio(click)" class="{{formClassInd}}">
+                                   <a ng-click="clickedIndio(click4)" class="{{formClassInd}}">
  															     Indio <i class="{{formClassIconInd}}"></i></a>
-                                   <a ng-click="clickedMediterraneo(click)" class="{{formClass}}">
- 															     Mediterráneo <i class="{{formClassIcon}}"></i></a>
-                                   <a ng-click="clickedAmericano(click)" class="{{formClass}}">
- 															     Americano <i class="{{formClassIcon}}"></i></a>
-                                   <a ng-click="clickedArgentino(click)" class="{{formClass}}">
- 															     Argentino <i class="{{formClassIcon}}"></i></a>
-                                   <a ng-click="clickedAsiatico(click)" class="{{formClass}}">
- 															     Asiático <i class="{{formClassIcon}}"></i></a>
-                                   <a ng-click="clickedSuda(click)" class="{{formClass}}">
- 															     Sudamericano <i class="{{formClassIcon}}"></i></a>
-                                   <a ng-click="clickedDesayuno(click)" class="{{formClass}}">
- 															     Desayuno <i class="{{formClassIcon}}"></i></a>
-                                   <a ng-click="clickedCerveza(click)" class="{{formClass}}">
- 															     Cervecería <i class="{{formClassIcon}}"></i></a>
-                                   <a ng-click="clickedComida(click)" class="{{formClass}}">
- 															     Comida <i class="{{formClassIcon}}"></i></a>
-                                   <a ng-click="clickedCena(click)" class="{{formClass}}">
- 															     Cena  <i class="{{formClassIcon}}"></i></a>
-                                   <a ng-click="clickedVinos(click)" class="{{formClass}}">
- 															     Vinos y cavas <i class="{{formClassIcon}}"></i></a>
-                                   <a ng-click="clickedCarne(click)" class="{{formClass}}">
- 															     Carne <i class="{{formClassIcon}}"></i></a>
-                                   <a ng-click="clickedPescado(click)" class="{{formClass}}">
- 															     Pescado <i class="{{formClassIcon}}"></i></a>
-                                   <a ng-click="clickedVegetariano(click)" class="{{formClass}}">
- 															     Vegetariano <i class="{{formClassIcon}}"></i></a>
-                                   <a ng-click="clickedCafe(click)" class="{{formClass}}">
- 															     Cafetería <i class="{{formClassIcon}}"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -154,6 +126,19 @@
                                    Parque <i class="{{formClassIconParque}}"></i></a>
                                    <a ng-click="clickedOtros(click4)" class="{{formClassOtros}}">
                                    Otros <i class="{{formClassIconOtros}}"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group"  ng-show="mostrarSubtagsCompras">
+                            <label class="control-label col-md-3">Tags</label>
+                            <div class="col-md-8">
+                                <div class="input-icon right">
+                                  <a ng-click="clickedCent(click1)" class="{{formClassCent}}">
+                                   Centro comercial <i class="{{formClassIconCent}}"></i></a>
+                                   <a ng-click="clickedSup(click2)" class="{{formClassSup}}">
+                                   Supermercado <i class="{{formClassIconSup}}"></i></a>
+                                   <a ng-click="clickedCom(click3)" class="{{formClassCom}}">
+                                     Comercio de barrio <i class="{{formClassIconCom}}"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -483,10 +468,95 @@
                         </div>
                         <div class="form-group"  ng-show="mostrarDetalleCompras">
                             <label class="control-label col-md-3">Detalles</label>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <div class="input-icon right">
-                                  Hoooola
+                                  <div class="md-checkbox-list">
+
+                                    <div class="md-checkbox">
+
+                                      <input id="wifi" class="md-check" ng-model="newEmpresa.detalles.wifi" ng-true-value="'Sí'" ng-false-value="'No'" type="checkbox">
+                                      <label for="wifi">
+                                        <span class="inc"></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span>
+                                        Wifi</label>
+
+                                      </div>
+
+                                          <div class="md-checkbox">
+                                            <input id="tarjeta" class="md-check" ng-model="newEmpresa.detalles.tarjeta" ng-true-value="'Sí'" ng-false-value="'No'" type="checkbox">
+                                            <label for="tarjeta">
+                                              <span class="inc"></span>
+                                              <span class="check"></span>
+                                              <span class="box"></span>
+                                              Tarjeta </label>
+                                            </div>
+                                          </div>
                                 </div>
+                            </div>
+                            <div class="col-md-3">
+
+                              <div class="md-checkbox-list">
+
+                                <div class="md-checkbox">
+
+                                  <input id="todos" class="md-check" ng-model="todos" ng-true-value="'Todos los dias'" type="checkbox">
+                                  <label for="todos">
+                                    <span class="inc"></span>
+                                    <span class="check"></span>
+                                    <span class="box"></span>
+                                    Todos los dias</label>
+
+                                  </div>
+                                  <div class="md-checkbox">
+                                    <input id="entre" class="md-check" ng-model="entre" ng-true-value="'De Lunes a Viernes'"  type="checkbox">
+                                    <label for="entre">
+                                      <span class="inc"></span>
+                                      <span class="check"></span>
+                                      <span class="box"></span>
+                                      De Lunes a Viernes </label>
+                                    </div>
+                                    <div class="md-checkbox">
+                                      <input id="fines" class="md-check" ng-model="fines" ng-true-value="'Sólo fines de semana'"  type="checkbox">
+                                      <label for="fines">
+                                        <span class="inc"></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span>
+                                        Sólo fines de semana </label>
+                                      </div>
+                                      </div>
+                            </div>
+                            <div class="col-md-3">
+
+                              <div class="md-checkbox-list">
+
+                                <div class="md-checkbox">
+
+                                  <input id="manyanas" class="md-check" ng-model="manyanas" ng-true-value="' por las mañanas'" type="checkbox">
+                                  <label for="manyanas">
+                                    <span class="inc"></span>
+                                    <span class="check"></span>
+                                    <span class="box"></span>
+                                    Mañanas</label>
+
+                                  </div>
+                                  <div class="md-checkbox">
+                                    <input id="tardes" class="md-check" ng-model="tardes" ng-true-value="' por las tardes'"  type="checkbox">
+                                    <label for="tardes">
+                                      <span class="inc"></span>
+                                      <span class="check"></span>
+                                      <span class="box"></span>
+                                      Tardes </label>
+                                    </div>
+                                    <div class="md-checkbox">
+                                      <input id="ambos" class="md-check" ng-model="ambos" ng-true-value="' por la mañana y por la tarde'"  type="checkbox">
+                                      <label for="ambos">
+                                        <span class="inc"></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span>
+                                        Mañanas y tardes </label>
+                                      </div>
+                                      </div>
                             </div>
                         </div>
                     <div class="form-actions">

@@ -10,6 +10,7 @@ MetronicApp.controller('RegisterCompanyController', function ($scope, $http, $st
     $scope.mostrarDetalleNocturno = false;
     $scope.mostrarDetalleCompras = false;
     $scope.mostrarSubtagsComida = false;
+    $scope.mostrarSubtagsCompras = false;
     $scope.newEmpresa = {};
     $scope.newEmpresa.lat;
     $scope.newEmpresa.lng;
@@ -61,11 +62,27 @@ MetronicApp.controller('RegisterCompanyController', function ($scope, $http, $st
     $scope.formClassAlt = 'btn btn-sm blue-steel';
     $scope.formClassIconAlt = 'fa fa-plus';
 
+    //For tags Compras
+
+    $scope.formClassCent = 'btn btn-sm blue-steel';
+    $scope.formClassIconCent = 'fa fa-plus';
+    $scope.formClassSup = 'btn btn-sm blue-steel';
+    $scope.formClassIconSup = 'fa fa-plus';
+    $scope.formClassCom = 'btn btn-sm blue-steel';
+    $scope.formClassIconCom = 'fa fa-plus';
+
+
     var contdisco;
     var contcopas;
     var contgin;
     var contcock;
     var contalt;
+
+
+    var contcom;
+    var contcent;
+    var contsup;
+
 
     $scope.newEmpresa.subtags = new Array();
     $scope.click = true;
@@ -85,90 +102,82 @@ MetronicApp.controller('RegisterCompanyController', function ($scope, $http, $st
 
 
 
-    $scope.clickedChino = function (click) {
+    $scope.clickedChino = function (click1) {
 
-      if(click==true){
+      if(click1==true){
         $scope.formClassCh = 'btn btn-sm green-meadow';
         $scope.formClassIconCh = 'fa fa-coffee';
+        contch = $scope.newEmpresa.subtags.length;
 
-        if($scope.newEmpresa.subtags.length == 0 ){
-          contch = 0;
-        }else{
-          contch = $scope.newEmpresa.subtags.length - 1;
-        }
-        $scope.newEmpresa.subtags.push("chino");
-        $scope.click= false;
+        $scope.newEmpresa.subtags[contch] = "chino";
+        $scope.click1 = false;
+
       }
-      if(click==false){
+
+      if(click1==false){
         $scope.formClassCh = 'btn btn-sm blue-steel';
         $scope.formClassIconCh = 'fa fa-plus';
         delete $scope.newEmpresa.subtags[contch];
-        $scope.click = true;
+        $scope.click1 = true;
       }
 
     };
-    $scope.clickedItaliano = function (click) {
+    $scope.clickedItaliano = function (click2) {
 
-      if(click==true){
+      if(click2==true){
         $scope.formClassIta = 'btn btn-sm green-meadow';
         $scope.formClassIconIta = 'fa fa-coffee';
-        if($scope.newEmpresa.subtags.length == 0 ){
-          contita = 0;
-        }else{
-          contita = $scope.newEmpresa.subtags.length - 1;
-        }
-        $scope.newEmpresa.subtags.push("italiano");
-        $scope.click= false;
+
+        contita = $scope.newEmpresa.subtags.length;
+
+        $scope.newEmpresa.subtags[contita] = "italiano";
+        $scope.click2= false;
 
       }
-      if(click==false){
-        $scope.formClass = 'btn btn-sm blue-steel';
-        $scope.formClassIcon = 'fa fa-plus';
+      if(click2==false){
+        $scope.formClassIta = 'btn btn-sm blue-steel';
+        $scope.formClassIconIta = 'fa fa-plus';
         delete $scope.newEmpresa.subtags[contita];
-        $scope.click = true;
+        $scope.click2 = true;
       }
 
     };
-    $scope.clickedEspanol = function (click) {
+    $scope.clickedEspanol = function (click3) {
 
-      if(click==true){
+      if(click3==true){
         $scope.formClassEsp = 'btn btn-sm green-meadow';
         $scope.formClassIconEsp = 'fa fa-coffee';
-        if($scope.newEmpresa.subtags.length == 0 ){
-          contesp = 0;
-        }else{
-          contesp = $scope.newEmpresa.subtags.length - 1;
-        }
+        contesp = $scope.newEmpresa.subtags.length;
 
-        $scope.newEmpresa.subtags.push("espanol");
-        $scope.click= false;
+        $scope.newEmpresa.subtags[contesp] = "español";
+
+        $scope.click3 = false;
       }
-      if(click==false){
+
+      if(click3==false){
         $scope.formClassEsp = 'btn btn-sm blue-steel';
         $scope.formClassIconEsp = 'fa fa-plus';
         delete $scope.newEmpresa.subtags[contesp];
-        $scope.click = true;
+        $scope.click3 = true;
       }
 
     };
-    $scope.clickedIndio = function (click) {
+    $scope.clickedIndio = function (click4) {
 
-      if(click==true){
+      if(click4==true){
         $scope.formClassInd = 'btn btn-sm green-meadow';
         $scope.formClassIconInd = 'fa fa-coffee';
-        if($scope.newEmpresa.subtags.length == 0 ){
-          contind = 0;
-        }else{
-          contind = $scope.newEmpresa.subtags.length - 1;
-        }
-        $scope.newEmpresa.subtags.push("indio");
-        $scope.click= false;
+
+        contind = $scope.newEmpresa.subtags.length;
+
+        $scope.newEmpresa.subtags[contind] = "indio";
+        $scope.click4= false;
       }
-      if(click==false){
+      if(click4==false){
         $scope.formClassInd = 'btn btn-sm blue-steel';
         $scope.formClassIconInd = 'fa fa-plus';
         delete $scope.newEmpresa.subtags[contind];
-        $scope.click = true;
+        $scope.click4 = true;
       }
 
     };
@@ -372,6 +381,71 @@ console.log(contotr);
 
     };
 
+
+    $scope.clickedCent = function (click1) {
+
+      if(click1==true){
+        $scope.formClassCent = 'btn btn-sm yellow-lemon';
+        $scope.formClassIconCent = 'fa fa-credit-card';
+
+
+        contcent = $scope.newEmpresa.subtags.length;
+
+        $scope.newEmpresa.subtags[contcent] = "centro comercial";
+        $scope.click1= false;
+      }
+      if(click1==false){
+        $scope.formClassCent = 'btn btn-sm blue-steel';
+        $scope.formClassIconCent = 'fa fa-plus';
+        delete $scope.newEmpresa.subtags[contcent];
+        $scope.click1 = true;
+      }
+
+    };
+
+    $scope.clickedSup = function (click2) {
+
+      if(click2==true){
+        $scope.formClassSup = 'btn btn-sm yellow-lemon';
+        $scope.formClassIconSup = 'fa fa-credit-card';
+
+
+        contsup = $scope.newEmpresa.subtags.length;
+
+        $scope.newEmpresa.subtags[contsup] = "supermercado";
+        $scope.click2= false;
+      }
+      if(click2==false){
+        $scope.formClassSup = 'btn btn-sm blue-steel';
+        $scope.formClassIconSup = 'fa fa-plus';
+        delete $scope.newEmpresa.subtags[contsup];
+        $scope.click2 = true;
+      }
+
+    };
+
+
+        $scope.clickedCom = function (click3) {
+
+          if(click3==true){
+            $scope.formClassCom = 'btn btn-sm yellow-lemon';
+            $scope.formClassIconCom = 'fa fa-credit-card';
+
+
+            contcom = $scope.newEmpresa.subtags.length;
+
+            $scope.newEmpresa.subtags[contcom] = "comercio de barrio";
+            $scope.click3= false;
+          }
+          if(click3==false){
+            $scope.formClassCom = 'btn btn-sm blue-steel';
+            $scope.formClassIconCom = 'fa fa-plus';
+            delete $scope.newEmpresa.subtags[contcom];
+            $scope.click3 = true;
+          }
+
+        };
+
     $scope.detallesComida = function (comida) {
       $scope.mostrarDetalleComida = true;
       $scope.mostrarDetalleDiversion = false;
@@ -381,6 +455,7 @@ console.log(contotr);
       $scope.mostrarSubtagsComida = true;
       $scope.mostrarSubtagsDiversion = false;
       $scope.mostrarSubtagsNocturno = false;
+      $scope.mostrarSubtagsCompras = false;
 
       $scope.newEmpresa.tag = "comida";
 
@@ -395,6 +470,7 @@ console.log(contotr);
       $scope.mostrarSubtagsDiversion = true;
       $scope.mostrarSubtagsComida = false;
       $scope.mostrarSubtagsNocturno = false;
+      $scope.mostrarSubtagsCompras = false;
 
       $scope.newEmpresa.tag = "diversion";
 
@@ -409,6 +485,7 @@ console.log(contotr);
       $scope.mostrarSubtagsDiversion = false;
       $scope.mostrarSubtagsComida = false;
       $scope.mostrarSubtagsNocturno = true;
+      $scope.mostrarSubtagsCompras = false;
 
       $scope.newEmpresa.tag = "nocturno";
 
@@ -421,6 +498,10 @@ console.log(contotr);
       $scope.mostrarDetalleDiversion = false;
       $scope.mostrarDetalleNocturno = false;
 
+      $scope.mostrarSubtagsDiversion = false;
+      $scope.mostrarSubtagsComida = false;
+      $scope.mostrarSubtagsNocturno = false;
+      $scope.mostrarSubtagsCompras = true;
 
     };
 
@@ -451,10 +532,10 @@ console.log(contotr);
 
 
 
-      
+
   //        codeAddress($scope.newEmpresa.direccion);
           geocoder = new google.maps.Geocoder();
-            geocoder.geocode({address: $scope.newEmpresa.direccion}, function (results, status) {
+            geocoder.geocode({address: $scope.newEmpresa.direccion + " " + $scope.newEmpresa.ciudad}, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
 
                   $scope.newEmpresa.location = [results[0].geometry.location.lat(),results[0].geometry.location.lng()];

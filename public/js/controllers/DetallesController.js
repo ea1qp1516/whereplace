@@ -37,9 +37,12 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
     $scope.mostrarEstrellas = true;
     $scope.mostrarMensaje = false;
 
+
     $scope.favorito = false;
     $scope.user = {};
     $scope.user.favoritos = new Array();
+    var fotos;
+    $scope.slides = new Array();
 
 
     userPuntuador = $cookieStore.get('IdUser');
@@ -57,6 +60,14 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
 
         $scope.empresa = data;
         empresa = data;
+
+
+        fotos = data.galeria.split(',');
+        var i;
+        for(i=0;i<fotos.length-1;i++){
+
+          $scope.slides.push(fotos[i]);
+        };
 
         $scope.user.favoritos.forEach(function (data) {
 
@@ -77,15 +88,12 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
             $scope.subtags.push($scope.empresa.subtags[i]);
           }
         };
+
         direccion = $scope.empresa.direccion;
-        contador = $scope.empresa.puntuacion.contador;
-        calificacion = $scope.empresa.puntuacion.puntuacion;
-        if (contador == null && calificacion == null) {
-            contador = 0;
-            calificacion = 0;
-        }
+
         users = $scope.empresa.puntuacion.users;
-        console.log(users.length);
+
+
 
     })
         .error(function (data) {
@@ -110,7 +118,7 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
     };
 
     $scope.puntuar = function (puntuacion) {
-          
+
 
     };
 

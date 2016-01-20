@@ -57,6 +57,8 @@ module.exports = function (app) {
                 subtags: req.body.subtags,
                 detalles: req.body.detalles,
                 location: req.body.location,
+                puntuacion: [],
+                comentarios: [],
                 avatar: req.body.avatar,
                 created_at: now,
                 updated_at: now
@@ -98,14 +100,14 @@ module.exports = function (app) {
         Empresa.findById(req.params.empresa_id, function (err, empresa) {
             if (err)
                 res.send(err)
-            console.log(empresa);
+            console.log(req.body);
             empresa.comentarios.push(req.body);
             empresa.save(function (error, data) {
                 if (error) {
                     res.json(error);
                 }
                 else {
-                    res.json(data);
+                    
                     Empresa.findById(req.params.empresa_id, function (err, empresa) {
                         if (err) {
                             res.json(err);

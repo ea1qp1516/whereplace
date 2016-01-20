@@ -10,10 +10,10 @@ MetronicApp.controller('MainController', function ($scope, $http) {
     $scope.mostrarHeaderLogin = true;
     $scope.mostrarBotonesHeader = false;
 
-    $http.get('/empresas').success(function (data) {
+    $http.get('/empresas?count=200').success(function (data) {
 
-            $scope.empresas = data;
-            empresas = data;
+            $scope.empresas = data.results;
+            empresas = data.results;
 
 
     })
@@ -43,7 +43,7 @@ var geolocation;
 var pos;
 
 function initMap() {
-    var myLatLng = new google.maps.LatLng(41.32930232, 12.94898);
+    var myLatLng = new google.maps.LatLng(41.2758721, 1.987634899999989);
 
     my_position();
     map = new google.maps.Map(document.getElementById('map'), {
@@ -53,7 +53,7 @@ function initMap() {
 
     var index;
     for (index = 0; index <empresas.length; index++) {
-      pos = new google.maps.LatLng(empresas[index].lat, empresas[index].lng);
+      pos = new google.maps.LatLng(empresas[index].location[0], empresas[index].location[1]);
       console.log(empresas[index]);
       var marker = new google.maps.Marker({
           position: pos,

@@ -49,7 +49,7 @@
 				<!-- SIDEBAR BUTTONS -->
 				<div class="profile-userbuttons">
 
-					<button type="submit" class="btn btn-circle blue-steel btn-sm" ng-click="anadirGaleria()"><i class="fa fa-check"></i> Añadir imagen a la galeria</button>
+					<button type="submit" class="btn btn-circle blue-steel btn-sm" ng-click="anadirGaleria(click)"><i class="fa fa-check"></i> Añadir imagen a la galeria</button>
 					<form name="upload" ng-show="mostrarGallery" ng-submit="actGaleria()">
 					<div class="fileinput fileinput-new" data-provides="fileinput">
 							<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
@@ -75,7 +75,7 @@
 
 					</div>
 			</form>
-			<button type="submit" class="btn btn-circle blue-steel btn-sm" ng-click="anadirAvatar()"><i class="fa fa-check"></i> Cambiar Avatar</button>
+			<button type="submit" class="btn btn-circle blue-steel btn-sm" ng-click="anadirAvatar(click1)"><i class="fa fa-check"></i> Cambiar Avatar</button>
 			<form name="upload" ng-show="mostrarImagen" ng-submit="actAvatar()">
 			<div class="fileinput fileinput-new" data-provides="fileinput">
 					<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
@@ -112,7 +112,8 @@
 		<!-- END BEGIN PROFILE SIDEBAR -->
 		<!-- BEGIN PROFILE CONTENT -->
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-8">
+
 				<!-- BEGIN PORTLET -->
 				<div class="portlet light " style = "height:  100%; background-color: white;">
 					<div class="portlet-title">
@@ -140,6 +141,7 @@
 									</div>
 								</div>
 							</div>
+
 							<div class="col-md-6 col-sm-6 col-xs-6">
 								<div class="stat-right">
 									<div class="stat-chart">
@@ -157,6 +159,7 @@
 								</div>
 							</div>
 						</div>
+
 						<div class="table-scrollable table-scrollable-borderless">
 							<table class="table table-hover table-light">
 								<thead>
@@ -261,26 +264,15 @@
 							</table>
 						</div>
 					</div>
+
 				</div>
 
 				<!-- END PORTLET -->
 			</div>
-			<div class="col-md-6">
 
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-6">
-
-			</div>
-			<div class="col-md-6">
-
-			</div>
 		</div>
 		<!-- BEGIN MAIN JS-->
-		<script>
-			Profile.init(); // init page demo
-		</script>
+
 		<!-- BEGIN MAIN JS -->
 		</div>
 		<!-- END PROFILE CONTENT -->
