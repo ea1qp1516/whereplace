@@ -41,7 +41,7 @@ var empresaSchema = {
     created_at: Date,
     updated_at: Date,
     avatar: String,
-    galeria: [String],
+    galeria: String,
     puntuaciones: [puntuacionSchema],
     location: { type: [Number], index: '2d'}
 

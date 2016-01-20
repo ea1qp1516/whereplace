@@ -96,27 +96,30 @@ module.exports = function (app) {
 
     addComment = function (req, res) {
         Empresa.findById(req.params.empresa_id, function (err, empresa) {
-            if (err)
+            if (err) {
                 res.send(err)
-            console.log(empresa);
-            empresa.comentarios.push(req.body);
-            empresa.save(function (error, data) {
-                if (error) {
-                    res.json(error);
-                }
-                else {
-                    res.json(data);
-                    Empresa.findById(req.params.empresa_id, function (err, empresa) {
-                        if (err) {
-                            res.json(err);
-                        }
-                        else {
-                            res.json(empresa);
-                        }
-                    });
+            }else {
+                console.log(empresa);
+                empresa.comentarios.push(req.body);
+                console.log(empresa);
+                empresa.save(function (error, data) {
+                    console.log("save");
+                    if (error) {
+                        res.json(error);
+                    }
+                    else {
+                        Empresa.findById(req.params.empresa_id, function (err, empresa) {
+                            if (err) {
+                                res.json(err);
+                            }
+                            else {
+                                res.json(empresa);
+                            }
+                        });
 
-                }
-            });
+                    }
+                });
+            }
 
         });
 
@@ -344,7 +347,7 @@ module.exports = function (app) {
 
                 var avatar_final ='/'+ avatarUser[6] + '/' + avatarUser[7] +'/'+avatarUser[8]+'/'+avatarUser[9]+'/'+avatarUser[10];
                 console.log(avatar_final);
-                
+
 
                 //req.body.galeria.push(avatar_final);
                 //req.body.galeria[req.body.galeria.length] = avatar_final;
@@ -366,9 +369,15 @@ module.exports = function (app) {
 
                     Empresa.findById(req.params.empresa_id, function (err, empresa) {
                         if (err)
-                            res.send(err)
+                          res.send(err);
 
-                        empresa.galeria.push(avatar_final);
+                        if(empresa.galeria == undefined){
+                            empresa.galeria = avatar_final + ",";
+
+                        }else{
+                          empresa.galeria = empresa.galeria + avatar_final + ",";
+                        }
+
 
                         empresa.save(function (error, data) {
                             if (error) {

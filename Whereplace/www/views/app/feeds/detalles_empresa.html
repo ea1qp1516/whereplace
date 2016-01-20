@@ -5,19 +5,12 @@
 
     </ion-nav-title>
     <ion-content>
-        <div class="top-content row">
-            <div class="profile-container">
-                <div class="user-image-container">
-                    <pre-img ratio="_1_1" helper-class="rounded-image">
-                        <img class="user-image" ng-src="http://i0.wp.com/alt1040.com/files/2014/06/poly-wallpaper-2-800x450.jpg?resize=800%2C450" spinner-on-load>
-                    </pre-img>
-                </div>
-                <div class="user-name">{{empresa.ciudad}}</div>
-                <div class="user-twitter">{{empresa.descripcion}}</div>
-            </div>
-            <div class="user-background-image-outer">
-                <div multi-bg="['http://applediario.com/wp-content/uploads/2012/02/ox-mountain-lion-galaxy-wallpaper.png']"></div>
-            </div>
+
+
+        <div class="profile-container">
+
+            <div class="user-name">{{empresa.ciudad}}</div>
+            <div class="user-twitter">{{empresa.descripcion}}</div>
         </div>
 
       <div class="ec-stars-wrapper">
@@ -62,6 +55,26 @@
 
              </div>-->
           </div>
+
         </div>
+
     </ion-content>
+    <div class="bar bar-footer ">
+        <div class="tabs-striped tabs-color-assertive">
+            <div class="tabs">
+                <a class="tab-item active" ng-click="">
+                    <i class="icon ion-home"></i>
+                    Informacion
+                </a>
+                <a class="tab-item" ng-click="goComments(empresa)">
+                    <i class="icon ion-android-create"></i>
+                    Comentarios
+                </a>
+                <a class="tab-item" ng-click="goPhotos(empresa)">
+                    <i class="icon ion-android-camera"></i>
+                    Photos
+                </a>
+            </div>
+        </div>
+    </div>
 </ion-view>

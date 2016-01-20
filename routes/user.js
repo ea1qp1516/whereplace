@@ -317,6 +317,7 @@ module.exports = function (app, passport) {
     app.post('/user', newUser);
     app.post('/user/login',
         passport.authenticate('local'), function (req, res) {
+            console.log("************************** user/login");
             if (req.user) {
                 res.send(req.user);
             }
