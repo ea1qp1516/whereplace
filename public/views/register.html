@@ -25,36 +25,36 @@
             </div>
             <div class="portlet-body form">
                 <!-- BEGIN FORM-->
-                <form name="formUsuario" class="form-horizontal form-bordered ng-pristine ng-valid" novalidate>
+                <form name="formUsuario" class="form-horizontal form-bordered">
                     <div class="form-body">
                         <div class="form-group">
-                            <label class="control-label col-md-3">Nombre</label>
+                            <label class="control-label col-md-3">Nombre*</label>
 
                             <div class="col-md-4">
                                 <div class="input-icon right">
                                     <input class="form-control" type="text" placeholder="Nombre"
                                            ng-model="newUser.nombre" name="name" required>
                                 </div>
-                                <div class="alert alert-danger" ng-show="!formUsuario.$pristine && formUsuario.name.$error.required">
+                                <div class="alert alert-danger" ng-show="$mostrarAlertNom">
                                   <strong>Nombre requerido</strong>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Apellidos</label>
+                            <label class="control-label col-md-3">Apellidos*</label>
 
                             <div class="col-md-4">
                                 <div class="input-icon right">
                                     <input class="form-control" type="text" placeholder="Apellidos"
                                            ng-model="newUser.apellidos" name="apellidos" required>
                                 </div>
-                                <div class="alert alert-danger" ng-show="!formUsuario.$pristine && formUsuario.apellidos.$error.required">
+                                <div class="alert alert-danger" ng-show="mostrarAlertApe">
                                   <strong>Apellidos requeridos</strong>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Contraseña</label>
+                            <label class="control-label col-md-3">Contraseña*</label>
 
                             <div class="col-md-4">
                                 <div class="input-icon right">
@@ -64,39 +64,48 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Confirmar contraseña</label>
+                            <label class="control-label col-md-3">Confirmar contraseña*</label>
 
                             <div class="col-md-4">
                                 <div class="input-icon right">
                                     <input class="form-control"  type="password"
                                            placeholder="Confirmar contraseña"
-                                           ng-model="valPassword.password2" name="pass2" required>
+                                           ng-model="password2"  required>
                                 </div>
-                                <div class="alert alert-danger" ng-show="formUsuario.pass.$valid != formUsuario.pass2.$valid">
-                                  <strong>EEEE!</strong> Las contraseñas no coinciden!
+                                <div class="alert alert-danger" ng-show="mostrarAlertCon">
+                                  <strong></strong> Las contraseñas no coinciden!
                                   <span class="required">*</span>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Email</label>
+                            <label class="control-label col-md-3">Email*</label>
 
                             <div class="col-md-4">
                                 <div class="input-icon right">
                                     <input class="form-control" type="email" placeholder="Email"
                                            ng-model="newUser.email" name="correo" required>
                                 </div>
-                                <div class="alert alert-danger" ng-show="formUsuario.correo.$error.email">
-                                  <strong>EEEE!</strong> El formato del correo no es correcto
+                                <div class="alert alert-danger" ng-show="mostrarAlertEm">
+                                  <strong>Debes introducir un email</strong>
+                                  <span class="required">*</span>
+                                </div>
+                                <div class="alert alert-danger" ng-show="mostrarRepe">
+                                  <strong>Ya existe un usuario con este email</strong>
+                                  <span class="required">*</span>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Fecha de nacimiento</label>
+                            <label class="control-label col-md-3">Fecha de nacimiento*</label>
 
                             <div class="col-md-4">
                                 <input class="form-control" id="mask_date2" type="text"
                                        ng-model="newUser.fecha_nacimiento">
+                            </div>
+                            <div class="alert alert-danger" ng-show="mostrarAlertFecha">
+                              <strong>Debes una fecha</strong>
+                              <span class="required">*</span>
                             </div>
                         </div>
                     </div>

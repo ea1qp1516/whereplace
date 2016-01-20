@@ -119,7 +119,7 @@
 					<div class="portlet-title">
 						<div class="caption caption-md">
 							<i class="icon-bar-chart theme-font hide"></i>
-							<span class="caption-subject font-blue-madison bold uppercase">Actividad</span>
+							<span class="caption-subject font-blue-madison bold uppercase">Comentarios</span>
 							<span class="caption-helper hide"></span>
 						</div>
 					</div>
@@ -132,12 +132,7 @@
 										<div id="sparkline_bar"></div>
 									</div>
 									<div class="stat-number">
-										<div class="title">
-											Total
-										</div>
-										<div class="number">
-											2460
-										</div>
+
 									</div>
 								</div>
 							</div>
@@ -149,12 +144,6 @@
 										<div id="sparkline_bar2"></div>
 									</div>
 									<div class="stat-number">
-										<div class="title">
-											New
-										</div>
-										<div class="number">
-											719
-										</div>
 									</div>
 								</div>
 							</div>
@@ -167,38 +156,22 @@
 									<th colspan="2">
 										Miembro
 									</th>
+
 									<th>
-										Ganado
-									</th>
-									<th>
-										Casos
-									</th>
-									<th>
-										Cerrado
-									</th>
-									<th>
-										Tasa
+										Comentarios
 									</th>
 								</tr>
 								</thead>
-								<tr>
+								<tr ng-repeat = "comentario in empresa.comentarios" >
 									<td class="fit">
-										<img class="user-pic" src="../../../assets/admin/layout3/img/avatar4.jpg">
+										<img class="user-pic" src="{{comentario.avatar}}">
 									</td>
 									<td>
-										<a href="#" class="primary-link">Brain</a>
+										<a href="#" class="primary-link">{{comentario.user}}</a>
 									</td>
+
 									<td>
-										$
-									</td>
-									<td>
-										45
-									</td>
-									<td>
-										124
-									</td>
-									<td>
-										<span class="bold theme-font">80%</span>
+										<span class="bold theme-font">{{comentario.comentario}}</span>
 									</td>
 								</tr>
 								<tr>
