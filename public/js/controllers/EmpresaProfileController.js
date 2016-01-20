@@ -4,13 +4,22 @@ MetronicApp.controller('EmpresaProfileController', function ($scope, $http, $sta
 
   $scope.empresa={};
   $scope.mostrarImagen = false;
-  $scope.galerias = new Array();
+  $scope.galerias = "";
+  var fotos;
+  $scope.slides = new Array();
 
 
     $http.get('/empresa/'+$cookieStore.get('IdCompany')).success(function (data) {
 
       $scope.empresa = data;
-      $scope.galerias = data.galeria;
+      console.log(data);
+      fotos = data.galeria.split(',');
+      var i;
+      for(i=0;i<fotos.length-1;i++){
+        console.log(fotos[i]);
+        console.log(fotos.length);
+        $scope.slides.push(fotos[i]);
+      }
       console.log($scope.galerias);
     })
     .error(function (data) {
