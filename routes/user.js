@@ -263,14 +263,14 @@ module.exports = function (app, passport) {
     addImages = function (req, res, next) {
 
 
-                fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_users/" + req.params.user_id);
-                fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_users/" + req.params.user_id + "/avatar");
+                fs.mkdir("/home/ea0/whereplace/public/img/avatar_users/" + req.params.user_id);
+                fs.mkdir("/home/ea0/whereplace/public/img/avatar_users/" + req.params.user_id + "/avatar");
                 var tmp_path = req.files.file.path;
                 console.log(tmp_path);
                 console.log(tmp_path);
                 var ext = req.files.file.type;
                 ext = ext.split('/');
-                var target_path = '/home/nacho/EAProject/whereplace/public/img/avatar_users/' + req.params.user_id + '/avatar/' + req.params.user_id;
+                var target_path = '/home/ea0/whereplace/public/img/avatar_users/' + req.params.user_id + '/avatar/' + req.params.user_id;
                 console.log(target_path);
                 fs.rename(tmp_path, target_path, function (err) {
                     if (err) throw err;

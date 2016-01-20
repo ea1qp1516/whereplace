@@ -320,14 +320,14 @@ module.exports = function (app) {
     addImages = function (req, res, next) {
 
 
-                fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_empresas/" + req.params.empresa_id);
-                fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_empresas/" + req.params.empresa_id + "/avatar");
+                fs.mkdir("/home/ea0/whereplace/public/img/avatar_empresas/" + req.params.empresa_id);
+                fs.mkdir("/home/ea0/whereplace/public/img/avatar_empresas/" + req.params.empresa_id + "/avatar");
                 var tmp_path = req.files.file.path;
                 console.log(tmp_path);
 
                 var ext = req.files.file.type;
                 ext = ext.split('/');
-                var target_path = '/home/nacho/EAProject/whereplace/public/img/avatar_empresas/' + req.params.empresa_id + '/avatar/' + req.params.empresa_id;
+                var target_path = '/home/ea0/whereplace/public/img/avatar_empresas/' + req.params.empresa_id + '/avatar/' + req.params.empresa_id;
                 console.log(target_path);
                 fs.rename(tmp_path, target_path, function (err) {
                     if (err) throw err;
@@ -365,14 +365,14 @@ module.exports = function (app) {
 
 
 
-                fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_empresas/" + req.params.empresa_id);
-                fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_empresas/" + req.params.empresa_id + "/gallery");
+                fs.mkdir("/home/ea0/whereplace/public/img/avatar_empresas/" + req.params.empresa_id);
+                fs.mkdir("/home/ea0/whereplace/public/img/avatar_empresas/" + req.params.empresa_id + "/gallery");
                 var tmp_path = req.files.file.path;
 
 
                 var ext = req.files.file.type;
                 ext = ext.split('/');
-                var target_path = '/home/nacho/EAProject/whereplace/public/img/avatar_empresas/' + req.params.empresa_id + '/gallery/' + req.files.file.name;
+                var target_path = '/home/ea0/whereplace/public/img/avatar_empresas/' + req.params.empresa_id + '/gallery/' + req.files.file.name;
 
                 fs.rename(tmp_path, target_path, function (err) {
                     if (err) throw err;

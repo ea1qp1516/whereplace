@@ -6,7 +6,7 @@ module.exports = function(app, passport){
 //route for showing the profile page
     app.get('/auth/facebook/profile', isAuth,  function(req, res, next) {
         //console.log("B\nB\nB\nB\nBBBB\nB\nB\nBBBBBBBBBBBB" + req.user.name);
-        res.redirect("http://localhost:3000/#/main");
+        res.redirect("http://147.83.7.158:3000/#/main");
     });
 //route for logging out
     app.get('/logout', function(req, res, next) {
@@ -27,7 +27,7 @@ module.exports = function(app, passport){
 
     app.get('/auth/twitter/profile', isAuth,  function(req, res, next) {
         //console.log("B\nB\nB\nB\nBBBB\nB\nB\nBBBBBBBBBBBB" + req.user.name);
-        res.redirect("http://localhost:3000/#/main");
+        res.redirect("http://147.83.7.158:3000/#/main");
     });
     app.get('/auth/twitter',passport.authenticate('twitter', {
         scope: ['public_profile', 'email'] }));
