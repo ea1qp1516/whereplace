@@ -280,7 +280,7 @@ module.exports = function (app, passport) {
                 });
                 avatarUser = target_path.split('/');
 
-                var avatar_final ='/'+ avatarUser[6] + '/' + avatarUser[7] +'/'+avatarUser[8]+'/'+avatarUser[9]+'/'+avatarUser[10];
+                var avatar_final ='/'+ avatarUser[5] + '/' + avatarUser[6] +'/'+avatarUser[7]+'/'+avatarUser[8]+'/'+avatarUser[9];
                 console.log(avatar_final);
                 req.body.avatar=avatar_final;
                 console.log(req.body);
