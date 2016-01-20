@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "nodejs ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -29,6 +29,7 @@
     "passport": "^0.3.2",
     "passport-facebook": "^2.0.0",
     "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.3",
     "rand-token": "^0.2.1",
     "requests": "~0.1.7",
     "serve-favicon": "~2.3.0",

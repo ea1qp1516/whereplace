@@ -20,6 +20,7 @@
         </div>
         <i class="icon ion-arrow-right-c"></i>
       </a>
+      <ion-infinite-scroll distance="2" on-infinite="loadMoreData()" ng-if="!moredata" ></ion-infinite-scroll>
     </div>
   </ion-content>
 </ion-view>

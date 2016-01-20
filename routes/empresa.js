@@ -1,10 +1,15 @@
+var fs = require('fs');
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
+
 module.exports = function (app) {
 
     var Empresa = require('../modelos/empresa');
 
+
     // Obtiene una Empresa de la base de datos
     getEmpresa = function (req, res) {
-        Empresa.findOne({"_id": req.params.empresa_id}, { _id:0, password:0  }, function (err, empresa) {
+        Empresa.findOne({"_id": req.params.empresa_id}, { password:0  }, function (err, empresa) {
                 if (err)
                     res.send(err)
                 res.json(empresa); // devuelve todas las Empresas en JSON
@@ -27,7 +32,7 @@ module.exports = function (app) {
             }
         };
         Empresa
-            .find({},{password:0,_id:0})
+            .find({},{password:0})
             .page(pagination, function (err, empresa) {
                 if (err)
                     res.send(err)
@@ -39,7 +44,6 @@ module.exports = function (app) {
 // Guarda un objeto Empresa en base de datos
     newEmpresa = function (req, res) {
         var now = new Date();
-        console.log(req.body.lat);
         Empresa.create(
             {
                 nombre: req.body.nombre,
@@ -52,8 +56,8 @@ module.exports = function (app) {
                 tag: req.body.tag,
                 subtags: req.body.subtags,
                 detalles: req.body.detalles,
-                lat: req.body.lat,
-                lng: req.body.lng,
+                location: req.body.location,
+                avatar: req.body.avatar,
                 created_at: now,
                 updated_at: now
             },
@@ -165,20 +169,53 @@ module.exports = function (app) {
             start: (page - 1) * count,
             count: count
         };
-
         var sort = {
             sort: {
                 desc: '_id'
             }
         };
-        Empresa.find({"tags": {$in:req.body.gusto}},
-            { _id:0, password:0 })
-            .page(pagination, function (err, empresa) {
-                if (err)
-                    res.send(err)
-                res.json(empresa); // devuelve todas las Empresas en JSON
-            }
-        );
+
+        if (req.query.latitude!=undefined||req.query.longitude!=undefined) {
+            console.log("dins");
+
+            var maxDistance = req.query.distance || 8;
+
+            maxDistance /= 6371;
+
+            var coords = [];
+            coords[1] = req.query.latitude;
+            coords[0] = req.query.longitude;
+
+            console.log("coord: " + coords);
+            console.log("maxD: " + maxDistance);
+            Empresa.find({$and: [{"location": {$geoWithin: {$centerSphere: [[coords[0], coords[1]], maxDistance]}}}, {"tag": {$in: req.body.gusto}}]},
+                {password: 0})
+                .page(pagination, function (err, empresa) {
+                    console.log("results");
+                    if (err) {
+                        console.log("err");
+                        res.send(err);
+                    } else {
+                        res.json(empresa); // devuelve todas las Empresas en JSON
+                    }
+                }
+            );
+        }
+        else {
+            console.log(req.body.gusto);
+            Empresa.find({tag: {$in: req.body.gusto}},
+                {password: 0})
+                .page(pagination, function (err, empresa) {
+                    console.log("results");
+                    if (err) {
+                        console.log("err");
+                        res.send(err);
+                    } else {
+                        res.json(empresa); // devuelve todas las Empresas en JSON
+                    }
+                })
+
+        }
     }
 
     empresalogin = function (req, res) {
@@ -240,6 +277,115 @@ module.exports = function (app) {
         });
     }
 
+    addImages = function (req, res, next) {
+
+
+                fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_empresas/" + req.params.empresa_id);
+                fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_empresas/" + req.params.empresa_id + "/avatar");
+                var tmp_path = req.files.file.path;
+                console.log(tmp_path);
+
+                var ext = req.files.file.type;
+                ext = ext.split('/');
+                var target_path = '/home/nacho/EAProject/whereplace/public/img/avatar_empresas/' + req.params.empresa_id + '/avatar/' + req.params.empresa_id;
+                console.log(target_path);
+                fs.rename(tmp_path, target_path, function (err) {
+                    if (err) throw err;
+                    fs.unlink(tmp_path, function () {
+                        if (err) throw err;
+                    });
+                });
+                avatarUser = target_path.split('/');
+
+                var avatar_final ='/'+ avatarUser[6] + '/' + avatarUser[7] +'/'+avatarUser[8]+'/'+avatarUser[9]+'/'+avatarUser[10];
+                console.log(avatar_final);
+                req.body.avatar=avatar_final;
+                console.log(req.body);
+
+                //var now = new Date();
+
+                Empresa.update({_id: req.params.empresa_id},req.body,
+                    function (err, empresa) {
+                        if (err)
+                            res.send(err);
+
+
+                        Empresa.findOne({"_id": req.params.empresa_id}, {__v: 0, password: 0}, function (err, empresa) {
+                                if (err)
+                                    res.send(err)
+                                res.json(empresa);
+                            }
+                        );
+                    });
+
+
+    };
+
+    addGallery = function (req, res, next) {
+
+
+
+                fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_empresas/" + req.params.empresa_id);
+                fs.mkdir("/home/nacho/EAProject/whereplace/public/img/avatar_empresas/" + req.params.empresa_id + "/gallery");
+                var tmp_path = req.files.file.path;
+
+
+                var ext = req.files.file.type;
+                ext = ext.split('/');
+                var target_path = '/home/nacho/EAProject/whereplace/public/img/avatar_empresas/' + req.params.empresa_id + '/gallery/' + req.files.file.name;
+
+                fs.rename(tmp_path, target_path, function (err) {
+                    if (err) throw err;
+                    fs.unlink(tmp_path, function () {
+                        if (err) throw err;
+                    });
+                });
+                avatarUser = target_path.split('/');
+
+                var avatar_final ='/'+ avatarUser[6] + '/' + avatarUser[7] +'/'+avatarUser[8]+'/'+avatarUser[9]+'/'+avatarUser[10];
+                console.log(avatar_final);
+                
+
+                //req.body.galeria.push(avatar_final);
+                //req.body.galeria[req.body.galeria.length] = avatar_final;
+                //var now = new Date();
+
+            /*    Empresa.update({_id: req.params.empresa_id},req.body,
+                    function (err, empresa) {
+                        if (err)
+                            res.send(err);
+
+
+                        Empresa.findOne({"_id": req.params.empresa_id}, {__v: 0, password: 0}, function (err, empresa) {
+                                if (err)
+                                    res.send(err)
+                                res.json(empresa);
+                            }
+                        );
+                    });*/
+
+                    Empresa.findById(req.params.empresa_id, function (err, empresa) {
+                        if (err)
+                            res.send(err)
+
+                        empresa.galeria.push(avatar_final);
+
+                        empresa.save(function (error, data) {
+                            if (error) {
+                                res.json(error);
+                            }
+                            else {
+                                res.json(data);
+                            }
+                        });
+
+                    });
+
+
+
+
+    };
+
 
     app.get('/empresa/:empresa_id', getEmpresa);
     // app.get('/', getEmpresas);
@@ -256,6 +402,8 @@ module.exports = function (app) {
     app.post('/empresa/:empresa_id/rating', addRate);
     app.post('/empresa', newEmpresa);
     app.post('/empresa/login', empresalogin);
+    app.post('/empresa/modify_avatar/:empresa_id',multipartMiddleware, addImages);
+    app.post('/empresa/gallery/:empresa_id',multipartMiddleware, addGallery);
 
 
 }

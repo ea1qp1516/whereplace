@@ -13,7 +13,7 @@ MetronicApp.controller('RegisterCompanyController', function ($scope, $http, $st
     $scope.newEmpresa = {};
     $scope.newEmpresa.lat;
     $scope.newEmpresa.lng;
-
+    var numeroAv;
 
 
     //FormsTagsComida
@@ -431,14 +431,33 @@ console.log(contotr);
 
 
     $scope.registrarEmpresa = function () {
+        if($scope.newEmpresa.tag == "comida"){
 
+          numeroAv = Math.floor(Math.random() * 9);
+          $scope.newEmpresa.avatar = "/assets/avatar_emp/comida"+numeroAv+".jpg";
+        } else if($scope.newEmpresa.tag == "diversion"){
+          numeroAv = Math.floor(Math.random() * 2);
+          $scope.newEmpresa.avatar = "/assets/avatar_emp/diversion"+numeroAv+".jpg";
+        }else if($scope.newEmpresa.tag == "nocturno"){
+
+            numeroAv = Math.floor(Math.random() * 5);
+            $scope.newEmpresa.avatar = "/assets/avatar_emp/nocturno"+numeroAv+".jpg";
+
+          }else if($scope.newEmpresa.tag == "compras"){
+            numeroAv = Math.floor(Math.random() * 4);
+            $scope.newEmpresa.avatar = "/assets/avatar_emp/compras"+numeroAv+".jpg";
+          }
+
+
+
+
+      
   //        codeAddress($scope.newEmpresa.direccion);
           geocoder = new google.maps.Geocoder();
             geocoder.geocode({address: $scope.newEmpresa.direccion}, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
 
-                  $scope.newEmpresa.lat = results[0].geometry.location.lat();
-                  $scope.newEmpresa.lng = results[0].geometry.location.lng();
+                  $scope.newEmpresa.location = [results[0].geometry.location.lat(),results[0].geometry.location.lng()];
                   $scope.newEmpresa.detalles.horario = $scope.todos + $scope.entre + $scope.fines + $scope.manyanas + $scope.tardes + $scope.ambos;
                   console.log($scope.newEmpresa);
                   $http.post('/empresa', $scope.newEmpresa)

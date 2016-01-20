@@ -40,16 +40,14 @@ var empresaSchema = {
     detalles:detallesSchema,
     created_at: Date,
     updated_at: Date,
+    avatar: String,
+    galeria: [String],
     puntuaciones: [puntuacionSchema],
-    lat: String,
-    lng: String
+    location: { type: [Number], index: '2d'}
 
 };
 
 
 
 
-module.exports = mongoose.model("Comentario", comentarioSchema);
-module.exports = mongoose.model("Puntuacion", puntuacionSchema);
-module.exports = mongoose.model("Detalles", detallesSchema);
 module.exports = mongoose.model("Empresa", empresaSchema);

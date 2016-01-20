@@ -17,6 +17,7 @@ var fs = require('fs');
 
 require('./config/passport')(passport);
 var app = express();
+app.disable('etag');
 
 app.use(session({ secret: '3f3b6994ec1dfda4c36de216d8fa03e3' }));
 

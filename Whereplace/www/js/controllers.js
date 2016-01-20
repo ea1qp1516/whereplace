@@ -1,4 +1,4 @@
-var url = "http://10.183.41.226:3000";
+var url = "http://147.83.7.158:3000";
 
 //10.83.55.226
 //localhost
@@ -200,7 +200,16 @@ angular.module('your_app_name.controllers', [])
       $scope.feeds_categories = response;
     });
 
+
+
     $scope.getEmpresas = function(gusto){
+
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        console.log("lat: "+ pos.k +" "+ "lon: "+pos.B);
+      });
+
+
       var user = JSON.parse(window.localStorage['user'] || '{}');
       if (gusto =="Mis Gustos"){
         console.log("misgustos");
@@ -209,9 +218,9 @@ angular.module('your_app_name.controllers', [])
           gusto : mis_gustos
         }
         console.log(jsgusto);
-        $http.post(url + '/empresas', jsgusto).success(function (empresas) {
+        $http.post(url + '/empresas?count=20', jsgusto).success(function (empresas) {
 
-          $state.go('app.category-feeds',{empresas:empresas});
+          $state.go('app.category-feeds',{empresas:empresas.results});
 
         });
       }
@@ -219,9 +228,9 @@ angular.module('your_app_name.controllers', [])
 
         console.log("personaizada");
 
-        $http.get(url + '/empresas').success(function (empresas) {
+        $http.get(url + '/empresas?count=20').success(function (empresas) {
 
-          $state.go('app.category-feeds',{empresas:empresas});
+          $state.go('app.category-feeds',{empresas:empresas.results});
 
         });
 
@@ -235,9 +244,9 @@ angular.module('your_app_name.controllers', [])
         var jsgusto ={
           gusto: arrgusto
         }
-        $http.post(url + '/empresas',jsgusto).success(function (empresas) {
+        $http.post(url + '/empresas?count=20',jsgusto).success(function (empresas) {
 
-          $state.go('app.category-feeds', {empresas: empresas});
+          $state.go('app.category-feeds', {empresas: empresas.results});
 
         });
       }
@@ -264,6 +273,10 @@ angular.module('your_app_name.controllers', [])
       var category = _.find(response, {id: $scope.categoryId});
     });
 
+      $scope.loadMoreData = function(){
+
+      }
+
 
 
     $scope.buscar = function(busqueda){
@@ -274,7 +287,7 @@ angular.module('your_app_name.controllers', [])
 
 
       empresas.forEach(function(empresa){
-        if(empresa.nombre.search(busqueda)!=-1){
+        if((empresa.nombre.search(busqueda)!=-1)||(empresa.subtags.indexOf(busqueda)!=-1)){
           matches.push(empresa);
         }
       })
@@ -300,19 +313,23 @@ angular.module('your_app_name.controllers', [])
     var user = JSON.parse(window.localStorage['user'] || '{}');
     $scope.id = user._id;
 
+    console.log(user);
+
     var empresaEntrada = $stateParams.empresa;
-    var idempresa = empresaEntrada._id;
-    console.log($stateParams.empresa);
+    console.log(empresaEntrada);
+
     $scope.empresa = empresaEntrada;
-    $scope.favorito = false;
     $scope.formClass = 'icon ion-ios-star-outline';
+    $scope.favorito = false;
+
+
     $scope.puntuaciones={};
     $scope.puntuaciones_iniciales = {};
     $scope.media={};
     var puntuacion_total = 0;
 
     $http.get(url + '/empresa/' + $stateParams.empresa._id).success(function (data) {
-
+      console.log(data);
       $scope.puntuaciones_iniciales = data.puntuaciones;
       var i;
       for(i=0; i<$scope.puntuaciones_iniciales.length;i++){
@@ -355,6 +372,7 @@ angular.module('your_app_name.controllers', [])
           empresa: empresaEntrada
         }
         $http.post(url + '/user/favorito', favSend).success(function (response) {
+          window.localStorage['user'] = JSON.stringify(response);
 
         });
       }
@@ -368,9 +386,11 @@ angular.module('your_app_name.controllers', [])
         }
         $http.post(url + '/user/favorito', favSend).success(function (response) {
 
+          window.localStorage['user'] = JSON.stringify(response);
+
         });
       }
-      console.log(favorito);
+      console.log($scope.favorito);
     }
 
     $scope.puntuar = function (puntuacion) {
@@ -518,7 +538,7 @@ angular.module('your_app_name.controllers', [])
 
     $http.get(url + '/empresas/comentarios/' + user._id).success(function (response) {
       console.log(response);
-      $scope.empresas = response;
+      $scope.empresas = response.results;
       $scope.numComments = response.length;
     });
     $scope.detailEmpresa = function (idempresa) {

@@ -50,6 +50,7 @@ var userSchema = new Schema({
     email: String,
     gustos: [String],
     fecha_nacimiento: String ,
+    socialID : String,
     created_at: Date,
     updated_at: Date,
     contador_comentarios: String,
