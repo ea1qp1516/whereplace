@@ -6,8 +6,7 @@ MetronicApp.controller('logincompanyController', function ($scope, $http, $state
     $scope.login = function () {
         $http.post('/empresa/login', $scope.loginempresa)
             .success(function (data) {
-                console.log($scope.loginempresa);
-                console.log(data);
+
                 $cookieStore.put('IdCompany', data._id);
                 $scope.empresa = data;
                 $state.go('profile_company');

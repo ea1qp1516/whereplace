@@ -451,7 +451,7 @@ console.log(contotr);
 
 
 
-        $scope.newEmpresa.avatar = "/assets/avatar_emp/"+numeroAv+".png";
+      
   //        codeAddress($scope.newEmpresa.direccion);
           geocoder = new google.maps.Geocoder();
             geocoder.geocode({address: $scope.newEmpresa.direccion}, function (results, status) {
