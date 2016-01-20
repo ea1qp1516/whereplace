@@ -1,4 +1,4 @@
-var url = "http://10.83.55.226:3000";
+var url = "http://147.83.7.158:3000";
 
 //10.83.55.226
 //localhost
@@ -313,12 +313,16 @@ angular.module('your_app_name.controllers', [])
     var user = JSON.parse(window.localStorage['user'] || '{}');
     $scope.id = user._id;
 
+    console.log(user);
+
     var empresaEntrada = $stateParams.empresa;
-    var idempresa = empresaEntrada._id;
-    console.log($stateParams.empresa);
+    console.log(empresaEntrada);
+
     $scope.empresa = empresaEntrada;
-    $scope.favorito = false;
     $scope.formClass = 'icon ion-ios-star-outline';
+    $scope.favorito = false;
+
+
     $scope.puntuaciones={};
     $scope.puntuaciones_iniciales = {};
     $scope.media={};
@@ -368,6 +372,7 @@ angular.module('your_app_name.controllers', [])
           empresa: empresaEntrada
         }
         $http.post(url + '/user/favorito', favSend).success(function (response) {
+          window.localStorage['user'] = JSON.stringify(response);
 
         });
       }
@@ -381,9 +386,11 @@ angular.module('your_app_name.controllers', [])
         }
         $http.post(url + '/user/favorito', favSend).success(function (response) {
 
+          window.localStorage['user'] = JSON.stringify(response);
+
         });
       }
-      console.log(favorito);
+      console.log($scope.favorito);
     }
 
     $scope.puntuar = function (puntuacion) {
