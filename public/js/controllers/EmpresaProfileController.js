@@ -5,6 +5,8 @@ MetronicApp.controller('EmpresaProfileController', function ($scope, $http, $sta
   $scope.empresa={};
   $scope.mostrarImagen = false;
   $scope.galerias = "";
+  $scope.click = true;
+  $scope.click1 = true;
   var fotos;
   $scope.slides = new Array();
 
@@ -16,16 +18,24 @@ MetronicApp.controller('EmpresaProfileController', function ($scope, $http, $sta
       fotos = data.galeria.split(',');
       var i;
       for(i=0;i<fotos.length-1;i++){
-        console.log(fotos[i]);
-        console.log(fotos.length);
+
         $scope.slides.push(fotos[i]);
       }
-      console.log($scope.galerias);
+
     })
     .error(function (data) {
         console.log('Error: ' + data);
     });
 
+    $scope.logout = function () {
+
+      $cookieStore.remove('IdCompany');
+
+
+      window.location.href = "/";
+      //$state.go('index');
+
+    }
     $scope.actAvatar = function(){
 
       var file = $scope.file;
@@ -44,14 +54,29 @@ MetronicApp.controller('EmpresaProfileController', function ($scope, $http, $sta
 
     }
 
-    $scope.anadirAvatar = function () {
-      $scope.mostrarImagen = true;
-    }
-    $scope.anadirGaleria = function () {
-      $scope.mostrarGallery = true;
+    $scope.anadirAvatar = function (click1) {
+      if(click1 ==true){
+        $scope.mostrarImagen = true;
+        $scope.mostrarGallery= false;
+        $scope.click1 = false;
+      }else{
+        $scope.mostrarImagen= false;
+        $scope.click1 = true;
+      }
+
     }
 
+    $scope.anadirGaleria = function (click) {
+      if(click ==true){
+        $scope.mostrarGallery = true;
+        $scope.mostrarImagen=false;
+        $scope.click = false;
+      }else{
+        $scope.mostrarGallery= false;
+        $scope.click = true;
+      }
 
+    }
 });
 
 MetronicApp.directive('uploaderModel', ["$parse", function ($parse){

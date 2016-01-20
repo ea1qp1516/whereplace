@@ -63,7 +63,7 @@ MetronicApp.controller('AdminPanelController', function($scope, $http, $statePar
 
 
     $http.get('/empresas').success(function(data){
-            $scope.empresas = data;
+            $scope.empresas = data.results;
             console.log(data);
 
         })

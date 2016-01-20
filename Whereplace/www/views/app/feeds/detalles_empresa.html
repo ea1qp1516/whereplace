@@ -11,6 +11,7 @@
 
             <div class="user-name">{{empresa.ciudad}}</div>
             <div class="user-twitter">{{empresa.descripcion}}</div>
+
         </div>
 
       <div class="ec-stars-wrapper">
@@ -27,6 +28,15 @@
 
       </div>
 
+        <div class="bottom-content">
+            <div class="profile-container">
+                <div class="user-image-container">
+                    <pre-img ratio="_1_1">
+                        <img class="user-image" ng-src="img/fondop.jpg" spinner-on-load>
+                    </pre-img>
+                </div>
+        </div>
+
 
 
         <div class="list category-feeds">
@@ -36,7 +46,6 @@
                     <span class="title">{{comentario.user}}</span>
                     <p class="description">{{comentario.comentario}}</p>
                 </div>
-                <i class="icon ion-arrow-right-c"></i>
             </a>
         </div>
         <div class="bottom-content">
@@ -49,7 +58,7 @@
               </div>-->
             </div>
           <div class="user-bio">
-            <a ng-click="cargarMapa()">{{empresa.direccion}}</a>
+            <a ng-click="cargarMapa()">Localizacion: {{empresa.direccion}}</a>
             <!--   <a ng-click="cargarMapa()">{{empresa.direccion}}</a>
              <div ng-show="mostrarMapa" id="map" style="height: 400px; ">
 
@@ -59,22 +68,5 @@
         </div>
 
     </ion-content>
-    <div class="bar bar-footer ">
-        <div class="tabs-striped tabs-color-assertive">
-            <div class="tabs">
-                <a class="tab-item active" ng-click="">
-                    <i class="icon ion-home"></i>
-                    Informacion
-                </a>
-                <a class="tab-item" ng-click="goComments(empresa)">
-                    <i class="icon ion-android-create"></i>
-                    Comentarios
-                </a>
-                <a class="tab-item" ng-click="goPhotos(empresa)">
-                    <i class="icon ion-android-camera"></i>
-                    Photos
-                </a>
-            </div>
-        </div>
-    </div>
+
 </ion-view>

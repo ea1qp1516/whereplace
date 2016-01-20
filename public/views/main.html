@@ -34,11 +34,11 @@
 
     <div class="col-md-4" >
         <!-- BEGIN: ACCORDION DEMO -->
-        <div class="portlet light" style="background-color: white;" ng-repeat="empresa in empresas" >
+        <div class="portlet box blue-steel"  ng-repeat="empresa in empresas" >
             <div class="portlet-title">
                 <div class="caption font-green-sharp">
-                    <i class="icon-paper-plane font-green-sharp"></i>
-                    <a class="caption-subject bold uppercase font-red-flamingo" type="button"
+                    <i class="icon-paper-plane font-blue-chambray"></i>
+                    <a class="caption-subject bold uppercase font-blue-chambray" type="button"
                        href="#/detalles/{{empresa._id}}">{{empresa.nombre}}</a>
                     <span class="caption-helper hide"></span>
                 </div>
@@ -46,11 +46,14 @@
             <div class="portlet-body">
                 <div class="row">
                     <div class="col-md-4">
-                        <span class="font-red-thunderbird">{{empresa.email}}</span>
+                      <div class="profile-userpic">
+                        <img src="{{empresa.avatar}}" class="img-responsive" alt="">
+                      </div>
+                        <span class="font-blue-chambray">{{empresa.email}}</span>
                         <br>
-                        <span class="font-red-thunderbird">{{empresa.direccion}}</span>
+                        <span class="font-blue-chambray">{{empresa.direccion}}</span>
                     </div>
-                    <div class="col-md-4"></div>
+
                     <div class="col-md-4">
                         <div class="tiles">
                             <div class="tile bg-green-jungle">

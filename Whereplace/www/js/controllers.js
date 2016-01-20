@@ -10,6 +10,8 @@ angular.module('your_app_name.controllers', [])
 
       var user = JSON.parse(window.localStorage['user'] || '{}');
       console.log(user.nombre);
+      window.localStorage['radio'] = "1";
+
 
       if (user.nombre != undefined){
 
@@ -112,7 +114,7 @@ angular.module('your_app_name.controllers', [])
 
   })
 
-  .controller('SignupCtrl', function ($scope, $state, $http) {
+  .controller('SignupCtrl', function ($scope, $state, $http, $ionicPopup) {
     $scope.user = {};
 
     $scope.user.email = "";
@@ -125,12 +127,19 @@ angular.module('your_app_name.controllers', [])
               $scope.formClass = "ion-checkmark";
               $state.go('auth.registrar', {user:user});
 
-            }else{
-              $scope.formClass = "ion-close";
+            }else {
+
+
+              var alertPopup = $ionicPopup.alert({
+                title: 'Ese email ya existe'
+              });
+
+              alertPopup.then(function(res) {
+
+
+              });
             }
-
           })
-
     };
   })
   .controller('RegistrarCtrl', function ($scope, $state, $http, $stateParams) {
@@ -253,11 +262,12 @@ angular.module('your_app_name.controllers', [])
 
       navigator.geolocation.getCurrentPosition(function(position) {
         var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        console.log("lat: "+ pos.k +" "+ "lon: "+pos.B);
       });
 
 
       var user = JSON.parse(window.localStorage['user'] || '{}');
+      var radio = window.localStorage['radio'] || '1';
+
       if (gusto =="Mis Gustos"){
         console.log("misgustos");
         var mis_gustos = user.gustos;
@@ -265,7 +275,7 @@ angular.module('your_app_name.controllers', [])
           gusto : mis_gustos
         }
         console.log(jsgusto);
-        $http.post(url + '/empresas?count=20', jsgusto).success(function (empresas) {
+        $http.post(url + '/empresas?count=20&longitude=41.275626&latitude=1.985223&distance='+radio, jsgusto).success(function (empresas) {
 
           $state.go('app.category-feeds',{empresas:empresas.results});
 
@@ -275,7 +285,7 @@ angular.module('your_app_name.controllers', [])
 
         console.log("personaizada");
 
-        $http.get(url + '/empresas?count=20').success(function (empresas) {
+        $http.get(url + '/empresas?count=20&longitude=41.275626&latitude=1.985223&distance='+radio).success(function (empresas) {
 
           $state.go('app.category-feeds',{empresas:empresas.results});
 
@@ -291,7 +301,7 @@ angular.module('your_app_name.controllers', [])
         var jsgusto ={
           gusto: arrgusto
         }
-        $http.post(url + '/empresas?count=20',jsgusto).success(function (empresas) {
+        $http.post(url + '/empresas?count=20&longitude=41.275626&latitude=1.985223&distance='+radio,jsgusto).success(function (empresas) {
 
           $state.go('app.category-feeds', {empresas: empresas.results});
 
@@ -473,247 +483,6 @@ angular.module('your_app_name.controllers', [])
 
 
   })
-  .controller('FeedEntriesCtrlComments', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService, $ionicHistory) {
-    var user = JSON.parse(window.localStorage['user'] || '{}');
-    $scope.id = user._id;
-
-    console.log(user);
-
-    var empresaEntrada = $stateParams.empresa;
-    console.log(empresaEntrada);
-
-    $scope.empresa = empresaEntrada;
-    $scope.formClass = 'icon ion-ios-star-outline';
-    $scope.favorito = false;
-
-
-    $scope.puntuaciones={};
-    $scope.puntuaciones_iniciales = {};
-    $scope.media={};
-    var puntuacion_total = 0;
-
-    $http.get(url + '/empresa/' + $stateParams.empresa._id).success(function (data) {
-      console.log(data);
-      $scope.puntuaciones_iniciales = data.puntuaciones;
-      var i;
-      for(i=0; i<$scope.puntuaciones_iniciales.length;i++){
-        puntuacion_total = puntuacion_total + $scope.puntuaciones_iniciales[i].puntuacion;
-      }
-
-      $scope.media = ((puntuacion_total/$scope.puntuaciones_iniciales.length).toFixed(2))*2;
-
-    })
-        .error(function (data) {
-          console.log('Error: ' + data);
-        });
-
-
-    user.favoritos.forEach(function (empresa) {
-      if (empresa._id == empresaEntrada._id) {
-        $scope.favorito = true;
-        $scope.formClass = 'icon ion-ios-star';
-      }
-    })
-
-
-    $scope.NewComment = function () {
-      console.log($scope.empresa);
-      $state.go("app.newComment", {empresa: $scope.empresa});
-    }
-    $scope.cargarMapa = function () {
-      $state.go("app.maps", {empresa: $scope.empresa});
-
-    }
-
-
-    $scope.changing = function (favorito) {
-      if (favorito == true) {
-        $scope.formClass = 'icon ion-ios-star-outline';
-        $scope.favorito = false;
-        var favSend = {
-          user_id: user._id,
-          function: 'drop',
-          empresa: empresaEntrada
-        }
-        $http.post(url + '/user/favorito', favSend).success(function (response) {
-          window.localStorage['user'] = JSON.stringify(response);
-
-        });
-      }
-      if (favorito == false) {
-        $scope.formClass = 'icon ion-ios-star';
-        $scope.favorito = true;
-        var favSend = {
-          user_id: user._id,
-          function: 'add',
-          empresa: empresaEntrada
-        }
-        $http.post(url + '/user/favorito', favSend).success(function (response) {
-
-          window.localStorage['user'] = JSON.stringify(response);
-
-        });
-      }
-      console.log($scope.favorito);
-    }
-    $scope.goPhotos = function(empresa){
-
-      $state.go("app.feed-entries.photos",{empresa:$scope.empresa});
-
-    }
-    $scope.goComments = function(empresa){
-
-      $state.go("app.feed-entries.comments",{empresa:$scope.empresa});
-
-    }
-    $scope.goHome = function(empresa){
-
-      $state.go("app.feed-entries",{empresa:$scope.empresa});
-    }
-
-    $scope.puntuar = function (puntuacion) {
-
-
-      $scope.puntuaciones.puntuacion = puntuacion;
-      $scope.puntuaciones.userID = user._id;
-
-
-
-      $http.post(url + '/empresa/' + $scope.empresa._id + '/rating', $scope.puntuaciones).success(function (response) {
-        console.log(response);
-        console.log(response.puntuaciones[response.puntuaciones.length-1].puntuacion);
-        puntuacion_total = response.puntuaciones[response.puntuaciones.length-1].puntuacion + puntuacion_total;
-
-        $scope.media = ((puntuacion_total/response.puntuaciones.length).toFixed(2))*2;
-      });
-
-    };
-
-
-  })
-  .controller('FeedEntriesCtrlPhotos', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService, $ionicHistory) {
-    var user = JSON.parse(window.localStorage['user'] || '{}');
-    $scope.id = user._id;
-
-    console.log(user);
-
-    var empresaEntrada = $stateParams.empresa;
-    console.log(empresaEntrada);
-
-    $scope.empresa = empresaEntrada;
-    $scope.formClass = 'icon ion-ios-star-outline';
-    $scope.favorito = false;
-
-
-    $scope.puntuaciones={};
-    $scope.puntuaciones_iniciales = {};
-    $scope.media={};
-    var puntuacion_total = 0;
-
-    $http.get(url + '/empresa/' + $stateParams.empresa._id).success(function (data) {
-      console.log(data);
-      $scope.puntuaciones_iniciales = data.puntuaciones;
-      var i;
-      for(i=0; i<$scope.puntuaciones_iniciales.length;i++){
-        puntuacion_total = puntuacion_total + $scope.puntuaciones_iniciales[i].puntuacion;
-      }
-
-      $scope.media = ((puntuacion_total/$scope.puntuaciones_iniciales.length).toFixed(2))*2;
-
-    })
-        .error(function (data) {
-          console.log('Error: ' + data);
-        });
-
-
-    user.favoritos.forEach(function (empresa) {
-      if (empresa._id == empresaEntrada._id) {
-        $scope.favorito = true;
-        $scope.formClass = 'icon ion-ios-star';
-      }
-    })
-
-
-    $scope.NewComment = function () {
-      console.log($scope.empresa);
-      $state.go("app.newComment", {empresa: $scope.empresa});
-    }
-    $scope.cargarMapa = function () {
-      $state.go("app.maps", {empresa: $scope.empresa});
-
-    }
-
-
-    $scope.changing = function (favorito) {
-      if (favorito == true) {
-        $scope.formClass = 'icon ion-ios-star-outline';
-        $scope.favorito = false;
-        var favSend = {
-          user_id: user._id,
-          function: 'drop',
-          empresa: empresaEntrada
-        }
-        $http.post(url + '/user/favorito', favSend).success(function (response) {
-          window.localStorage['user'] = JSON.stringify(response);
-
-        });
-      }
-      if (favorito == false) {
-        $scope.formClass = 'icon ion-ios-star';
-        $scope.favorito = true;
-        var favSend = {
-          user_id: user._id,
-          function: 'add',
-          empresa: empresaEntrada
-        }
-        $http.post(url + '/user/favorito', favSend).success(function (response) {
-
-          window.localStorage['user'] = JSON.stringify(response);
-
-        });
-      }
-      console.log($scope.favorito);
-    }
-    $scope.goPhotos = function(empresa){
-      console.log(empresa);
-
-      $state.go("app.feed-entries.photos",{empresa:$scope.empresa});
-
-    }
-    $scope.goComments = function(empresa){
-      console.log(empresa);
-
-      $state.go("app.feed-entries.comments",{empresa:$scope.empresa});
-
-    }
-    $scope.goHome = function(empresa){
-      console.log(empresa);
-
-      $state.go("app.feed-entries",{empresa:$scope.empresa});
-    }
-
-    $scope.puntuar = function (puntuacion) {
-
-
-      $scope.puntuaciones.puntuacion = puntuacion;
-      $scope.puntuaciones.userID = user._id;
-
-
-
-      $http.post(url + '/empresa/' + $scope.empresa._id + '/rating', $scope.puntuaciones).success(function (response) {
-        console.log(response);
-        console.log(response.puntuaciones[response.puntuaciones.length-1].puntuacion);
-        puntuacion_total = response.puntuaciones[response.puntuaciones.length-1].puntuacion + puntuacion_total;
-
-        $scope.media = ((puntuacion_total/response.puntuaciones.length).toFixed(2))*2;
-      });
-
-    };
-
-
-  })
-
-
     .controller('NewCommentCtrl', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService, $ionicHistory) {
     $ionicHistory.nextViewOptions({
       disableBack: true
@@ -790,6 +559,12 @@ angular.module('your_app_name.controllers', [])
               });
 
         }
+
+      }
+      $scope.choice = "1";
+      $scope.getradio = function(radio){
+        console.log(radio);
+        window.localStorage['radio'] = radio;
 
       }
     // Triggered on a the logOut button click

@@ -25,20 +25,53 @@ module.exports = function (app) {
             start: (page - 1) * count,
             count: count
         };
-
         var sort = {
             sort: {
                 desc: '_id'
             }
         };
-        Empresa
-            .find({},{password:0})
-            .page(pagination, function (err, empresa) {
-                if (err)
-                    res.send(err)
-                res.json(empresa); // devuelve todas las Empresas en JSON
-            }
-        );
+
+        if (req.query.latitude!=undefined||req.query.longitude!=undefined) {
+            console.log("dins");
+
+            var maxDistance = req.query.distance || 100;
+
+            maxDistance /= 6371;
+
+            var coords = [];
+            coords[1] = req.query.latitude;
+            coords[0] = req.query.longitude;
+
+            console.log("coord: " + coords);
+            console.log("maxD: " + maxDistance);
+            Empresa.find({"location": {$geoWithin: {$centerSphere: [[coords[0], coords[1]], maxDistance]}}},
+                {password: 0})
+                .page(pagination, function (err, empresa) {
+                    console.log("results");
+                    if (err) {
+                        console.log("err");
+                        res.send(err);
+                    } else {
+                        res.json(empresa); // devuelve todas las Empresas en JSON
+                    }
+                }
+            );
+        }
+        else {
+            console.log(req.body.gusto);
+            Empresa.find({},
+                {password: 0})
+                .page(pagination, function (err, empresa) {
+                    console.log("results");
+                    if (err) {
+                        console.log("err");
+                        res.send(err);
+                    } else {
+                        res.json(empresa); // devuelve todas las Empresas en JSON
+                    }
+                })
+
+        }
     }
 
 // Guarda un objeto Empresa en base de datos
@@ -57,6 +90,8 @@ module.exports = function (app) {
                 subtags: req.body.subtags,
                 detalles: req.body.detalles,
                 location: req.body.location,
+                puntuacion: [],
+                comentarios: [],
                 avatar: req.body.avatar,
                 created_at: now,
                 updated_at: now
@@ -98,6 +133,7 @@ module.exports = function (app) {
         Empresa.findById(req.params.empresa_id, function (err, empresa) {
             if (err) {
                 res.send(err)
+
             }else {
                 console.log(empresa);
                 empresa.comentarios.push(req.body);
@@ -116,6 +152,7 @@ module.exports = function (app) {
                                 res.json(empresa);
                             }
                         });
+
 
                     }
                 });

@@ -7,6 +7,12 @@ MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
     $scope.valPassword = {};
     $scope.error = "";
     $scope.empresa = {};
+    $scope.mostrarAlertNom = false;
+    $scope.mostrarAlertApe = false;
+    $scope.mostrarAlertCon = false;
+    $scope.mostrarAlertEm = false;
+    $scope.mostrarAlertFecha = false;
+    $scope.mostrarRepe = false;
     var numeroAv;
 
 
@@ -22,32 +28,57 @@ MetronicApp.controller('RegisterController', function ($scope, $http, $state) {
 
     $scope.registrarUser = function () {
       numeroAv = Math.floor(Math.random() * 12) ;
-    
-      $scope.newUser.avatar = "/assets/avatar/"+numeroAv+".png";
-        if ($scope.newUser.password == $scope.valPassword.password2) {
 
-            $http.post('/user', $scope.newUser)
-                .success(function () {
+       if($scope.newUser.password != $scope.password2){
+
+          $scope.mostrarAlertCon = true;
+      }
+      else{
+
+        $http.post('/user/find', $scope.newUser)
+          .success(function (data) {
+            console.log(data);
+
+              if(data[0] == undefined){
+                $scope.newUser.avatar = "/assets/avatar/"+numeroAv+".png";
+
+                $http.post('/user', $scope.newUser)
+                  .success(function () {
 
                     $scope.newUser = {};
                     $state.go('index');
 
-                })
-                .error(function (data) {
-                    console.log('Error: ' + data);
+                    })
+                      .error(function (data) {
+                          console.log('Error: ' + data);
+                            $scope.error = "Las contraseñas no coinciden";
+
+                            });
+                            $scope.newUser = {};
+                            $state.go('index');
+              }else{
+
+                  $scope.mostrarRepe = true;
+
+              }
+
+
+            })
+              .error(function (data) {
+                  console.log('Error: ' + data);
                     $scope.error = "Las contraseñas no coinciden";
 
-                });
-        } else {
-            console.log('Error');
-        }
-
-    };
+                    });
 
 
 
-    $scope.volver = function () {
-        $state.go('index');
-    };
+      }
+
+};
+
+$scope.volver = function () {
+    window.location.href ="/";
+};
+
 
 });

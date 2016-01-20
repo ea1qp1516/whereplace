@@ -11,8 +11,27 @@
 
     }
 </style>
-<div data-ng-include="'tpl/header_login.html'" data-ng-controller="HeaderLoginController" ng-show="mostrarHeader" class="page-header md-shadow-z-1-i navbar navbar-fixed-top">
+<div data-ng-include="'tpl/header_login.html'" data-ng-controller="HeaderLoginController"  class="page-header md-shadow-z-1-i navbar navbar-fixed-top">
 </div>
+
+<div class="portlet box red-thunderbird">
+			<div class="portlet-title">
+				<div class="caption">
+					Galería de Imágenes
+				</div>
+			</div>
+			<div class="portlet-body">
+				<carousel >
+						<slide ng-repeat="slide in slides" active="slide.active">
+							<img ng-src="{{slide}}" style="margin:auto;">
+							<div class="carousel-caption">
+
+
+							</div>
+						</slide>
+				</carousel>
+	</div>
+	</div>
 
 <div class="row" ng-controller="DetallesController">
     <div class="col-md-12">
@@ -28,7 +47,7 @@
                                 <h3 style="margin-top:0;">{{empresa.descripcion}}</h3>
 
                                 <div class="blog-tag-data">
-                                    <img src="../../assets/images_emp/prueba.jpg"
+                                    <img src="{{empresa.avatar}}"
                                          class="img-responsive" alt="">
 
                                     <div class="row">
@@ -46,16 +65,6 @@
                                         <div class="col-md-6 blog-tag-data-inner">
                                             <ul class="list-inline">
                                               <li>
-                                                    <div class="ec-stars-wrapper" ng-show ="mostrarEstrellas">
-                                                          <a  ng-click="puntuar(1)">&#9733;</a>
-                                                          <a  ng-click="puntuar(2)">&#9733;</a>
-                                                          <a  ng-click="puntuar(3)">&#9733;</a>
-                                                          <a  ng-click="puntuar(4)">&#9733;</a>
-                                                          <a  ng-click="puntuar(5)">&#9733;</a>
-                                                    </div>
-                                                <div class="ec-stars-wrapper" ng-show ="mostrarMensaje">
-                                                      <h3>{{NoPuedes}}</h3>
-                                                </div>
                                               </li>
                                                 <li>
                                                     <i class="fa fa-calendar"></i>
@@ -91,45 +100,6 @@
                                 </div>
                                 <hr>
 
-                                <h3>Comentarios</h3>
-
-                                <div class="media" data-ng-repeat="comentario in empresa.comentarios">
-
-                                    <a href="javascript:;" class="pull-left">
-                                        <img alt="" src="{{comentario.avatar}}"
-                                             class="media-object">
-                                    </a>
-
-                                    <div class="media-body">
-                                        <h4 class="media-heading">{{comentario.user}} <span>
-											{{comentario.created_at}}
-											</span>
-                                        </h4>
-
-                                        <p>
-                                            {{comentario.comentario}}
-                                        </p>
-                                        <hr>
-
-                                    </div>
-                                </div>
-
-                                <div class="post-comment">
-                                    <h3>Escribe un comentario</h3>
-
-                                    <form role="form">
-                                        <div class="form-group">
-                                            <label class="control-label">Descripción <span class="required">
-												* </span>
-                                            </label>
-                                            <textarea class="col-md-10 form-control" rows="8"
-                                                      data-ng-model="newComment.comentario"></textarea>
-                                        </div>
-                                        <button class="margin-top-20 btn blue" type="submit"
-                                                ng-click="nuevoComentario()">Publicar
-                                        </button>
-                                    </form>
-                                </div>
                             </div>
                             <!--end col-md-9-->
                             <div class="col-md-3 blog-sidebar">
@@ -149,6 +119,48 @@
                                 </div>
                                 <div class="space20">
                                 </div>
+
+                            </div>
+
+                            <div class="col-md-3 blog-sidebar">
+                            <h3>Comentarios</h3>
+
+                                                              <div class="media" data-ng-repeat="comentario in empresa.comentarios">
+
+                                                                  <a href="javascript:;" class="pull-left">
+                                                                      <img alt="" src="{{comentario.avatar}}"
+                                                                           class="media-object">
+                                                                  </a>
+
+                                                                  <div class="media-body">
+                                                                      <h4 class="media-heading">{{comentario.user}} <span>
+                              											{{comentario.created_at}}
+                              											</span>
+                                                                      </h4>
+
+                                                                      <p>
+                                                                          {{comentario.comentario}}
+                                                                      </p>
+                                                                      <hr>
+
+                                                                  </div>
+                                                              </div>
+                                                              <div class="post-comment">
+                                                                  <h3>Escribe un comentario</h3>
+
+                                                                  <form role="form">
+                                                                      <div class="form-group">
+                                                                          <label class="control-label">Descripción <span class="required">
+                                                      * </span>
+                                                                          </label>
+                                                                          <textarea class="col-md-10 form-control" rows="8"
+                                                                                    data-ng-model="newComment.comentario"></textarea>
+                                                                      </div>
+                                                                      <button class="margin-top-20 btn red-thunderbird" type="submit"
+                                                                              ng-click="nuevoComentario()">Publicar
+                                                                      </button>
+                                                                  </form>
+                                                              </div>
 
                             </div>
                             <!--end col-md-3-->
