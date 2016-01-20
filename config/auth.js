@@ -10,10 +10,9 @@ module.exports = {
         profileFields: ['id', 'displayName', 'photos', 'emails']// [1]
  },
   'twitterAuth': {
-        consumer_key: '	R2II5v7NeZSyOgmVz2RUojTTt',
-        consumer_secret:'Fqxlk9xu0Kfhjinh58F5j4y22q8Kctm8Zhly2HMTO3mMyxt3my',
-        acces_token_key: '1431391406-dRyopyHfKty2OiYvL3cy54EOIBe7AxaTjH4v3IR',
-        acces_token_secret: 'p7t6EURhAmToOXKwOjWEyj468EVn2Muc3b4o3g9P1O0VQ'// [1]
+        clientID: 'qCxDfFYZobEDyhrpSC4ERp8mT',
+        clientSecret:'PC2tpiFgFHyMtEjYwBwc5uROZukS40mbhO5U7K6n9lrgrg8uRN',
+        callbackURL : "http://localhost:3000/auth/twitter/callback"
     }
 
 
