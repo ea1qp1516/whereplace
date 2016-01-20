@@ -134,23 +134,6 @@ module.exports = function (app) {
             if (err) {
                 res.send(err)
 
-            console.log(req.body);
-            empresa.comentarios.push(req.body);
-            empresa.save(function (error, data) {
-                if (error) {
-                    res.json(error);
-                }
-                else {
-
-                    Empresa.findById(req.params.empresa_id, function (err, empresa) {
-                        if (err) {
-                            res.json(err);
-                        }
-                        else {
-                            res.json(empresa);
-                        }
-                    });
-
             }else {
                 console.log(empresa);
                 empresa.comentarios.push(req.body);
@@ -169,7 +152,7 @@ module.exports = function (app) {
                                 res.json(empresa);
                             }
                         });
->>>>>>> origin/dev
+
 
                     }
                 });
