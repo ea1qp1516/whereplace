@@ -114,7 +114,7 @@ angular.module('your_app_name.controllers', [])
 
   })
 
-  .controller('SignupCtrl', function ($scope, $state, $http) {
+  .controller('SignupCtrl', function ($scope, $state, $http, $ionicPopup) {
     $scope.user = {};
 
     $scope.user.email = "";
@@ -127,12 +127,19 @@ angular.module('your_app_name.controllers', [])
               $scope.formClass = "ion-checkmark";
               $state.go('auth.registrar', {user:user});
 
-            }else{
-              $scope.formClass = "ion-close";
+            }else {
+
+
+              var alertPopup = $ionicPopup.alert({
+                title: 'Ese email ya existe'
+              });
+
+              alertPopup.then(function(res) {
+
+
+              });
             }
-
           })
-
     };
   })
   .controller('RegistrarCtrl', function ($scope, $state, $http, $stateParams) {

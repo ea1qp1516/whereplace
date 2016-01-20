@@ -82,9 +82,7 @@ MetronicApp.factory('settings', ['$rootScope', function ($rootScope) {
 
 /* Setup App Main Controller */
 MetronicApp.controller('AppController', ['$scope', '$state', '$stateParams','$location', '$http' ,'$cookieStore', function ($scope,$state, $stateParams, $location, $http,  $cookieStore) {
-    $scope.about = function () {
-        $state.go('about');
-    }
+
     $scope.user = $stateParams.user;
     $scope.header = "";
     //console.log($stateParams);
@@ -171,6 +169,9 @@ MetronicApp.controller('HeaderController', ['$scope','$cookieStore', '$state','$
     $scope.register = function () {
       $state.go('register');
     }
+    $scope.about = function () {
+        $state.go('about');
+    }
 
 }]);
 MetronicApp.controller('HeaderLoginController', ['$scope','$cookieStore', '$state','$http', function ($scope, $cookieStore, $state,$http) {
@@ -232,6 +233,7 @@ MetronicApp.controller('FooterController', ['$scope', function ($scope) {
     $scope.$on('$includeContentLoaded', function () {
         Layout.initFooter(); // init footer
     });
+
 }]);
 
 /* Setup Rounting For All Pages */
@@ -713,20 +715,36 @@ MetronicApp.controller('LoginController', function ($scope, $http, $state, $cook
     $scope.login = function () {
         $http.post('/user/login', $scope.loginUser)
             .success(function (data) {
+                console.log(data);
 
-                $cookieStore.put('IdUser', data._id);
-                $cookieStore.put('Header',0);
+                if (data.usernameadmin=="admin"){
+                    $state.go('adminpanel')
+                }else {
+
+                    $cookieStore.put('IdUser', data._id);
+                    $cookieStore.put('Header', 0);
 
 
-                $state.go('main');
-                $scope.mostrarBotonesHeader=false;
-                $scope.mostrarHeaderLogin = true;
+                    $state.go('main');
+                    $scope.mostrarBotonesHeader = false;
+                    $scope.mostrarHeaderLogin = true;
+                }
+
+
             })
             .error(function (data) {
                 console.log('Error: ' + data);
-                $state.go('index');
+                window.location.href = "/";
             });
+
+
+
+
+
     }
+    $scope.volver = function () {
+        window.location.href = "/";
+    };
 });
 
 

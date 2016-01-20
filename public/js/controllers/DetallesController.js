@@ -46,10 +46,27 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
 
 
     userPuntuador = $cookieStore.get('IdUser');
+
     $http.get('/user/' + $cookieStore.get('IdUser')).success(function (data) {
 
         $scope.user = data;
         $scope.user.favoritos = data.favoritos;
+        console.log(data.favoritos);
+        data.favoritos.forEach(function(data){
+            console.log("dins");
+            console.log("esto: "+data._id);
+            console.log("and this: "+$stateParams.empresa_id);
+            if(data._id==$stateParams.empresa_id){
+                console.log("esto: "+data._id);
+                console.log("and this: "+$stateParams.empresa_id);
+
+                $scope.favorito = true;
+
+                $scope.formClassFav = 'btn btn-sm yellow-lemon';
+                $scope.formClassIconFav = 'fa fa-star';
+            }
+        })
+
 
     })
         .error(function (data) {
@@ -62,6 +79,7 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
         empresa = data;
 
 
+
         fotos = data.galeria.split(',');
         var i;
         for(i=0;i<fotos.length-1;i++){
@@ -69,17 +87,6 @@ MetronicApp.controller('DetallesController', function ($scope, $http, $statePara
           $scope.slides.push(fotos[i]);
         };
 
-        $scope.user.favoritos.forEach(function (data) {
-
-          if (data._id == $scope.empresa._id) {
-            console.log($scope.favorito);
-            $scope.favorito = true;
-
-            $scope.formClassFav = 'btn btn-sm yellow-lemon';
-            $scope.formClassIconFav = 'fa fa-star';
-
-          }
-        });
 
         var i;
         for(i=0;i<$scope.empresa.subtags.length;i++){
