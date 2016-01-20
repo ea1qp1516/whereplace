@@ -22,18 +22,18 @@
         <button class="button button-block button-assertive" ng-click="CambiarPassword(password)">
           Cambiar
         </button>
-      <div class="item item-divider">About</div>
+      <div class="item item-divider">Radio</div>
 
-      <ion-checkbox ng-model="checkOpt1">Option 1</ion-checkbox>
-      <ion-checkbox ng-model="checkOpt2">Option 2</ion-checkbox>
-      <ion-checkbox ng-model="checkOpt3">Option 3</ion-checkbox>
-
-
+      <ion-radio ng-model="choice" ng-change="getradio(choice)" ng-value="'1'">1 km</ion-radio>
+      <ion-radio ng-model="choice" ng-change="getradio(choice)" ng-value="'10'">10 km</ion-radio>
+      <ion-radio ng-model="choice" ng-change="getradio(choice)" ng-value="'30'">30 km</ion-radio>
 
 
-      <div class="bar bar-footer bar-assertive" ng-click="showLogOutMenu()">
-        <div class="title">Sign Out</div>
-      </div>
+
+
     </ul>
   </ion-content>
+  <div class="bar bar-footer bar-assertive" ng-click="showLogOutMenu()">
+    <div class="title">Sign Out</div>
+  </div>
 </ion-view>
