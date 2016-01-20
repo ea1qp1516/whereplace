@@ -44,7 +44,6 @@ module.exports = function (app) {
 // Guarda un objeto Empresa en base de datos
     newEmpresa = function (req, res) {
         var now = new Date();
-        console.log(req.body.lat);
         Empresa.create(
             {
                 nombre: req.body.nombre,
@@ -57,9 +56,8 @@ module.exports = function (app) {
                 tag: req.body.tag,
                 subtags: req.body.subtags,
                 detalles: req.body.detalles,
+                location: req.body.location,
                 avatar: req.body.avatar,
-                lat: req.body.lat,
-                lng: req.body.lng,
                 created_at: now,
                 updated_at: now
             },
@@ -171,20 +169,53 @@ module.exports = function (app) {
             start: (page - 1) * count,
             count: count
         };
-
         var sort = {
             sort: {
                 desc: '_id'
             }
         };
-        Empresa.find({"tags": {$in:req.body.gusto}},
-            {  password:0 })
-            .page(pagination, function (err, empresa) {
-                if (err)
-                    res.send(err)
-                res.json(empresa); // devuelve todas las Empresas en JSON
-            }
-        );
+
+        if (req.query.latitude!=undefined||req.query.longitude!=undefined) {
+            console.log("dins");
+
+            var maxDistance = req.query.distance || 8;
+
+            maxDistance /= 6371;
+
+            var coords = [];
+            coords[1] = req.query.latitude;
+            coords[0] = req.query.longitude;
+
+            console.log("coord: " + coords);
+            console.log("maxD: " + maxDistance);
+            Empresa.find({$and: [{"location": {$geoWithin: {$centerSphere: [[coords[0], coords[1]], maxDistance]}}}, {"tag": {$in: req.body.gusto}}]},
+                {password: 0})
+                .page(pagination, function (err, empresa) {
+                    console.log("results");
+                    if (err) {
+                        console.log("err");
+                        res.send(err);
+                    } else {
+                        res.json(empresa); // devuelve todas las Empresas en JSON
+                    }
+                }
+            );
+        }
+        else {
+            console.log(req.body.gusto);
+            Empresa.find({tag: {$in: req.body.gusto}},
+                {password: 0})
+                .page(pagination, function (err, empresa) {
+                    console.log("results");
+                    if (err) {
+                        console.log("err");
+                        res.send(err);
+                    } else {
+                        res.json(empresa); // devuelve todas las Empresas en JSON
+                    }
+                })
+
+        }
     }
 
     empresalogin = function (req, res) {
