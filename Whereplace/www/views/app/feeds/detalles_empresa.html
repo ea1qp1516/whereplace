@@ -5,19 +5,13 @@
 
     </ion-nav-title>
     <ion-content>
-        <div class="top-content row">
-            <div class="profile-container">
-                <div class="user-image-container">
-                    <pre-img ratio="_1_1" helper-class="rounded-image">
-                        <img class="user-image" ng-src="http://i0.wp.com/alt1040.com/files/2014/06/poly-wallpaper-2-800x450.jpg?resize=800%2C450" spinner-on-load>
-                    </pre-img>
-                </div>
-                <div class="user-name">{{empresa.ciudad}}</div>
-                <div class="user-twitter">{{empresa.descripcion}}</div>
-            </div>
-            <div class="user-background-image-outer">
-                <div multi-bg="['http://applediario.com/wp-content/uploads/2012/02/ox-mountain-lion-galaxy-wallpaper.png']"></div>
-            </div>
+
+
+        <div class="profile-container">
+
+            <div class="user-name">{{empresa.ciudad}}</div>
+            <div class="user-twitter">{{empresa.descripcion}}</div>
+
         </div>
 
       <div class="ec-stars-wrapper">
@@ -34,6 +28,15 @@
 
       </div>
 
+        <div class="bottom-content">
+            <div class="profile-container">
+                <div class="user-image-container">
+                    <pre-img ratio="_1_1">
+                        <img class="user-image" ng-src="img/fondop.jpg" spinner-on-load>
+                    </pre-img>
+                </div>
+        </div>
+
 
 
         <div class="list category-feeds">
@@ -43,7 +46,6 @@
                     <span class="title">{{comentario.user}}</span>
                     <p class="description">{{comentario.comentario}}</p>
                 </div>
-                <i class="icon ion-arrow-right-c"></i>
             </a>
         </div>
         <div class="bottom-content">
@@ -56,12 +58,15 @@
               </div>-->
             </div>
           <div class="user-bio">
-            <a ng-click="cargarMapa()">{{empresa.direccion}}</a>
+            <a ng-click="cargarMapa()">Localizacion: {{empresa.direccion}}</a>
             <!--   <a ng-click="cargarMapa()">{{empresa.direccion}}</a>
              <div ng-show="mostrarMapa" id="map" style="height: 400px; ">
 
              </div>-->
           </div>
+
         </div>
+
     </ion-content>
+
 </ion-view>

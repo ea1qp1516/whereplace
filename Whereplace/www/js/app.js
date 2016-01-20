@@ -225,6 +225,7 @@ angular.module('WherePlace', [
     },
     params: {empresa:{}}
   })
+
   .state('app.comentarios', {
     url: "/mycomments",
     views: {

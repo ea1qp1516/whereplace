@@ -1,4 +1,4 @@
-var url = "http://10.83.55.226:3000";
+var url = "http://10.183.44.133:3000";
 
 //10.83.55.226
 //localhost
@@ -10,6 +10,8 @@ angular.module('your_app_name.controllers', [])
 
       var user = JSON.parse(window.localStorage['user'] || '{}');
       console.log(user.nombre);
+      window.localStorage['radio'] = "1";
+
 
       if (user.nombre != undefined){
 
@@ -25,11 +27,58 @@ angular.module('your_app_name.controllers', [])
     console.log(user);
     $scope.user = user;
     })
-  .controller('ProfileCtrl', function ($scope, $ionicConfig) {
+  .controller('ProfileCtrl', function ($scope, $ionicConfig,  $cordovaCamera, $ionicActionSheet, $cordovaFileTransfer, $rootScope, $timeout) {
 
     var user = JSON.parse(window.localStorage['user'] || '{}');
     console.log(user);
     $scope.user = user;
+
+      $scope.cambiarPhoto = function(){
+
+
+        var options = {
+          quality: 100,
+          destinationType: Camera.DestinationType.FILE_URI,
+          sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+          allowEdit: false,
+          encodingType: Camera.EncodingType.JPEG,
+          popoverOptions: CameraPopoverOptions,
+          saveToPhotoAlbum: true
+        };
+
+        $cordovaCamera.getPicture(options).then(function (imageData) {
+
+          $timeout(function () {
+            $scope.$apply(function () {
+              $scope.fotoperfil = imageData;
+            });
+          });
+
+          var url = "http://10.183.44.133:3000/user/modify_avatar/"+user._id;
+          var targetPath = imageData;
+          var filename = user._id;
+          var options = {
+            fileKey: "avatar",
+            fileName: filename,
+            chunkedMode: false,
+            mimeType: "image/jpg"
+          };
+
+          $cordovaFileTransfer.upload(url, targetPath, options).then(function (result) {
+            alert("Foto subida correctamente");
+          }, function (err) {
+            alert(JSON.stringify(err));
+          }, function (progress) {
+
+          });
+
+
+        }, function (err) {
+          // error
+          console.log(err);
+        });
+
+      }
 
   })
 
@@ -206,11 +255,12 @@ angular.module('your_app_name.controllers', [])
 
       navigator.geolocation.getCurrentPosition(function(position) {
         var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        console.log("lat: "+ pos.k +" "+ "lon: "+pos.B);
       });
 
 
       var user = JSON.parse(window.localStorage['user'] || '{}');
+      var radio = window.localStorage['radio'] || '1';
+
       if (gusto =="Mis Gustos"){
         console.log("misgustos");
         var mis_gustos = user.gustos;
@@ -218,7 +268,7 @@ angular.module('your_app_name.controllers', [])
           gusto : mis_gustos
         }
         console.log(jsgusto);
-        $http.post(url + '/empresas?count=20', jsgusto).success(function (empresas) {
+        $http.post(url + '/empresas?count=20&longitude=41.275626&latitude=1.985223&distance='+radio, jsgusto).success(function (empresas) {
 
           $state.go('app.category-feeds',{empresas:empresas.results});
 
@@ -228,7 +278,7 @@ angular.module('your_app_name.controllers', [])
 
         console.log("personaizada");
 
-        $http.get(url + '/empresas?count=20').success(function (empresas) {
+        $http.get(url + '/empresas?count=20&longitude=41.275626&latitude=1.985223&distance='+radio).success(function (empresas) {
 
           $state.go('app.category-feeds',{empresas:empresas.results});
 
@@ -244,7 +294,7 @@ angular.module('your_app_name.controllers', [])
         var jsgusto ={
           gusto: arrgusto
         }
-        $http.post(url + '/empresas?count=20',jsgusto).success(function (empresas) {
+        $http.post(url + '/empresas?count=20&longitude=41.275626&latitude=1.985223&distance='+radio,jsgusto).success(function (empresas) {
 
           $state.go('app.category-feeds', {empresas: empresas.results});
 
@@ -313,12 +363,16 @@ angular.module('your_app_name.controllers', [])
     var user = JSON.parse(window.localStorage['user'] || '{}');
     $scope.id = user._id;
 
+    console.log(user);
+
     var empresaEntrada = $stateParams.empresa;
-    var idempresa = empresaEntrada._id;
-    console.log($stateParams.empresa);
+    console.log(empresaEntrada);
+
     $scope.empresa = empresaEntrada;
-    $scope.favorito = false;
     $scope.formClass = 'icon ion-ios-star-outline';
+    $scope.favorito = false;
+
+
     $scope.puntuaciones={};
     $scope.puntuaciones_iniciales = {};
     $scope.media={};
@@ -368,6 +422,7 @@ angular.module('your_app_name.controllers', [])
           empresa: empresaEntrada
         }
         $http.post(url + '/user/favorito', favSend).success(function (response) {
+          window.localStorage['user'] = JSON.stringify(response);
 
         });
       }
@@ -381,9 +436,24 @@ angular.module('your_app_name.controllers', [])
         }
         $http.post(url + '/user/favorito', favSend).success(function (response) {
 
+          window.localStorage['user'] = JSON.stringify(response);
+
         });
       }
-      console.log(favorito);
+      console.log($scope.favorito);
+    }
+    $scope.goPhotos = function(empresa){
+
+      $state.go("app.feed-entries.photos",{empresa:$scope.empresa});
+
+    }
+    $scope.goComments = function(empresa){
+
+      $state.go("app.feed-entries.comments",{empresa:$scope.empresa});
+
+    }
+    $scope.goHome = function(empresa){
+      $state.go("app.feed-entries",{empresa:$scope.empresa});
     }
 
     $scope.puntuar = function (puntuacion) {
@@ -406,8 +476,7 @@ angular.module('your_app_name.controllers', [])
 
 
   })
-
-  .controller('NewCommentCtrl', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService, $ionicHistory) {
+    .controller('NewCommentCtrl', function ($scope, $state, $stateParams, $http, FeedList, $q, $ionicLoading, BookMarkService, $ionicHistory) {
     $ionicHistory.nextViewOptions({
       disableBack: true
     });
@@ -483,6 +552,12 @@ angular.module('your_app_name.controllers', [])
               });
 
         }
+
+      }
+      $scope.choice = "1";
+      $scope.getradio = function(radio){
+        console.log(radio);
+        window.localStorage['radio'] = radio;
 
       }
     // Triggered on a the logOut button click
