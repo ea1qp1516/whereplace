@@ -289,16 +289,18 @@ module.exports = function (app, passport) {
 
                 User.update({_id: req.params.user_id},req.body,
                     function (err, user) {
-                        if (err)
+                        if (err) {
                             res.send(err);
+                        }else {
 
 
-                        User.findOne({"_id": req.params.user_id}, {__v: 0, password: 0}, function (err, user) {
-                                if (err)
-                                    res.send(err)
-                                res.json(user);
-                            }
-                        );
+                            User.findOne({"_id": req.params.user_id}, {__v: 0, password: 0}, function (err, user) {
+                                    if (err)
+                                        res.send(err)
+                                    res.json(user);
+                                }
+                            );
+                        }
                     });
 
 
